@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const Card = ({ title, description,ClassClick ,book}) => (
   <View style={styles.card}>
    
-    <Image style={{width:"100%",height:140,borderTopLeftRadius:10,borderTopRightRadius:10}} source={{ uri:"https://staticg.sportskeeda.com/editor/2022/11/2ca83-16687038360374-1920.jpg"}} />
+    <Image style={{width:"100%",height:140,borderTopLeftRadius:10,borderTopRightRadius:10}} source={require('../../assets/Samsra-app.jpg')} />
 
    
     

@@ -19,7 +19,7 @@ export const ClassDescription = () => {
   
         <ScrollView>
         <ImageBackground
-      source={{ uri: 'https://verv.com/wp-content/uploads/2018/12/seiza_pose-e1545294218881.jpg' }} // Replace 'your_background_image_url' with the actual image URL
+      source={require('../../assets/samsara-app2.jpg')} // Replace 'your_background_image_url' with the actual image URL
       style={{opacity: 0.7,flex: 1, resizeMode: 'cover', alignItems: 'left', marginTop: 15, width: width, height: height * 0.4}}
     >
        

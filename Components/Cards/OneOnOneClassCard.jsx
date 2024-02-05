@@ -10,7 +10,7 @@ export const OneOnOneClassCard = ({ title, description,onTeacherClick,book }) =>
    
    <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",padding:10}}>
     <Block>
-    <Image style={{width:130,height:130,borderRadius:100}} source={{ uri:"https://staticg.sportskeeda.com/editor/2022/11/2ca83-16687038360374-1920.jpg"}} />
+    <Image style={{width:130,height:130,borderRadius:100}} source={require('../../assets/Samsra-app.jpg')} />
     </Block>
 
     <Block>
