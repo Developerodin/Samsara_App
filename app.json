@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.akshaypareek_01.samsaraapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c18b200f-0b08-4823-bfcd-29d54f9b95f2"
+      }
+    },
+    "owner": "akshaypareek_01"
   }
 }
