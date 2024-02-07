@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, SafeAreaView, StyleSheet,ScrollView,  View,Dimensions,TouchableOpacity, Image,Animated, TextInput } from 'react-native'
+import {Linking, FlatList, SafeAreaView, StyleSheet,ScrollView,  View,Dimensions,TouchableOpacity, Image,Animated, TextInput } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import { Block, Text, Input, theme, Button } from "galio-framework";
 import { Header } from '../../Components/Header/Header';
@@ -11,10 +11,12 @@ import Card from '../../Components/Cards/ClassCard';
 import { useNavigation } from '@react-navigation/native';
 import { OneOnOneClassCard } from '../../Components/Cards/OneOnOneClassCard';
 import { MemberShipModel } from '../../Components/Model/MemberShipModel';
+import { WebModel } from '../../Components/Model/WebModel';
 export const Home = () => {
   const navigation= useNavigation()
   const animationRef = useRef(null);
   const [modalVisible,setModalVisible] = useState(false)
+  const [webmodalVisible,setWebModalVisible] = useState(false)
   const cards = [
     { title: 'Hatha Yoga', description: 'Start Your Day Out Right ' },
     { title: 'Rise and Shine', description: 'Intermediate Power Flow' },
@@ -23,6 +25,18 @@ export const Home = () => {
 
   const handelClassClick = ()=>{
     navigation.navigate("ClassDescription")
+  }
+
+  const handelWebModelOpen = ()=>{
+    setWebModalVisible(true)
+  }
+
+  const handelWebModelClose = ()=>{
+    setWebModalVisible(false)
+  }
+
+  const handelWebModelComplete = () =>{
+    console.log("web Complete")
   }
 
   const handelTeacherClick = ()=>{
@@ -48,6 +62,24 @@ export const Home = () => {
     
     setModalVisible(true)
   }
+
+  const handelZommClassClick =() =>{
+    const zoomMeetingUrl = 'https://us05web.zoom.us/j/88339990603?pwd=sg8wOrCMGY5mhat5RaJdhAhyTIxuuo.1';
+
+    // Open the Zoom meeting URL using Linking
+    Linking.canOpenURL(zoomMeetingUrl).then((supported) => {
+      if (supported) {
+        Linking.openURL(zoomMeetingUrl);
+      } else {
+        console.error("Cannot open Zoom meeting. Make sure Zoom app is installed.");
+      }
+    });
+  }
+
+  const handelWebZommClassClick = () =>{
+    navigation.navigate("ZoomWebView")
+   
+  }
   return (
     <View style={styles.container}>
 
@@ -69,9 +101,9 @@ export const Home = () => {
   </Block>
  
   <Block>
-          <Button color='white' style={{width:120}}>
+          <Button onPress={handelWebZommClassClick} color='white' style={{width:120}}>
               <Text style={{fontSize:16,fontWeight:400}}>
-             Get 
+              Zoom Web  
               </Text>
             
               </Button>
@@ -128,9 +160,9 @@ export const Home = () => {
   </Block>
  
   <Block>
-          <Button color='white' style={{width:120}}>
+          <Button onPress={handelZommClassClick} color='white' style={{width:120}}>
               <Text style={{fontSize:16,fontWeight:400}}>
-              Join
+               Zoom App 
               </Text>
             
               </Button>
@@ -211,6 +243,7 @@ export const Home = () => {
        </Block>
 <MemberShipModel modalVisible={modalVisible} setModalVisible={setModalVisible} handelComplete={handelComplete}/>
 
+<WebModel webUrl={'https://us05web.zoom.us/j/85135267203?pwd=6lbUCFVHcELptiad0J0aVi5IfSD8Ht.1'} modalVisible={webmodalVisible} setModalVisible={setWebModalVisible} handelComplete={handelWebModelComplete} />
     </ScrollView>
      
         

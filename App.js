@@ -26,6 +26,7 @@ import { Chat } from './Pages/Chat/Chat';
 import { MyClass } from './Pages/MyClasses/MyClass';
 import { Profile } from './Pages/Profile/Profile';
 import { ContactUs } from './Pages/Contactus/ContactUs';
+import {  ZoomWebView } from './Pages/WebViewPage/WebView';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -170,6 +171,12 @@ export default function App() {
  <Stack.Screen name="Home" component={Home}
           options={{
             headerShown: false,
+          }}
+        />
+
+<Stack.Screen name="ZoomWebView" component={ZoomWebView}
+          options={{
+            headerShown: true,
           }}
         />
 
