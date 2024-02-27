@@ -1,5 +1,5 @@
-import React from 'react'
-import { ScrollView, StyleSheet, View,Dimensions, ImageBackground} from 'react-native'
+import React, { useState } from 'react'
+import { ScrollView, StyleSheet, View,Dimensions, ImageBackground, TouchableOpacity} from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import { Block, Text, Input, theme, Button } from "galio-framework";
 const {width, height} = Dimensions.get('window');
@@ -13,6 +13,27 @@ export const ClassDescription = () => {
   const handelBack = () => {
     navigation.goBack()
   };
+  const [selectedClasses, setSelectedClasses] = useState([]);
+
+  const classes = [
+    { id: 1, date: 'Fri 26th January', time: '4:30 PM IST', instructor: 'Shweta Jain' },
+    { id: 2, date: 'Fri 29th January', time: '4:30 PM IST', instructor: 'Shweta Jain' },
+    { id: 3, date: 'Fri 31th January', time: '4:30 PM IST', instructor: 'Shweta Jain' },
+    // Add more classes as needed
+  ];
+
+  const handleClassSelection = (classId) => {
+    const isSelected = selectedClasses.includes(classId);
+
+    if (isSelected) {
+      // If the class is already selected, remove it from the selectedClasses array
+      setSelectedClasses(selectedClasses.filter((id) => id !== classId));
+    } else {
+      // If the class is not selected, add it to the selectedClasses array
+      setSelectedClasses([...selectedClasses, classId]);
+    }
+  };
+ 
   return (
     <View style={styles.container}>
     {/* <StatusBar style="dark" /> */}
@@ -177,51 +198,35 @@ export const ClassDescription = () => {
 
 
              
-             <Block style={{marginTop:40}}>
-               <Text style={{fontSize:20,fontWeight:700}}>Fri 26th January</Text>
+           {classes.map((classItem) => (
+        <Block key={classItem.id} style={{ marginTop: 40 }}>
+          <Text style={{ fontSize: 20, fontWeight: '700' }}>{classItem.date}</Text>
 
-               <Block style={{backgroundColor:"#fff",marginTop:20,borderRadius:20,padding:20}}>
-                      <Text style={{fontSize:16,fontWeight:600}}>4:30 PM IST</Text>
-                      <Text style={{fontSize:14,color:"grey",marginTop:5}}>60 minute class with Shweta Jain</Text>
+          <Block style={{ backgroundColor: '#fff', marginTop: 20, borderRadius: 20, padding: 20 }}>
+            <Text style={{ fontSize: 16, fontWeight: '600' }}>{classItem.time}</Text>
+            <Text style={{ fontSize: 14, color: 'grey', marginTop: 5 }}>{`60 minute class with ${classItem.instructor}`}</Text>
 
-                      <Block center style={{marginTop:10}}>
-                <Button color='orange' style={{width:300}}>Select Class</Button>
-               </Block>
-               </Block>
+            <Block center style={{ marginTop: 10 }}>
+              <TouchableOpacity
+                onPress={() => handleClassSelection(classItem.id)}
+                style={{
+                  width: 300,
+                  backgroundColor: selectedClasses.includes(classItem.id) ? 'green' : '#C9D7DD',
+                  paddingVertical: 10,
+                  borderRadius: 5,
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: selectedClasses.includes(classItem.id) ? 'white' : '#243763', fontWeight: 600, fontSize: 17 }}>
+                  {selectedClasses.includes(classItem.id) ? 'Selected' : 'Select Class'}
+                </Text>
+              </TouchableOpacity>
+            </Block>
+          </Block>
+        </Block>
+      ))}
 
-               
-             </Block>
-
-             <Block style={{marginTop:40}}>
-               <Text style={{fontSize:20,fontWeight:700}}>Fri 29th January</Text>
-
-               <Block style={{backgroundColor:"#fff",marginTop:20,borderRadius:20,padding:20}}>
-                      <Text style={{fontSize:16,fontWeight:600}}>4:30 PM IST</Text>
-                      <Text style={{fontSize:14,color:"grey",marginTop:5}}>60 minute class with Shweta Jain</Text>
-
-                      <Block center style={{marginTop:10}}>
-                <Button color='orange' style={{width:300}}>Select Class</Button>
-               </Block>
-               </Block>
-
-               
-             </Block>
-
-
-             <Block style={{marginTop:40}}>
-               <Text style={{fontSize:20,fontWeight:700}}>Fri 31th January</Text>
-
-               <Block style={{backgroundColor:"#fff",marginTop:20,borderRadius:20,padding:20}}>
-                      <Text style={{fontSize:16,fontWeight:600}}>4:30 PM IST</Text>
-                      <Text style={{fontSize:14,color:"grey",marginTop:5}}>60 minute class with Shweta Jain</Text>
-
-                      <Block center style={{marginTop:10}}>
-                <Button color='orange' style={{width:300}}>Select Class</Button>
-               </Block>
-               </Block>
-
-               
-             </Block>
+            
 
           </Block>
       
@@ -230,6 +235,17 @@ export const ClassDescription = () => {
    
       
        </ScrollView>
+{
+  selectedClasses && selectedClasses.length > 0 && <Block style={[styles.Center,{height:120,backgroundColor:"#fff"}]}>
+  <Block center >
+           <Button  style={{width:width*0.9,backgroundColor:"#FC6736",height:50}}>
+             <Text style={{letterSpacing:1,color:"#fff",fontWeight:600,fontSize:17}}>Book Classes ({selectedClasses.length})</Text>
+             
+             </Button>
+          </Block>
+</Block>
+}
+       
        </View>
   )
 }
