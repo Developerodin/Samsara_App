@@ -12,11 +12,14 @@ import { useNavigation } from '@react-navigation/native';
 import { OneOnOneClassCard } from '../../Components/Cards/OneOnOneClassCard';
 import { MemberShipModel } from '../../Components/Model/MemberShipModel';
 import { WebModel } from '../../Components/Model/WebModel';
+import { Base_url } from '../../Config/BAseUrl';
+import axios from "axios";
 export const Home = () => {
   const navigation= useNavigation()
   const animationRef = useRef(null);
   const [modalVisible,setModalVisible] = useState(false)
   const [webmodalVisible,setWebModalVisible] = useState(false)
+  const [classes, setClasses] = useState([]);
   const cards = [
     { title: 'Hatha Yoga', description: 'Start Your Day Out Right ' },
     { title: 'Rise and Shine', description: 'Intermediate Power Flow' },
@@ -80,6 +83,35 @@ export const Home = () => {
     navigation.navigate("ZoomWebView")
    
   }
+
+  const getAllClasses = async () => {
+    try {
+      const response = await axios.get(`${Base_url}api/classes`); // Update the API endpoint accordingly
+      
+      const Data = response.data.data
+      if(Data){
+       
+          const formattedData = Data.map((item) => ({
+         "Title":item.title,
+         "Teacher":item.teacher.name,
+         "Date":item.schedule, 
+         "Recordings":"coming soon",
+        
+     }));
+
+     setClasses(formattedData);
+   
+    
+    
+      }
+    } catch (error) {
+      console.error('Error fetching classes:', error.message);
+    }
+  };
+
+  useEffect(()=>{
+    getAllClasses();
+  },[])
   return (
     <View style={styles.container}>
 
@@ -130,9 +162,9 @@ export const Home = () => {
       overlayColor={'transparent'} // Set the color of the overlay
       overlayOpacity={0.5}
     >
-      {cards.map((card, index) => (
+      {classes.map((card, index) => (
         <View key={index} >
-          <Card title={card.title} description={card.description}  ClassClick={handelClassClick} book={handelMembershipModel} />
+          <Card title={card.Title} description={card.Teacher}  ClassClick={handelClassClick} book={handelMembershipModel} />
         </View>
       ))}
     </Swiper>

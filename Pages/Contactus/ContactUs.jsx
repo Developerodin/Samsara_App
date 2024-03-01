@@ -47,7 +47,7 @@ export const ContactUs = () => {
            <Block style={{flexDirection:"row"}}>
            
            <MaterialIcons name="email" size={20} style={{marginRight:10,color:"#525CEB"}} />
-           <Text style={{color:"#525CEB"}}>Call us</Text>
+           <Text style={{color:"#525CEB"}}>Email us</Text>
            </Block>
         </Block>
          </Block>
