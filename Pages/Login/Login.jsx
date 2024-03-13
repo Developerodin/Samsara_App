@@ -237,7 +237,7 @@ export const Login = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar hidden={true} />
+      <StatusBar style="dark" />
       <ScrollView>
 
       

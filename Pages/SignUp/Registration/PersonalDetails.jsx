@@ -22,20 +22,62 @@ import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
 // import { Base_url } from '../../../Config/BaseUrl';
 import { ToastAndroid } from "react-native";
+import { CategoryAddModel2 } from '../../../Components/Model/CategoryAddModel2';
 // import CheckBox from 'react-native-check-box';
 
 export const PersonalDetails = () => {
-    const navigation= useNavigation()
-    const [formData, setFormData] = useState({
-      gender:"",
-      pincode:"",
-      email: "",
-      name:"",
-      city:"",
-      category:"",
-      address:""
-    });
-    const [CategoriesData, setCategoriesData] = useState([]);
+    const navigation= useNavigation();
+
+    const HealthIssuesData= [
+      {name:"Neck and Shoulder"},
+      {name:"Lower Back"},
+      {name:"Frozen Shoulder"},
+      {name:"Diabetic"},
+      {name:"Knee Problem"},
+      {name:"PCOS & PCOD"},
+      {name:"Thyroid"},
+      {name:"Gastric & Constipations"},
+      {name:"Insomnia"},
+      {name:"Varicos Vein"},
+      {name:"High BP"},
+      {name:"Low Bp"},
+      {name:"Anxiety"},
+      {name:"Depression"},
+      {name:"Breathless"},
+      {name:"Dizziness"},
+      {name:"Sciatica"},
+      {name:"Morning Sickness"},
+      {name:"Oedema (Swelling Joints)"},
+      {name:"Headache"}
+    ]
+
+  const initalFormData ={
+    gender:"",
+    pincode:"",
+    email: "",
+    name:"",
+    city:"",
+    category:"",
+    address:"",
+    country:"",
+    companyName:"",
+    employeeId:"",
+    height:"",
+    weight:"",
+    password:"",
+    description:"",
+    priorExperience:"",
+    howKnowus:""
+  }
+
+    const [formData, setFormData] = useState(initalFormData);
+    const [UserCategoryData, setUserCategoryData] = useState(HealthIssuesData);
+    const [yogainformationshow,setYogaInformation] = useState(false)
+    const [ catmodalVisible,setcatModalVisible] = useState(false);
+    const [updatedCategoriesData,setUpdatedCategoriesData] = useState(HealthIssuesData)
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [CategoriesData, setCategoriesData] = useState(HealthIssuesData);
+    // const [selectedHealthIssues, setSelectedHealthIssues] = useState([]);
     const [isFocused, setIsFocused] = useState({
       ForName:false,
       ForEmail:false,
@@ -91,6 +133,44 @@ export const PersonalDetails = () => {
         savePersonalDetails()
         navigation.navigate("Signup Status")
     }
+    const handelCatSelectComplete = async()=>{
+
+      if(selectedCategories && selectedCategories.length>0){
+       
+          const Data = selectedCategories.map(category => {
+            return {
+              name:category.name, 
+            }
+          });
+          console.log("Helth Issues After Select",Data)
+          const UpdatedData = JSON.stringify(Data);
+          setSelectedCategories(Data);
+        // setupdate((prev) => prev + 1);
+            setcatModalVisible(false)
+          // try {
+          //   const response = await axios.post(
+          //     `${Base_url}api/b2b/${userDetails._id}/addCategories`,{
+          //      Data : UpdatedData
+          //     }
+              
+          //   );
+          //   setupdate((prev) => prev + 1);
+          //   setcatModalVisible(false)
+          //   return response.data;
+          // } catch (error) {
+          //   console.error("Error adding category:", error);
+          //   throw error;
+          // }
+      
+      }
+      
+      
+    }
+
+    const ToggelNext = ()=>{
+      console.log("Toogel Next ==>",yogainformationshow)
+      setYogaInformation(!yogainformationshow)
+    }
 
     const handleInputChange = (fieldName, value) => {
       setFormData((prevData) => ({
@@ -113,6 +193,25 @@ export const PersonalDetails = () => {
     //   }
     // };
 
+    const handelCategoryModelOpen=()=>{
+
+      const newCategoriesData = CategoriesData.filter(
+        (category) => !UserCategoryData.some((userCategory) => userCategory.name === category.name)
+      );
+      setUpdatedCategoriesData(newCategoriesData)
+        // console.log("CategoryUpdatedData",newCategoriesData)
+     
+      setcatModalVisible(true)
+    }
+
+    const handelPrevious = ()=>{
+      ToggelNext();
+    }
+
+    const handelSubmit = () =>{
+      console.log("Submit Data ==> ",formData)
+    }
+    
     useEffect(() => {
       const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
         setIsKeyboardOpen(true);
@@ -142,14 +241,25 @@ export const PersonalDetails = () => {
          
        {!isKeyboardOpen &&
          <Block>
-           
+           {
+             yogainformationshow ?
+             <AntDesign
+                onPress={handelPrevious}
+                name="arrowleft"
+                size={30}
+                color="grey"
+                style={{ marginLeft: 20 }}
+              />
+              :
               <AntDesign
                 onPress={handelBack}
                 name="arrowleft"
                 size={30}
                 color="grey"
                 style={{ marginLeft: 20 }}
-              />
+              /> 
+           }
+              
             
           </Block>
 }
@@ -158,7 +268,12 @@ export const PersonalDetails = () => {
 
         <Block style={{padding:10}}>
 
-        <Block style={{marginTop:20,padding:10}}>
+        
+
+        {
+          !yogainformationshow &&  
+          <Block >
+<Block style={{marginTop:20,padding:10}}>
 <Block style={[{borderBottomWidth:1,borderColor:"grey",flexDirection:"row",alignItems:"center"}]}>
   <Block style={{width:"6%"}}>
   <MaterialIcons name="category" size={24} color="grey" />
@@ -172,7 +287,7 @@ export const PersonalDetails = () => {
           <Picker.Item label="Select Category" value="" />
            <Picker.Item  label={"Personal"} value={"Personal"} />
            <Picker.Item  label={"Corporate"} value={"Corporate"} />
-           <Picker.Item  label={"Teacher"} value={"Teacher"} />
+           {/* <Picker.Item  label={"Teacher"} value={"Teacher"} /> */}
          
           
         </Picker>
@@ -181,119 +296,336 @@ export const PersonalDetails = () => {
                 </Block>
             
         </Block>
-        <Block style={{marginTop:20}}>
-<Block style={[ customStyle.Card1]}>
-                <TextInput
-
-        variant="standard"
-        
-        label="Name"
-        leading={(props) => <Icon name={'account'} {...props} />}
-        value={formData.name}
-        onChangeText={(text) => handleInputChange("name", text)}
-        color={ 'grey'}
-        inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
-        // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
-        
-      />
-                </Block>
-            
-        </Block>
-
-        <Block style={{marginTop:10,padding:10}}>
-<Block style={[{borderBottomWidth:1,borderColor:"grey",flexDirection:"row",alignItems:"center"}]}>
-  <Block style={{width:"6%"}}>
-  <MaterialCommunityIcons name="gender-male" size={24} color="grey" />
+          <Block style={{marginTop:20}}>
+  <Block style={[ customStyle.Card1]}>
+                  <TextInput
+  
+          variant="standard"
+          
+          label="Name"
+          leading={(props) => <Icon name={'account'} {...props} />}
+          value={formData.name}
+          onChangeText={(text) => handleInputChange("name", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+              
+          </Block>
+  
+          <Block style={{marginTop:10,padding:10}}>
+  <Block style={[{borderBottomWidth:1,borderColor:"grey",flexDirection:"row",alignItems:"center"}]}>
+    <Block style={{width:"6%"}}>
+    <MaterialCommunityIcons name="gender-male" size={24} color="grey" />
+    </Block>
+  <Block style={{width:"95%"}} >
+  <Picker
+            selectedValue={formData.gender}
+            onValueChange={(itemValue) => handleInputChange('gender', itemValue)}
+            style={{ color: 'black', height: 50, fontSize: 18 }}
+          >
+            <Picker.Item label="Select Gender" value="" />
+            <Picker.Item label="Male" value="male" />
+            <Picker.Item label="Female" value="female" />
+            <Picker.Item label="Other" value="other" />
+          </Picker>
   </Block>
-<Block style={{width:"95%"}} >
-<Picker
-          selectedValue={formData.gender}
-          onValueChange={(itemValue) => handleInputChange('gender', itemValue)}
-          style={{ color: 'black', height: 50, fontSize: 18 }}
-        >
-          <Picker.Item label="Select Gender" value="" />
-          <Picker.Item label="Male" value="male" />
-          <Picker.Item label="Female" value="female" />
-          <Picker.Item label="Other" value="other" />
-        </Picker>
-</Block>
+  
+                  </Block>
+              
+          </Block>
 
-                </Block>
-            
-        </Block>
+{
+  formData.category === "Corporate" && 
+  <Block style={{marginTop:20}}>
+  <Block style={[ customStyle.Card1]}>
+                  <TextInput
+  
+          variant="standard"
+          label="Company Name"
+          leading={(props) =>  <FontAwesome name="building-o" {...props} />}
+          value={formData.companyName}
+          onChangeText={(text) => handleInputChange("companyName", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+              
+          </Block>
+}
 
-        <Block style={{marginTop:20}}>
-        <Block style={[ customStyle.Card2]}>
-                <TextInput
+{
+  formData.category === "Corporate" && 
+   <Block style={{marginTop:20}}>
+  <Block style={[ customStyle.Card1]}>
+                  <TextInput
+  
+          variant="standard"
+          label="Employee Id"
+          leading={(props) =>  <Entypo name="creative-commons-attribution" {...props} />}
+          value={formData.employeeId}
+          onChangeText={(text) => handleInputChange("employeeId", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+              
+          </Block>
+}
+          
 
-        variant="standard"
-        keyboardType="email-address"
-        label="Email"
-        leading={(props) => <Icon name={'email'} {...props} />}
-        value={formData.email}
-        onChangeText={(text) => handleInputChange("email", text)}
-        color={ 'grey'}
-        inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
-        // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
-        
-      />
-                </Block>
-        </Block>
-
-        <Block style={{marginTop:20}}>
-        <Block style={[ customStyle.Card3]}>
-                <TextInput
-
-        variant="standard"
-        keyboardType="default"
-        label="Address"
-        leading={(props) =>  <FontAwesome5 name="address-book" {...props} />}
-        value={formData.address}
-        onChangeText={(text) => handleInputChange("address", text)}
-        color={ 'grey'}
-        inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
-        // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
-        
-      />
-                </Block>
-        </Block>
-
-        <Block style={[{marginTop:20},styles.Space_Between]}>
-    
-        <Block style={[ customStyle.Card3,{width:"48%"}]}>
-                <TextInput
-
-        variant="standard"
-        keyboardType="numeric"
-        label="Pin Code"
-        leading={(props) => <Icon name={ 'city'} {...props} />}
-        value={formData.pincode}
-        onChangeText={(text) => handleInputChange("pincode", text)}
-        color={ 'grey'}
-        inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
-        // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
-        
-      />
-                </Block>
+         
+  
+          <Block style={{marginTop:20}}>
+          <Block style={[ customStyle.Card3]}>
+                  <TextInput
+  
+          variant="standard"
+          keyboardType="default"
+          label="Height"
+          leading={(props) => <MaterialCommunityIcons name="human-male-height" {...props} />}
+          value={formData.height}
+          onChangeText={(text) => handleInputChange("height", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+          </Block>
+  
+  
+          <Block style={{marginTop:20}}>
+          <Block style={[ customStyle.Card3]}>
+                  <TextInput
+  
+          variant="standard"
+          keyboardType="default"
+          label="Weight"
+          leading={(props) => <FontAwesome5 name="weight" {...props}/>}
+          value={formData.weight}
+          onChangeText={(text) => handleInputChange("weight", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+          </Block>
+  
+          <Block style={{marginTop:20}}>
+          <Block style={[ customStyle.Card2]}>
+                  <TextInput
+  
+          variant="standard"
+          keyboardType="email-address"
+          label="Email"
+          leading={(props) => <Icon name={'email'} {...props} />}
+          value={formData.email}
+          onChangeText={(text) => handleInputChange("email", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+          </Block>
+  
+  
+          <Block style={{marginTop:20}}>
+          <Block style={[ customStyle.Card3]}>
+                  <TextInput
+  
+          variant="standard"
+          keyboardType="default"
+          label="Password"
+          leading={(props) =>  <Feather name="lock" {...props} />}
+          value={formData.password}
+          onChangeText={(text) => handleInputChange("password", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+          </Block>
+  
+  
+  
+  
+          <Block style={{marginTop:20}}>
+          <Block style={[ customStyle.Card3]}>
+                  <TextInput
+  
+          variant="standard"
+          keyboardType="default"
+          label="Address"
+          leading={(props) =>  <FontAwesome5 name="address-book" {...props} />}
+          value={formData.address}
+          onChangeText={(text) => handleInputChange("address", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+          </Block>
+  
+          <Block style={{marginTop:20}}>
+          <Block style={[ customStyle.Card3]}>
+          <TextInput
+  
+  variant="standard"
+  keyboardType="default"
+  label="City"
+  leading={(props) => <Icon name={ 'city'} {...props} />}
+  value={formData.city}
+  onChangeText={(text) => handleInputChange("city", text)}
+  color={ 'grey'}
+  inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+  // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+  
+  />
+                  </Block>
+          </Block>
+         
+  
+          <Block style={[{marginTop:20},styles.Space_Between]}>
       
-       
-        <Block style={[ customStyle.Card3,{width:"48%"}]}>
-                <TextInput
-
-        variant="standard"
-        keyboardType="default"
-        label="City"
-        leading={(props) => <Icon name={ 'city'} {...props} />}
-        value={formData.city}
-        onChangeText={(text) => handleInputChange("city", text)}
-        color={ 'grey'}
-        inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
-        // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          <Block style={[ customStyle.Card3,{width:"48%"}]}>
+                  <TextInput
+  
+          variant="standard"
+          keyboardType="numeric"
+          label="Pin Code"
+          leading={(props) =>  <Ionicons name="location-outline" {...props} />}
+          value={formData.pincode}
+          onChangeText={(text) => handleInputChange("pincode", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
         
-      />
-                </Block>
-       
-        </Block>
+         
+          <Block style={[ customStyle.Card3,{width:"48%"}]}>
+                  <TextInput
+  
+          variant="standard"
+          keyboardType="default"
+          label="Country"
+          leading={(props) => <AntDesign name="flag" {...props}  /> }
+          value={formData.country}
+          onChangeText={(text) => handleInputChange("country", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+         
+          </Block>
+  
+  
+          </Block>
+        }
+        
+        {
+          yogainformationshow &&  
+          <Block >
+
+<TouchableOpacity onPress={handelCategoryModelOpen} style={[{marginRight:10}]}>
+          {/* <Ionicons name="add-circle-outline" size={24} color="teal" /> */}
+        
+  
+          <Block style={{marginTop:20}}>
+          <Block style={[ customStyle.Card3,{flexDirection:"row",borderBottomWidth:1,borderColor:"grey"}]}>
+          <MaterialIcons name="health-and-safety" size={24} color="grey" />
+
+          <Block style={{marginLeft:10}} >
+            <Text>
+              {
+                selectedCategories.length > 0 ? selectedCategories.map((el,index)=>{
+                  return el.name+ " , "
+                })
+                :
+                "Select Health Issues"
+              }
+            </Text>
+          </Block>
+                  </Block>
+          </Block>
+          </TouchableOpacity>
+
+          <Block style={{marginTop:20}}>
+          <Block style={[ customStyle.Card3]}>
+                  <TextInput
+  
+          variant="standard"
+          keyboardType="default"
+          label="Description"
+          leading={(props) => <MaterialIcons name="details" {...props} />}
+          value={formData.description}
+          onChangeText={(text) => handleInputChange("description", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+          </Block>
+  
+  
+          <Block style={{marginTop:20}}>
+          <Block style={[ customStyle.Card3]}>
+                  <TextInput
+  
+          variant="standard"
+          keyboardType="default"
+          label="Prior yoga experience"
+          leading={(props) => <MaterialCommunityIcons  name="yoga" {...props}/>}
+          value={formData.priorExperience}
+          onChangeText={(text) => handleInputChange("priorExperience", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+          </Block>
+  
+          <Block style={{marginTop:20}}>
+          <Block style={[ customStyle.Card2]}>
+                  <TextInput
+  
+          variant="standard"
+          label="How did you get to know about us"
+          leading={(props) => <AntDesign name="questioncircleo" {...props} />}
+          value={formData.howKnowus}
+          onChangeText={(text) => handleInputChange("howKnowus", text)}
+          color={ 'grey'}
+          inputStyle={{ borderWidth: 0, paddingBottom:0,fontSize:18,letterSpacing:1 }}
+          // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+          
+        />
+                  </Block>
+          </Block>
+  
+  
+         
+  
+  
+          </Block>
+        }
+
+     
 
        </Block>
     {/* } */}
@@ -302,18 +634,38 @@ export const PersonalDetails = () => {
         
     <Block right style={[{ padding: 20, marginTop: 20 }]}>
              
-                <Button
-                  title="Proceed"
+             {
+              yogainformationshow ? 
+              <Button
+                  title="Submit"
                   color="#65be34"
                   style={{ width: 150, padding: 5 }}
-                  onPress={handelPersonalDetailSubmit}
+                  onPress={handelSubmit}
                   trailing={(props) => <Icon name="send" {...props} />}
                   tintColor="#fff"
                 />
+                :
+                <Button
+                  title="Next"
+                  color="#65be34"
+                  style={{ width: 150, padding: 5 }}
+                  onPress={ToggelNext}
+                  trailing={(props) => <Icon name="send" {...props} />}
+                  tintColor="#fff"
+                />
+             }
+                
               
             </Block>
       
-   
+            <CategoryAddModel2
+            modalVisible={catmodalVisible} 
+            setModalVisible={setcatModalVisible} 
+            categoriesData={HealthIssuesData}
+            setSelectedCategories={setSelectedCategories}
+            selectedCategories={selectedCategories}
+            handelComplete={handelCatSelectComplete}
+            />
       
        </ScrollView>
        </View>

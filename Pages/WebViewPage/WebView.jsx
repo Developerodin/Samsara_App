@@ -29,7 +29,15 @@ export const ZoomWebView = () => {
     <View style={styles.modalView}>
       
       <Block >
-      <WebView style={styles.webcontainer} source={{ uri: 'https://zoom-live-web.vercel.app/'  }}  originWhitelist={['*']} />
+      <WebView style={styles.webcontainer} 
+      source={{ uri: 'https://zoom-live-web.vercel.app/'  }} 
+       originWhitelist={['*']}
+       javaScriptEnabled={true}
+       domStorageEnabled={true}
+       allowsInlineMediaPlayback={true}
+       mediaPlaybackRequiresUserAction={false}
+      
+      />
       </Block>
       
     </View>
@@ -39,7 +47,7 @@ export const ZoomWebView = () => {
 
 const styles = StyleSheet.create({
   webcontainer: {
-     width:width*0.98,
+     width:width,
      height:height,
       // marginTop: Constants.statusBarHeight,
     },
@@ -67,7 +75,7 @@ centeredView: {
   flex: 1,
   justifyContent: "center",
   alignItems: "center",
-  marginBottom: -50,
+  marginBottom: -30,
 },
 modalView: {
   margin: 20,
@@ -83,7 +91,7 @@ modalView: {
   shadowRadius: 4,
   elevation: 5,
   width: width,
-  height: height - 0.8,
+  height: height - 0.9,
 },
 button: {
   borderRadius: 20,

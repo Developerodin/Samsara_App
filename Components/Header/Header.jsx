@@ -19,8 +19,8 @@ export const Header = () => {
     setMenuVisible(true)
   }
   return (
-    <View style={[{marginTop:10,padding:10,borderBottomWidth:1,borderColor:"#d3d7d9"},styles.container]}>
-        <StatusBar  hidden/>
+    <View style={[{marginTop:10,padding:10,borderBottomWidth:1,borderColor:"#d3d7d9",paddingTop:20},styles.container]}>
+        {/* <StatusBar  hidden/> */}
         <Block  style={styles.Space_Between}>
         <TouchableOpacity onPress={showMenue}>
           <Entypo name="menu" size={40} color="grey"  />

@@ -27,6 +27,9 @@ import { MyClass } from './Pages/MyClasses/MyClass';
 import { Profile } from './Pages/Profile/Profile';
 import { ContactUs } from './Pages/Contactus/ContactUs';
 import {  ZoomWebView } from './Pages/WebViewPage/WebView';
+import { ZoomPage } from './Pages/ZoomSdkPage/ZoomPage';
+
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -144,6 +147,8 @@ export default function App() {
  
      checkAuthAndFirstLaunch();
    },[])
+
+  
    
    if (!appIsReady) {
     return <WelcomeScreen/>
@@ -152,6 +157,8 @@ export default function App() {
   return (
     // <AppProvider>
 <NavigationContainer onLayout={onLayoutRootView} >
+
+
       {/* {
        isAppFirstLaunched !== null && Auth !== null && */}
          <Stack.Navigator initialRouteName={ Auth ? 'Home' : 'Login'}>
@@ -174,9 +181,15 @@ export default function App() {
           }}
         />
 
-<Stack.Screen name="ZoomWebView" component={ZoomWebView}
+<Stack.Screen name="ZoomPage" component={ZoomPage}
           options={{
             headerShown: true,
+          }}
+        />
+
+<Stack.Screen name="ZoomWebView" component={ZoomWebView}
+          options={{
+            headerShown: false,
           }}
         />
 
@@ -229,7 +242,8 @@ export default function App() {
       
       </Stack.Navigator>
       {/* } */}
-     
+    
+
     </NavigationContainer>
   //  </AppProvider>
   );
