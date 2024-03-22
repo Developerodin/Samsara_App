@@ -31,6 +31,7 @@ import LottieView from "lottie-react-native";
 import { Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
+import { Base_url } from "../../Config/BaseUrl";
 
 export const Login = ({ navigation }) => {
   const initalValuesForm = {
@@ -95,16 +96,44 @@ export const Login = ({ navigation }) => {
     }
   };
 
+  const handleLogin = async () => {
+    console.log("Login Fun")
+    setLoading(true)
+    try {
+        const response = await axios.post(`${Base_url}student_loginbymobile`, { mobile:formData.phoneNumber, password:otp });
+    
+              console.log("Status ==>",response.data)
+            if (response.data.status === "success") {
+          const { token } = response.data;
+          console.log("data ==>",response.data)
+          const Data = JSON.stringify(response.data);
+          await AsyncStorage.setItem("userDetails", Data);
+          // Save the token in AsyncStorage or in state management (e.g., Redux)
+          AsyncStorage.setItem('token', token);
+          saveAuthStatus()
+          setLoading(false)
+          handelPreviousUser()
+         } 
+    else {
+      setLoading(false)
+      handelNewUser();
+    }
+        
+       
+        // console.log('Login successful! Token:', token);
+        // Redirect user to dashboard or perform any other necessary action
+    } catch (error) {
+      setLoading(false)
+        console.error('Login failed:', error.response.data.message);
+        Alert.alert('Login failed', 'Invalid mobile number or password');
+    }
+};
 
   const handelOtpComplete = () => {
     saveMobileNumber()
     // loginWithOTP()
-    if (otp === "1234") {
-      saveAuthStatus()
-      handelPreviousUser();
-    } else {
-      handelNewUser();
-    }
+    handleLogin()
+    
   };
 
   const handelPreviousUser = () => {
@@ -402,6 +431,7 @@ export const Login = ({ navigation }) => {
                   onPress={handelOtpComplete}
                   trailing={(props) => <Icon name="send" {...props} />}
                   tintColor="#fff"
+                  disabled={loading}
                 />
               ) : (
                 <Button

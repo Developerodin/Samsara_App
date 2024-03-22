@@ -4,7 +4,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-const Card = ({ title, description,ClassClick ,book}) => (
+const Card = ({ title, description,ClassClick ,book,join,mn}) => (
   <View style={styles.card}>
    
     <Image style={{width:"100%",height:140,borderTopLeftRadius:10,borderTopRightRadius:10}} source={require('../../assets/Samsra-app.jpg')} />
@@ -24,9 +24,16 @@ const Card = ({ title, description,ClassClick ,book}) => (
     </Block>
 
     <Block center style={{marginTop:15}}>
+      {
+        mn ?  <Button onPress={()=>join()} style={{backgroundColor:"orange"}}>
+        Join
+      </Button>
+      :
       <Button onPress={()=>book()} style={{backgroundColor:"orange"}}>
         Book
       </Button>
+      }
+     
     </Block>
     </Block>
     

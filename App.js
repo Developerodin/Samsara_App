@@ -28,6 +28,7 @@ import { Profile } from './Pages/Profile/Profile';
 import { ContactUs } from './Pages/Contactus/ContactUs';
 import {  ZoomWebView } from './Pages/WebViewPage/WebView';
 import { ZoomPage } from './Pages/ZoomSdkPage/ZoomPage';
+import { AppProvider } from './Context/AppContext';
 
 
 const Stack = createNativeStackNavigator();
@@ -85,7 +86,6 @@ export default function App() {
     PlayfairDisplay_600SemiBold,
     Manrope_400Regular
   });
-  
   
   const [Auth, setAuth]=useState(null);
   const [isAppFirstLaunched, setIsAppFirstLaunched] =useState(null);
@@ -155,7 +155,7 @@ export default function App() {
   }
  
   return (
-    // <AppProvider>
+    <AppProvider>
 <NavigationContainer onLayout={onLayoutRootView} >
 
 
@@ -245,7 +245,7 @@ export default function App() {
     
 
     </NavigationContainer>
-  //  </AppProvider>
+    </AppProvider>
   );
 }
 

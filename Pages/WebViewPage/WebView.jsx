@@ -4,7 +4,9 @@ import {
   View,
   Dimensions,
   Image,
-  Linking
+  Linking,
+  Platform,
+  ActivityIndicator
 } from "react-native";
 import { Block, Text, Input, theme,Button } from "galio-framework";
 
@@ -17,25 +19,86 @@ import { Entypo } from '@expo/vector-icons';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from "@react-navigation/native";
 const { width, height } = Dimensions.get("screen");
-
-export const ZoomWebView = () => {
+import { StatusBar } from "expo-status-bar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+export const ZoomWebView = ({route}) => {
  const navigation = useNavigation()
+ const { ZoomMeetingNumber } = route.params;
+ const [userData,setUserData] = useState(null)
+ const [url,setUrl] = useState("");
+ const [isLoading, setIsLoading] = useState(true);
   const handelClose = () => {
     navigation.goBack();
     // setFormData(initalValuesForm);
   };
+
+  const handleWebViewLoad = () => {
+    // Implement any logic you need when the WebView is loaded
+    console.log("Platform ===>",Platform.OS)
+  };
+
+  
+  
+
+
+  const webViewProps = {
+    source: { uri: url },
+    originWhitelist: ['*'],
+    javaScriptEnabled: true,
+    domStorageEnabled: true,
+    allowsInlineMediaPlayback: true,
+    mediaPlaybackRequiresUserAction: false,
+    onLoad: handleWebViewLoad
+  };
+
+  // Conditionally adjust WebView props based on screen height
+  if (Platform.OS === 'ios' && height < 812) {
+    // For smaller iOS devices (like iPhone SE), hide the bottom buttons
+    webViewProps.style = { marginBottom: -34 };
+  } else if (Platform.OS === 'android' && height < 640) {
+    // For smaller Android devices, adjust the margin bottom accordingly
+    webViewProps.style = { marginBottom: -20 };
+  }
+
+
+
+  useEffect(()=>{
+    
+    console.log("Data ===>",ZoomMeetingNumber)
+    const state = { ZoomMeetingNumber };
+    const zoomMeetingNumberString = JSON.stringify(state.ZoomMeetingNumber);
+    const queryParams = new URLSearchParams();
+    queryParams.append('ZoomMeetingNumber', zoomMeetingNumberString);
+    const queryString = queryParams.toString();
+    const uri = `https://zoom-live-web.vercel.app/cdn?${queryString}`;
+    console.log("URL Updated ==>",uri);
+    setUrl(uri);
+   
+  },[])
+
+ useEffect(()=>{
+  setIsLoading(true)
+  setTimeout(()=>{
+    setIsLoading(false)
+  },4000)
+ },[])
+
+
   return (
     <View style={[styles.centeredView]}>
+      <StatusBar style="dark" backgroundColor="white" translucent={true} />
     <View style={styles.modalView}>
+    {isLoading &&
+    <Block style={{marginTop:20}}>
+            <ActivityIndicator size="large" color="orange" />  
+    </Block>
       
+      }
+      
+    
       <Block >
       <WebView style={styles.webcontainer} 
-      source={{ uri: 'https://zoom-live-web.vercel.app/'  }} 
-       originWhitelist={['*']}
-       javaScriptEnabled={true}
-       domStorageEnabled={true}
-       allowsInlineMediaPlayback={true}
-       mediaPlaybackRequiresUserAction={false}
+      {...webViewProps}
       
       />
       </Block>
@@ -49,6 +112,8 @@ const styles = StyleSheet.create({
   webcontainer: {
      width:width,
      height:height,
+     borderWidth:1,
+     borderColor:"red"
       // marginTop: Constants.statusBarHeight,
     },
 viewHalf: {
@@ -75,7 +140,7 @@ centeredView: {
   flex: 1,
   justifyContent: "center",
   alignItems: "center",
-  marginBottom: -30,
+
 },
 modalView: {
   margin: 20,
@@ -92,6 +157,9 @@ modalView: {
   elevation: 5,
   width: width,
   height: height - 0.9,
+  borderWidth:1,
+  borderColor:"red",
+  
 },
 button: {
   borderRadius: 20,

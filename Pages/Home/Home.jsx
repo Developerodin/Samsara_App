@@ -26,12 +26,16 @@ import { MemberShipModel } from "../../Components/Model/MemberShipModel";
 import { WebModel } from "../../Components/Model/WebModel";
 import { Base_url } from "../../Config/BaseUrl";
 import axios from "axios";
+import { ToastAndroid ,ActivityIndicator } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const Home = () => {
   const navigation = useNavigation();
   const animationRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [webmodalVisible, setWebModalVisible] = useState(false);
   const [classes, setClasses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userData,setUserData] = useState(null)
   const cards = [
     { title: "Hatha Yoga", description: "Start Your Day Out Right " },
     { title: "Rise and Shine", description: "Intermediate Power Flow" },
@@ -91,31 +95,70 @@ export const Home = () => {
     });
   };
 
-  const handelWebZommClassClick = () => {
-    navigation.navigate("ZoomWebView");
+  const handelWebZommClassClick = (data) => {
+    console.log("Data details =====>",data)
+      const ZoomMeetingNumber={
+    number:data.number,
+    pass:data.pass,
+    userName:userData && userData.name,
+    email:userData && userData.email,
+    }
+  
+    if(data.number){
+      navigation.navigate("ZoomWebView", { ZoomMeetingNumber });
+      return 
+    }
+    
+    ToastAndroid.show("Class Not Available", ToastAndroid.SHORT);
+    
   };
+
+  useEffect(()=>{
+    const userDetailsFromStorage = async()=>{
+      const Details = await AsyncStorage.getItem('userDetails') || null;
+      const ParseData = JSON.parse(Details);
+  
+      console.log("Parse Data ===>",ParseData.data.user)
+      const data = ParseData.data.user
+      setUserData(data)
+  
+    }
+    
+    userDetailsFromStorage()
+  },[])
 
   const handelWebZommPageClick = () => {
     navigation.navigate("ZoomPage");
   };
 
   const getAllClasses = async () => {
+    setIsLoading(true)
     try {
       const response = await axios.get(`${Base_url}api/classes`); // Update the API endpoint accordingly
+     
+      const Data = response.data.data
+      setIsLoading(false)
+      if(Data){
+       
+          const formattedData = Data.map((item) => ({
+          "Title":item.title,
+         "Teacher":item.teacher && item.teacher.name,
+         "Date":item.schedule,
+         "mn":item.meeting_number,
+         "pass":item.password,
+ 
+     }));
 
-      const Data = response.data.data;
-      if (Data) {
-        const formattedData = Data.map((item) => ({
-          Title: item.title,
-          Teacher: item.teacher.name,
-          Date: item.schedule,
-          Recordings: "coming soon",
-        }));
 
-        setClasses(formattedData);
+     setClasses(formattedData);
+
+   
+    
+    
       }
     } catch (error) {
-      console.error("Error fetching classes:", error.message);
+      setIsLoading(false)
+      console.error('Error fetching classes:', error.message);
     }
   };
 
@@ -127,6 +170,9 @@ export const Home = () => {
       <Header />
       <StatusBar  style="dark"/>
       <ScrollView>
+      {isLoading &&
+        <ActivityIndicator size="large" color="orange" />
+      }
         <Block style={{ backgroundColor: "#FFF", padding: 10 }}>
 
           <Block
@@ -156,12 +202,12 @@ export const Home = () => {
 
                 <Block>
                   <Button
-                    onPress={handelWebZommClassClick}
+                    // onPress={handelWebZommClassClick}
                     color="white"
                     style={{ width: 120 }}
                   >
                     <Text style={{ fontSize: 16, fontWeight: 400 }}>
-                      Zoom Web
+                      Get
                     </Text>
                   </Button>
                 </Block>
@@ -198,13 +244,15 @@ export const Home = () => {
               overlayColor={"transparent"} // Set the color of the overlay
               overlayOpacity={0.5}
             >
-              {classes.map((card, index) => (
+              {classes && classes.map((card, index) => (
                 <View key={index}>
                   <Card
+                   mn={card.mn}
                     title={card.Title}
                     description={card.Teacher}
                     ClassClick={handelClassClick}
                     book={handelMembershipModel}
+                    join={()=>handelWebZommClassClick({number:card.mn,pass:card.pass})}
                   />
                 </View>
               ))}
@@ -238,12 +286,12 @@ export const Home = () => {
 
                 <Block>
                   <Button
-                    onPress={handelZommClassClick}
+                    // onPress={handelZommClassClick}
                     color="white"
                     style={{ width: 120 }}
                   >
                     <Text style={{ fontSize: 16, fontWeight: 400 }}>
-                      Zoom App
+                      Join
                     </Text>
                   </Button>
                 </Block>
@@ -353,12 +401,12 @@ export const Home = () => {
 
 {/* ============================================================================ */}
   
-<Button onPress={handelWebZommPageClick} color='info' style={{width:120}}>
+{/* <Button onPress={handelWebZommPageClick} color='info' style={{width:120}}>
               <Text style={{fontSize:16,fontWeight:400,color:"#fff"}}>
               Zoom Page  
               </Text>
             
-              </Button>
+              </Button> */}
         <MemberShipModel
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}

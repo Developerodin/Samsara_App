@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -21,15 +21,33 @@ import { ProfileDetailCard } from "../../Components/Cards/ProfileDetailCard";
 import { FontAwesome6 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Profile = () => {
+
+  const [userData,setUserData] = useState(null)
+
+
   const CardData =[
-    {"icon": <MaterialCommunityIcons name="yoga" size={26} color="grey" />,"title":"Date of Birth & Gender","sub1":"Nov 16 1986 (36 Years old)","sub2":"Gender : Male","route":"/details"},
+    {"icon": <MaterialCommunityIcons name="yoga" size={26} color="grey" />,"title":"Date of Birth & Gender","sub1":userData && userData.dob,"sub2":`Gender : ${userData && userData.gender}`,"route":"/details"},
     {"icon": <FontAwesome6 name="hand-holding-medical" size={23} color="grey" />,"title":"Medical history","sub1":"Asthama","sub2":"","route":"/details"},
     {"icon": <MaterialIcons name="sports-gymnastics" size={24} color="grey" />,"title":"My experience with yoga","sub1":"INTERMEDIATE","sub2":"","route":"/details"},
     {"icon": <FontAwesome5 name="calendar-alt" size={24} color="grey" />,"title":"Preferred practice time","sub1":"Afternonn (12pm - 5pm)","sub2":"","route":"/details"}
-  
   ]
+
+  useEffect(()=>{
+    const userDetailsFromStorage = async()=>{
+      const Details = await AsyncStorage.getItem('userDetails') || null;
+      const ParseData = JSON.parse(Details);
+
+      console.log("Parse Data ===>",ParseData.data.user)
+      const data = ParseData.data.user
+      setUserData(data)
+
+    }
+    
+    userDetailsFromStorage()
+  },[])
   return (
     <View style={styles.container}>
         <ScrollView>
@@ -39,12 +57,12 @@ export const Profile = () => {
               <AntDesign name="camera" size={26} color="white" />
               </Block>
               <Block style={{marginTop:10,flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-                <Text style={{color:"#fff",marginRight:5,fontSize:18,fontWeight:600}}>Akshay</Text>
+                <Text style={{color:"#fff",marginRight:5,fontSize:18,fontWeight:600}}>{userData && userData.name}</Text>
                 <Feather name="edit-2" size={13} color="white" />
               </Block>
 
               <Block style={{marginTop:10}}>
-                <Text style={{color:"#F1F1F1",fontSize:14}}>akshay@gmail.com</Text>
+                <Text style={{color:"#F1F1F1",fontSize:14}}>{userData && userData.email}</Text>
               </Block>
          </Block>
 
