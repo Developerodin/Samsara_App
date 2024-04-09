@@ -41,7 +41,7 @@ import { View, TextInput, StyleSheet } from 'react-native';
           keyboardType="numeric"
           maxLength={1}
           ref={(ref) => (otpInputs.current[index] = ref)}
-          
+          placeholder='*'
           secureTextEntry={true}
         />
       ))}
@@ -56,15 +56,17 @@ const styles = StyleSheet.create({
     marginLeft:-10
   },
   input: {
-    width: 60,
-    height: 30,
+    width: 50,
+    height: 50,
     fontSize:27,
     textAlign: 'center',
-    borderBottomWidth: 1,
-    borderColor: 'black',
+    borderWidth: 1,
+    borderColor: 'grey',
     borderRadius:10,
     marginLeft:5,
-    marginRight:5
+    marginRight:18,
+    elevation:5,
+    backgroundColor: '#fff'
   },
 });
 

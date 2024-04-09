@@ -29,6 +29,7 @@ import { ContactUs } from './Pages/Contactus/ContactUs';
 import {  ZoomWebView } from './Pages/WebViewPage/WebView';
 import { ZoomPage } from './Pages/ZoomSdkPage/ZoomPage';
 import { AppProvider } from './Context/AppContext';
+import { PersonalInfo2 } from './Pages/SignUp/Registration/PersonalInfo2';
 
 
 const Stack = createNativeStackNavigator();
@@ -212,6 +213,11 @@ export default function App() {
         <Stack.Screen name="SignUp" component={PersonalDetails} options={{
             headerShown: false,
           }}/>
+
+<Stack.Screen name="PersonalInfo" component={PersonalInfo2} options={{
+            headerShown: false,
+          }}/>
+
 
 <Stack.Screen name="Signup Status" component={VerifyProfileStatus} options={{
             headerShown: false,

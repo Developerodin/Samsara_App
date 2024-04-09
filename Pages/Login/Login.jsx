@@ -32,6 +32,7 @@ import { Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import { Base_url } from "../../Config/BaseUrl";
+import CustomButton from "../../Components/Buttons/CustomButton";
 
 export const Login = ({ navigation }) => {
   const initalValuesForm = {
@@ -153,7 +154,7 @@ export const Login = ({ navigation }) => {
     setFormData(initalValuesForm);
     setOTPShow(false)
     setOtp("")
-    navigation.navigate("SignUp");
+    navigation.navigate("PersonalInfo");
   };
 
   const handelMobileNumber = () => {
@@ -271,7 +272,7 @@ export const Login = ({ navigation }) => {
 
       
       {!isKeyboardOpen &&  <Block
-          style={[styles.Space_Between, { marginTop: -12, marginRight: -13 }]}
+          style={[styles.Space_Between, { marginTop: 30, marginRight: -13 }]}
         >
           <Block>
             {showOTP && (
@@ -284,24 +285,53 @@ export const Login = ({ navigation }) => {
               />
             )}
           </Block>
-            <Image source={Shape} style={{ width: 130, height: 130 }} /> 
+             
          
         </Block>}
+
+        <Block center style={{marginTop:20}}>
+        <Image source={require("../../assets/samsaraLogo.png")}  />
+        </Block>
         
+        {
+          !showOTP && 
+          <Block style={{position:"absolute",top:100,right:20,transform: [{ rotate: '-33deg' }]}}>
+        <Image source={require("../../assets/Images/loginbg2.png")} style={{ width: 90, height: 90 }} />
+        </Block>
+}
+{
+        !showOTP &&  <Block style={{position:"absolute",left:-32,top:230,transform: [{ rotate: '33deg' }]}}>
+        <Image source={require("../../assets/Images/loginbg1.png")} style={{ width: 120, height: 120 }} />
+        </Block>
+         
+        }
+        
+
         <View
           style={[
-            { marginTop: 0, flexDirection: "row", justifyContent: "center" },
+            { marginTop: 10, flexDirection: "row", justifyContent: "center" },
           ]}
         >
           <Block style={{ padding: 10 }}>
            {
-            <Block center style={{marginTop:20}}>
-            <LottieView
+            <Block center style={{marginTop:10}}>
+              {
+                showOTP ?
+                <LottieView
+                style={styles.lottie}
+                source={require("../../assets/Animations/Animation - 1712298978315.json")}
+                autoPlay
+                loop
+              />
+              :
+              <LottieView
               style={styles.lottie}
-              source={require("../../assets/Animations/Animation - 1706005546726.json")}
+              source={require("../../assets/Animations/Animation - 1712035403480.json")}
               autoPlay
               loop
             />
+              }
+           
           </Block>
            } 
 
@@ -313,17 +343,20 @@ export const Login = ({ navigation }) => {
                 padding: 20,
                 justifyContent: "center",
                 width: width,
-                marginTop: 30,
+              
               
               }}
               >
-                <Text style={{ fontSize: 27, fontWeight: 700,letterSpacing:2  }}>
+                <Text style={{fontSize:16,color:"grey"}}>
+                  Please Enter Your
+                </Text>
+                <Text style={{ fontSize: 27,letterSpacing:1,color:"grey"  }}>
                 {loading ? 
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large"  color="#65be34" />
         </View>
         :
-        "Enter OTP"
+        "4 Digit OTP"
       }
                  
                   
@@ -331,7 +364,7 @@ export const Login = ({ navigation }) => {
                   </Text>
                 <Text
                    style={{
-                    fontSize: 17,
+                    fontSize: 12,
                     fontWeight: 500,
                     color: "grey",
                     marginTop: 7,
@@ -340,7 +373,9 @@ export const Login = ({ navigation }) => {
                     marginTop:10
                   }}
                 >
-                  OTP Sent to +91 {formData.phoneNumber}
+                  OTP Sent to  <Text style={{color:"#EA6C13"}}>
+                  +91 {formData.phoneNumber}
+                    </Text>
                 </Text>
               
                 <Block
@@ -357,14 +392,14 @@ export const Login = ({ navigation }) => {
                 <Block style={{ marginLeft:0 }}>
                   <Text
                     style={{
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: "400",
-                      marginTop: 30,
+                      marginTop: 20,
                       color: "#BDBDBD",
                     }}
                   >
-                    OTP Not Receive ?{" "}
-                    <Text style={{ color: "#65be34", fontWeight: 500 }}>
+                   
+                    <Text style={{ color: "#EA6C13", fontWeight: 500 }}>
                       Resend OTP
                     </Text>
                   </Text>
@@ -376,95 +411,149 @@ export const Login = ({ navigation }) => {
                   padding: 20,
                   justifyContent: "center",
                   width: width,
-                  marginTop: 30,
+                  marginTop: 35,
                 
                 }}
               >
-                <Text style={{ fontSize: 27, fontWeight: 700,letterSpacing:2 }}>
+                <Text style={{ fontSize: 17,letterSpacing:1,color:"#586B90" }}>
                 {loading ? 
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large"  color="#65be34" />
         </View>
         :
-        "Login"
+        "Please Enter Your"
       }
                 </Text>
                 <Text
                   style={{
-                    fontSize: 17,
-                    fontWeight: 500,
-                    color: "grey",
-                    marginTop: 7,
+                    fontSize: 30,
+                    
+                    color: "#586B90",
+                    marginTop: 2,
                     letterSpacing:1
                   }}
                 >
-                  Please sign in to continue. 
+                  Mobile Number 
                 </Text>
 
-                <Block style={[customStyle.Card ,{marginTop:50}]}>
-                <TextInput
+                <Block style={[{marginTop:30}]}>
+                {/* <Input
 
-        variant="standard"
+        variant="outlined"
         keyboardType="numeric"
         label="Mobile Number"
         leading={(props) => <Icon name={isFocused ? 'phone' : 'account'} {...props} />}
         value={formData.phoneNumber}
         onChangeText={(text) => handleInputChange("phoneNumber", text)}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+       
         color={ 'white'}
         inputStyle={{ borderWidth: 0, paddingBottom:0,color:"black",fontSize:20,letterSpacing:3 }}
-        // inputContainerStyle={{ borderBottomWidth:1, paddingBottom:0,borderColor:`${isFocused ? "#65be34" : "#fff" }`}}
+        start={{borderRadius:30}}
         
+      /> */}
+      <Input 
+      keyboardType="numeric"
+       left
+       icon="phone"
+       family="Feather"
+       iconSize={24}
+       value={formData.phoneNumber}
+       onChangeText={(text) => handleInputChange("phoneNumber", text)}
+      placeholder="   +91  xxx  xxx  xxx" 
+      style={{height:60,backgroundColor:"#A8B6D140",borderColor:"#A8B6D140",letterSpacing:2}}
       />
                 </Block>
       
               </View>
             )}
 
-            <Block right style={[{ padding: 20, marginTop: 40 }]}>
+            <Block center style={[{  marginTop: 10 }]}>
               {showOTP ? (
-                <Button
-                  title="Proceed"
-                  color="#65be34"
-                  style={{ width: 150, padding: 5 }}
-                  onPress={handelOtpComplete}
-                  trailing={(props) => <Icon name="send" {...props} />}
-                  tintColor="#fff"
-                  disabled={loading}
-                />
+                // <Button
+                //   title="Proceed"
+                //   color="#65be34"
+                //   style={{ width: 150, padding: 5 }}
+                //   onPress={handelOtpComplete}
+                //   trailing={(props) => <Icon name="send" {...props} />}
+                //   tintColor="#fff"
+                //   disabled={loading}
+                // />
+                <CustomButton onPress={handelOtpComplete} title="Verify" disabled={loading} />
               ) : (
-                <Button
-                  title="Get Otp"
-                  color="#65be34"
-                  style={{ width: 150, padding: 5 }}
-                  onPress={handelMobileNumber}
-                  trailing={(props) => <Icon name="send" {...props} />}
-                  tintColor="#fff"
-                />
+                // <Button
+                //   title="Get Otp"
+                //   color="#EA6C13"
+                //   style={{ width:width*0.8, padding: 5,height:60 }}
+                //   onPress={handelMobileNumber}
+                //   trailing={(props) => <Icon name="send" {...props} />}
+                //   tintColor="#fff"
+                // />
+                <CustomButton onPress={handelMobileNumber} title="Get OTP" />
               )}
             </Block>
           </Block>
         </View>
       </ScrollView>
-      {/* <Block center style={styles.bottomBlock}>
+      {
+        showOTP ?
+        !isKeyboardOpen && <Block center style={styles.bottomBlock}>
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 12,
             fontWeight: "500",
             marginTop: 30,
             color: "#BDBDBD",
           }}
         >
-          Don’t have an account ?{" "}
+          By proceeding you agree to our {" "}
           <Text
             onPress={handelNewUser}
-            style={{ color: "#f8ac50", fontWeight: 500 }}
+            style={{ color: "#EA6C13", fontWeight: 500 }}
           >
-            Sign up
+            Privacy Policy
+          </Text>
+      
+        </Text>
+        <Text
+          style={{
+            fontSize: 12,
+            fontWeight: "500",
+            marginTop: 3,
+            color: "#BDBDBD",
+          }}
+        >
+           and {" "}
+          <Text
+            onPress={handelNewUser}
+            style={{ color: "#EA6C13", fontWeight: 500 }}
+          >
+            Term & Conditions
           </Text>
         </Text>
-      </Block> */}
+      </Block>
+      :
+      !isKeyboardOpen && <Block center style={styles.bottomBlock}>
+      <Text
+        style={{
+          fontSize: 16,
+          fontWeight: "500",
+          marginTop: 30,
+          color: "#BDBDBD",
+        }}
+      >
+        <Text style={{color:"#EA6C13"}}>
+        Made {" "}
+        </Text>
+        In {" "}
+        <Text style={{color:"green"}}>
+        India
+        </Text>
+    
+      </Text>
+     
+    </Block>
+      }
+   
     </SafeAreaView>
   );
 };
@@ -475,6 +564,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFF",
   },
+  
   loadingContainer: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',

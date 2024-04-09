@@ -13,6 +13,7 @@ export const RegisterSuccessfull = () => {
     const handelContinue=()=>{
         navigation.navigate("Tabs")
     }
+    
   return (
     <View style={styles.container}>
     <StatusBar style="dark" />

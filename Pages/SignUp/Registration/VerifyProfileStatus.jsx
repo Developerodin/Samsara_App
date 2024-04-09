@@ -8,7 +8,7 @@ import Img from "../../Images/Onbording.png";
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
-
+import LottieView from "lottie-react-native";
 export const VerifyProfileStatus = () => {
     const navigation= useNavigation()
     const handelProceed=()=>{
@@ -22,7 +22,7 @@ export const VerifyProfileStatus = () => {
     <StatusBar style="dark" />
         <ScrollView>
       
-       <View style={{alignItems:"left",marginTop:30,width:width}}>
+       <View style={{alignItems:"left",width:width}}>
          
        <View style={{alignItems:"center",height:130}}>
          {/* <Image
@@ -33,28 +33,52 @@ export const VerifyProfileStatus = () => {
          
    
          <View style={{alignItems:"center"}}>
-         <Image
-           source={require('../../../assets/samsara-logo.png')}
-           style={{resizeMode: 'contain'}}
-         />
+         <Block center style={{marginTop:10}}>
+              
+                <LottieView
+                style={styles.lottie}
+                source={require("../../../assets/Animations/Animation - 1712299044093.json")}
+                autoPlay
+                loop
+              />
+             
+           
+          </Block>
          </View>
      
-         <View style={{alignItems:"left",padding:10,justifyContent:"center",marginTop:20}}>
-         <Text style={{fontSize:25,fontWeight:400}}>We are currently verifying your profile !</Text>
-        
-         <Block >
-         <Text style={{fontSize:24,fontWeight:400,marginTop:10}}>Aman Gupta</Text>
-         <Text style={{fontSize:14,fontWeight:400,marginTop:15}}>It may take 2-7 days. Thank you for your patience</Text>
-           {/* <Image source={Line1} style={{marginTop:10}} /> */}
-   
-           
-         </Block>
+         <View style={{alignItems:"center",padding:10,justifyContent:"center",marginTop:20}}>
+         <Text style={{fontSize:22,color:"#586B90",fontWeight:400}}>Verification Successful</Text>
+         <Text style={{fontSize:16,color:"#586B90",fontWeight:400,marginTop:10}}>
+         Now you can use {" "}
+         <Text style={{color:"#EA6C13"}}>
+         +91 870 870 8718
+         </Text>
+         {" "}
+          to 
+         </Text>
+         <Text style={{fontSize:16,color:"#586B90",fontWeight:400}}>
+          access our in app services
+         </Text>
          
          </View>
    
        </View>
-   
-       <Block style={{marginBottom:30}}>
+           
+       <View style={{borderWidth:1,padding:20,alignItems:"center",borderColor:"#D9E2F2",marginTop:25}}>
+          <Text style={{fontSize:14,color:"#586B90",fontWeight:400}}>Redirecting you to Registration Page in</Text>
+        
+        <Text style={{color:"#EA6C13",fontSize:32,marginTop:10}}>
+          5 Seconds
+        </Text>
+        </View>    
+
+
+        <View style={{alignItems:"center",marginTop:40}}>
+          <Text style={{color:"#EA6C13",fontSize:14}}>
+          Do not close or refresh this window
+          </Text>
+        </View>
+       {/* <Block style={{marginBottom:30}}>
           
            <Block style={[styles.Center,{marginTop:50}]} >
          
@@ -71,7 +95,7 @@ export const VerifyProfileStatus = () => {
                    ]}
                    onPress={handelProceed}
                    >
-                    {/* <AntDesign name="arrowleft" size={24} color="black" style={{marginRight:10}} /> */}
+                    
                    <Text
                      style={{
                        fontWeight:500,
@@ -85,7 +109,7 @@ export const VerifyProfileStatus = () => {
            
            </Block>
          
-       </Block>
+       </Block> */}
        </ScrollView>
        </View>
   )
@@ -97,6 +121,10 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor:"#FFF",
   
+    },
+    lottie: {
+      width: width * 0.9,
+      height: width * 0.5,
     },
     inputContainer: {
       width: '100%',
