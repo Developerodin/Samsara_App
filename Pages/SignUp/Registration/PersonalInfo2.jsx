@@ -30,8 +30,10 @@ import axios from "axios";
 import CustomButton from "../../../Components/Buttons/CustomButton";
 import { FontAwesome } from "@expo/vector-icons";
 import { SelectCategoryModel } from "../../../Components/Model/SelectCategoryModel";
-
+import { useNavigation } from '@react-navigation/native';
 export const PersonalInfo2 = () => {
+  const navigation = useNavigation()
+
   const [showPassword, setShowPassword] = useState(false);
   const [categoryModelOpen, setCategoryModelOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -48,10 +50,20 @@ export const PersonalInfo2 = () => {
       <ScrollView>
         <View style={{ backgroundColor: "#EA6C13", height: height }}>
           <View style={{ height: height * 0.3 }}>
+            {
+              showPassword ?
+              <View style={{ marginTop: 70, padding: 20 }}>
+              <Text style={{ color: "#fff", fontSize: 27 }}>Hii,</Text>
+              <Text style={{ color: "#fff", fontSize: 27 }}>Amrish Singh</Text>
+              <Text style={{ color: "#fff", fontSize: 14 }}>Let's Secure your Account</Text>
+            </View>
+            :
             <View style={{ marginTop: 70, padding: 20 }}>
               <Text style={{ color: "#fff", fontSize: 27 }}>Let's Know </Text>
               <Text style={{ color: "#fff", fontSize: 27 }}>Each Other</Text>
             </View>
+            }
+            
 
             {showPassword ? (
               <Block
@@ -91,6 +103,10 @@ export const PersonalInfo2 = () => {
             {/* ==================================================== */}
             {showPassword ? (
               <View>
+
+                <Block>
+                  <Text style={{fontSize:24,color:"#3E5072"}}>Setup Password</Text>
+                </Block>
                 <Block style={{ marginTop: 10 }}>
                   <Input
                     password
@@ -259,6 +275,7 @@ export const PersonalInfo2 = () => {
                 <CustomButton
                   onPress={() => {
                     console.log("hii");
+                    navigation.navigate("Login")
                   }}
                   title="Create Password"
                 />

@@ -26,8 +26,10 @@ import { MemberShipModel } from "../../Components/Model/MemberShipModel";
 import { WebModel } from "../../Components/Model/WebModel";
 import { Base_url } from "../../Config/BaseUrl";
 import axios from "axios";
-import { ToastAndroid ,ActivityIndicator } from "react-native";
+import { ToastAndroid, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
+import { BottomTabs } from "../../Components/Tabs/BottomTabs";
 export const Home = () => {
   const navigation = useNavigation();
   const animationRef = useRef(null);
@@ -35,7 +37,7 @@ export const Home = () => {
   const [webmodalVisible, setWebModalVisible] = useState(false);
   const [classes, setClasses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [userData,setUserData] = useState(null)
+  const [userData, setUserData] = useState(null);
   const cards = [
     { title: "Hatha Yoga", description: "Start Your Day Out Right " },
     { title: "Rise and Shine", description: "Intermediate Power Flow" },
@@ -59,7 +61,7 @@ export const Home = () => {
   };
 
   const handelTeacherClick = () => {
-    navigation.navigate("Teacher");
+    navigation.navigate("About Instructor");
   };
   useEffect(() => {
     animationRef.current?.play();
@@ -69,7 +71,7 @@ export const Home = () => {
   }, []);
 
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-  const swiperHeight = screenHeight * 0.5; // Set swiper height to 40% of screen height
+  const swiperHeight = screenHeight * 0.55; // Set swiper height to 40% of screen height
 
   const swiperItemWidth = screenWidth * 0.8;
 
@@ -96,69 +98,60 @@ export const Home = () => {
   };
 
   const handelWebZommClassClick = (data) => {
-    console.log("Data details =====>",data)
-      const ZoomMeetingNumber={
-    number:data.number,
-    pass:data.pass,
-    userName:userData && userData.name,
-    email:userData && userData.email,
-    }
-  
-    if(data.number){
+    console.log("Data details =====>", data);
+    const ZoomMeetingNumber = {
+      number: data.number,
+      pass: data.pass,
+      userName: userData && userData.name,
+      email: userData && userData.email,
+    };
+
+    if (data.number) {
       navigation.navigate("ZoomWebView", { ZoomMeetingNumber });
-      return 
+      return;
     }
-    
+
     ToastAndroid.show("Class Not Available", ToastAndroid.SHORT);
-    
   };
 
-  useEffect(()=>{
-    const userDetailsFromStorage = async()=>{
-      const Details = await AsyncStorage.getItem('userDetails') || null;
+  useEffect(() => {
+    const userDetailsFromStorage = async () => {
+      const Details = (await AsyncStorage.getItem("userDetails")) || null;
       const ParseData = JSON.parse(Details);
-  
-      console.log("Parse Data ===>",ParseData.data.user)
-      const data = ParseData.data.user
-      setUserData(data)
-  
-    }
-    
-    userDetailsFromStorage()
-  },[])
+
+      console.log("Parse Data ===>", ParseData.data.user);
+      const data = ParseData.data.user;
+      setUserData(data);
+    };
+
+    userDetailsFromStorage();
+  }, []);
 
   const handelWebZommPageClick = () => {
     navigation.navigate("ZoomPage");
   };
 
   const getAllClasses = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const response = await axios.get(`${Base_url}api/classes`); // Update the API endpoint accordingly
-     
-      const Data = response.data.data
-      setIsLoading(false)
-      if(Data){
-       
-          const formattedData = Data.map((item) => ({
-          "Title":item.title,
-         "Teacher":item.teacher && item.teacher.name,
-         "Date":item.schedule,
-         "mn":item.meeting_number,
-         "pass":item.password,
- 
-     }));
 
+      const Data = response.data.data;
+      setIsLoading(false);
+      if (Data) {
+        const formattedData = Data.map((item) => ({
+          Title: item.title,
+          Teacher: item.teacher && item.teacher.name,
+          Date: item.schedule,
+          mn: item.meeting_number,
+          pass: item.password,
+        }));
 
-     setClasses(formattedData);
-
-   
-    
-    
+        setClasses(formattedData);
       }
     } catch (error) {
-      setIsLoading(false)
-      console.error('Error fetching classes:', error.message);
+      setIsLoading(false);
+      console.error("Error fetching classes:", error.message);
     }
   };
 
@@ -168,240 +161,236 @@ export const Home = () => {
   return (
     <View style={styles.container}>
       <Header />
-      <StatusBar  style="dark"/>
+      <StatusBar style="dark" />
       <ScrollView>
-      {isLoading &&
-        <ActivityIndicator size="large" color="orange" />
-      }
-        <Block style={{ backgroundColor: "#FFF", padding: 10 }}>
-
+        {isLoading && <ActivityIndicator size="large" color="orange" />}
+        <Block style={{ backgroundColor: "#eef3f7" }}>
           <Block
             style={{
-              marginTop: 20,
-              borderWidth: 1,
-              borderColor: "#DCDCDC",
-              padding: 10,
-              backgroundColor: "orange",
-              paddingBottom: 20,
-              borderRadius: 7,
-              elevation: 2,
+              width: width,
             }}
           >
-            <Block>
-              <Block>
-                <Text style={{ fontSize: 16, color: "#fff" }}>
-                  Commit to your goals &
-                </Text>
-              </Block>
-              <Block style={[styles.Space_Between, { marginTop: -10 }]}>
-                <Block>
-                  <Text style={{ fontSize: 15, color: "#fff" }}>
-                    sign up for membership{" "}
-                  </Text>
-                </Block>
-
-                <Block>
-                  <Button
-                    // onPress={handelWebZommClassClick}
-                    color="white"
-                    style={{ width: 120 }}
-                  >
-                    <Text style={{ fontSize: 16, fontWeight: 400 }}>
-                      Get
-                    </Text>
-                  </Button>
-                </Block>
-              </Block>
-
-              <Block>
-                <Text style={{ fontSize: 18, color: "#fff" }}>today !</Text>
-              </Block>
+            <Block >
+              <Swiper
+                style={{ height: height * 0.25 }}
+                showsPagination={false}
+                overlayEnabled
+                overlayColor={"transparent"} // Set the color of the overlay
+                overlayOpacity={0.5}
+              >
+                <View>
+                  <Image
+                    source={require("../../assets/Images/Frame1.png")}
+                    resizeMode="contain"
+                  />
+                </View>
+                <View>
+                  <Image
+                    source={require("../../assets/Images/Frame1.png")}
+                    resizeMode="contain"
+                  />
+                </View>
+              </Swiper>
             </Block>
           </Block>
 
-          <Block style={{ marginTop: 20 }}>
-            <Text style={{ fontSize: 16, color: "grey" }}>
-              Recommended Teacher & Classes for you
-            </Text>
-            <Text
-              style={{
-                fontSize: 18,
-                color: "black",
-                fontWeight: 600,
-                marginTop: 5,
-              }}
-            >
-              Group Classes
-            </Text>
-          </Block>
-
-          
-          <Block style={{ marginTop: 10 }}>
-            <Swiper
-              style={{ height: swiperHeight, borderWidth: 1 }}
-              showsPagination={false}
-              overlayEnabled
-              overlayColor={"transparent"} // Set the color of the overlay
-              overlayOpacity={0.5}
-            >
-              {classes && classes.map((card, index) => (
-                <View key={index}>
-                  <Card
-                   mn={card.mn}
-                    title={card.Title}
-                    description={card.Teacher}
-                    ClassClick={handelClassClick}
-                    book={handelMembershipModel}
-                    join={()=>handelWebZommClassClick({number:card.mn,pass:card.pass})}
-                  />
-                </View>
-              ))}
-            </Swiper>
-          </Block>
-
-          <Block
-            style={{
-              marginTop: 20,
-              borderWidth: 1,
-              borderColor: "#DCDCDC",
-              padding: 10,
-              backgroundColor: "#3333ef",
-              paddingBottom: 20,
-              borderRadius: 7,
-              elevation: 2,
-            }}
-          >
-            <Block>
-              <Block>
-                <Text style={{ fontSize: 16, color: "#fff" }}>Events</Text>
-              </Block>
-              <Block style={[styles.Space_Between, { marginTop: -10 }]}>
-                <Block>
-                  <Text
-                    style={{ fontSize: 30, fontWeight: 700, color: "#fff" }}
-                  >
-                    Power Yoga
-                  </Text>
-                </Block>
-
-                <Block>
-                  <Button
-                    // onPress={handelZommClassClick}
-                    color="white"
-                    style={{ width: 120 }}
-                  >
-                    <Text style={{ fontSize: 16, fontWeight: 400 }}>
-                      Join
-                    </Text>
-                  </Button>
-                </Block>
-              </Block>
-
-              <Block>
-                <Text style={{ fontSize: 16, color: "#fff" }}>
-                  Rise and Shine
-                </Text>
-              </Block>
-            </Block>
-          </Block>
-
-          <Block style={{ marginTop: 20 }}>
-            <Text style={{ fontSize: 16, color: "grey" }}>
-              Personal classes
-            </Text>
-            <Text
-              style={{
-                fontSize: 18,
-                color: "black",
-                fontWeight: 600,
-                marginTop: 5,
-              }}
-            >
-              1-on-1 Classes
-            </Text>
-          </Block>
-
-          <Block style={{ marginTop: 10 }}>
-            <Swiper
-              style={{ height: swiperHeight, borderWidth: 1 }}
-              showsPagination={false}
-              overlayEnabled
-              overlayColor={"transparent"} // Set the color of the overlay
-              overlayOpacity={0.5}
-            >
-              {cards.map((card, index) => (
-                <View key={index}>
-                  <OneOnOneClassCard
-                    title={card.title}
-                    description={card.description}
-                    onTeacherClick={handelTeacherClick}
-                    book={handelMembershipModel}
-                  />
-                </View>
-              ))}
-            </Swiper>
-          </Block>
-
-          <Block
-            style={{
-              marginBottom: 60,
-              marginTop: 30,
-              borderWidth: 2,
-              padding: 20,
-              backgroundColor: "#FFFFFF",
-              paddingBottom: 60,
-              borderRadius: 10,
-            }}
-          >
-            <Block style={styles.Space_Between}>
-              <Block style={{ height: 200 }}>
-                <Text style={{ fontSize: 30, fontWeight: 500 }}>Yoga</Text>
-                <Text style={{ fontSize: 30, fontWeight: 500, color: "grey" }}>
-                  begins with
-                </Text>
-                <Text style={{ fontSize: 30, fontWeight: 500 }}>listening</Text>
-                <Block style={{ marginTop: 10 }}>
-                  <Button
-                    color="orange"
-                    style={{ height: 80, borderBottomWidth: 1, marginLeft: -3 }}
-                  >
-                    <Text
-                      style={{ fontSize: 18, fontWeight: 400, color: "#fff" }}
-                    >
-                      Book
-                    </Text>
-                    <Text
-                      style={{ fontSize: 20, fontWeight: 500, color: "#fff" }}
-                    >
-                      Class
-                    </Text>
-                  </Button>
-                </Block>
-              </Block>
-
-              <Block
+          <Block style={{ padding: 10 }}>
+            <Block style={{ marginTop: 10 }}>
+              <Text
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  fontSize: 20,
+                  color: "black",
+
+                  marginTop: 5,
                 }}
               >
+                Group Classes
+              </Text>
+            </Block>
+
+            <Block style={{ marginTop: 10 }}>
+              <Swiper
+                style={{ height: swiperHeight }}
+                showsPagination={false}
+                overlayEnabled={true}
+                overlayColor={"transparent"} // Set the color of the overlay
+                overlayOpacity={0.5}
+                spaceBetween={3}
+              >
+                {classes &&
+                  classes.map((card, index) => (
+                    <View key={index}>
+                      <View style={{ flexDirection: "row" }}>
+                        {/* Current card */}
+                        <Card
+                          mn={card.mn}
+                          title={card.Title}
+                          description={card.Teacher}
+                          ClassClick={handelClassClick}
+                          book={handelMembershipModel}
+                          join={() =>
+                            handelWebZommClassClick({
+                              number: card.mn,
+                              pass: card.pass,
+                            })
+                          }
+                          // Pass overlay color to the Card component
+                        />
+                        {/* Next card */}
+                        {classes[index + 1] && (
+                          <Card
+                            mn={classes[index + 1].mn}
+                            title={classes[index + 1].Title}
+                            description={classes[index + 1].Teacher}
+                            overlayColor={classes[index + 1].overlayColor} // Pass overlay color to the next card
+                          />
+                        )}
+                      </View>
+                    </View>
+                  ))}
+              </Swiper>
+            </Block>
+
+            <Block style={{ marginTop: 30 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "black",
+
+                  marginTop: 5,
+                }}
+              >
+                Upcoming Events
+              </Text>
+            </Block>
+
+            <Block style={{ marginTop: 10 }}>
+              <Swiper
+                style={{ height: swiperHeight }}
+                showsPagination={false}
+                overlayEnabled={true}
+                overlayColor={"transparent"} // Set the color of the overlay
+                overlayOpacity={0.5}
+                spaceBetween={3}
+              >
+                {classes &&
+                  classes.map((card, index) => (
+                    <View key={index}>
+                      <View style={{ flexDirection: "row" }}>
+                        {/* Current card */}
+                        <Card
+                          mn={card.mn}
+                          title={card.Title}
+                          description={card.Teacher}
+                          ClassClick={handelClassClick}
+                          book={handelMembershipModel}
+                          join={() =>
+                            handelWebZommClassClick({
+                              number: card.mn,
+                              pass: card.pass,
+                            })
+                          }
+                          // Pass overlay color to the Card component
+                        />
+                        {/* Next card */}
+                        {classes[index + 1] && (
+                          <Card
+                            mn={classes[index + 1].mn}
+                            title={classes[index + 1].Title}
+                            description={classes[index + 1].Teacher}
+                            overlayColor={classes[index + 1].overlayColor} // Pass overlay color to the next card
+                          />
+                        )}
+                      </View>
+                    </View>
+                  ))}
+              </Swiper>
+            </Block>
+
+            <Block style={{ marginTop: 40 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "black",
+                  marginTop: 5,
+                }}
+              >
+                Book 1:1 Session
+              </Text>
+              <Text style={{ fontSize: 14, color: "grey" }}>
+                With your favorite Instructor
+              </Text>
+            </Block>
+
+            <Block style={{ marginTop: 10 }}>
+              <Swiper
+                style={{ height: screenHeight * 0.25 }}
+                showsPagination={false}
+                overlayEnabled
+                overlayColor={"transparent"} // Set the color of the overlay
+                overlayOpacity={0.5}
+              >
+                {cards.map((card, index) => (
+                  <View key={index}>
+                    <OneOnOneClassCard
+                      title={card.title}
+                      description={card.description}
+                      onTeacherClick={handelTeacherClick}
+                      book={handelMembershipModel}
+                    />
+                  </View>
+                ))}
+              </Swiper>
+            </Block>
+
+            <LinearGradient
+      colors={['#FFFFFF', '#E6FBEB']}
+      style={{
+        flex: 1,
+        marginBottom: 120,
+        marginTop: 30,
+        padding: 10,
+        borderRadius: 25,
+        borderWidth: 1,
+        borderColor: '#D9E2F2',
+      }}>
+      <View
+        style={{
+          marginTop: 20,
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+
+        }}>
+        <View>
+          <Text style={{ fontSize: 24 }}>We are here to help you</Text>
+          <Text style={{ color: 'grey', marginTop: 3 }}>
+            Feel free to reach us out
+          </Text>
+        </View>
+
+        <View>
+          <Image
+            source={require('../../assets/Images/streamline_customer-support-1.png')}
+          />
+        </View>
+      </View>
+      <Block center>
                 <LottieView
-                  ref={animationRef}
                   style={styles.lottie}
-                  source={require("../../assets/Animations/Animation - 1706011493717.json")}
-                  autoPlay={true}
-                  loop={true}
+                  source={require("../../assets/Animations/Animation - 1712820681578.json")}
+                  autoPlay
+                  loop
                 />
               </Block>
-            </Block>
+    </LinearGradient>
+            
           </Block>
-
         </Block>
 
-{/* ============================================================================ */}
-  
-{/* <Button onPress={handelWebZommPageClick} color='info' style={{width:120}}>
+        {/* ============================================================================ */}
+
+        {/* <Button onPress={handelWebZommPageClick} color='info' style={{width:120}}>
               <Text style={{fontSize:16,fontWeight:400,color:"#fff"}}>
               Zoom Page  
               </Text>
@@ -421,7 +410,9 @@ export const Home = () => {
           setModalVisible={setWebModalVisible}
           handelComplete={handelWebModelComplete}
         />
+       
       </ScrollView>
+      <BottomTabs ActiveTab={"home"}/>
     </View>
   );
 };
@@ -430,12 +421,13 @@ const styles = StyleSheet.create({
   wrapper: {},
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+   
     borderWidth: 1,
   },
   lottie: {
-    width: 150,
-    height: 150,
+    width: 350,
+    height: 250,
+    marginBottom: -45,
   },
   inputContainer: {
     width: "100%",

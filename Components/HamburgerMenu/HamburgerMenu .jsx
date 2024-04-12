@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet,Dimensions, ScrollView,Share } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet,Dimensions, ScrollView,Share, Image } from 'react-native';
 import Modal from "react-native-modal";
 const {width, height} = Dimensions.get('window');
 import { AntDesign } from '@expo/vector-icons';
@@ -13,20 +13,23 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { EvilIcons } from '@expo/vector-icons';
 const HamburgerMenu = ({ isVisible, onClose }) => {
  const navigation = useNavigation()
   const RoutesData =[
-    {Icon:<AntDesign name="user" size={24} color="grey" />,Title:"My account" , Route:"My Account"},
-    {Icon:<MaterialCommunityIcons name="google-classroom" size={24} color="grey" />,Title:"My classes" , Route:"My Classes"},
+    // {Icon:<AntDesign name="user" size={24} color="#586B90" />,Title:"My account" , Route:"My Account"},
+    {Icon:<MaterialCommunityIcons name="google-classroom" size={24} color="#586B90" />,Title:"My classes" , Route:"My Classes"},
+    {Icon:<MaterialCommunityIcons name="google-classroom" size={24} color="#586B90" />,Title:"My Sessions" , Route:"My Classes"},
+    {Icon:<AntDesign name="playcircleo" size={24} color="#586B90" />,Title:"How It works ?" , Route:""},
     // {Icon:<Ionicons name="chatbox-ellipses-outline" size={24} color="grey" />,Title:"Chat" , Route:"Chat"},
-    {Icon:<Octicons name="gift" size={24} color="grey" />,Title:"Refer" , Route:"Refer"},
-    {Icon:<Entypo name="line-graph" size={24} color="grey" />,Title:"Step-by-step guid" , Route:""},
-    {Icon:<FontAwesome6 name="laptop" size={22} color="grey" />,Title:"Web Login" , Route:""},
-    {Icon:<FontAwesome name="dollar" size={24} color="grey" />,Title:"Pricing" , Route:""},
-    {Icon:<AntDesign name="playcircleo" size={24} color="grey" />,Title:"How It works" , Route:""},
-    {Icon:<AntDesign name="questioncircleo" size={24} color="grey" />,Title:"FAQ" , Route:""},
-    {Icon:<MaterialIcons name="support-agent" size={24} color="grey" />,Title:"Contact us" , Route:"Contact Us"},
-    {Icon:<AntDesign name="logout" size={24} color="grey" />,Title:"Logout" , Route:"logout"},
+    {Icon:<EvilIcons name="share-google" size={26} color="#586B90" />,Title:"Share App" , Route:"Refer"},
+   
+    {Icon:<FontAwesome6 name="laptop" size={21} color="#586B90" />,Title:"Web Login" , Route:""},
+
+    
+    {Icon:<AntDesign name="questioncircleo" size={24} color="#586B90" />,Title:"FAQ" , Route:""},
+    {Icon:<MaterialIcons name="support-agent" size={24} color="#586B90" />,Title:"Contact us" , Route:"Contact Us"},
+    // {Icon:<AntDesign name="logout" size={24} color="#586B90" />,Title:"Logout" , Route:"logout"},
   ]
 
 
@@ -103,26 +106,66 @@ const handelLogout=async()=>{
           style={{
             flex:1,
             backgroundColor: 'white',
-            padding: 2,
+            padding: 10,
             height: 300,
-            width:width * 0.6, 
+            width:width * 0.7, 
            
-            marginTop:4,borderTopRightRadius:10
+            marginTop:2,borderTopRightRadius:10
           }}
         >
+
+          <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:60}}>
+                 
+                 <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+                      <Block>
+                      <Image
+                    source={require("../../assets/Images/Rectangle 5.png")}
+                    
+                  />
+                      </Block>
+                      <Block style={{marginLeft:10}}>
+                        <Text style={{color:"#787878",fontSize:13}}>Welcome Back</Text>
+                        <Text style={{fontSize:18}}>Akshay Pareek</Text>
+                      </Block>
+                 </Block>
+
+                 <Block>
+                  <TouchableOpacity activeOpacity={0.4} onPress={onClose}>
+                  <AntDesign  name="close" size={24} color="black" />
+                  </TouchableOpacity>
+                    
+                 </Block>
+          </Block>
+
+          <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:20}}>
+    </Block>
          
          <ScrollView style={{ marginTop: 30}}>
       {RoutesData.map((el, index) => (
         <TouchableOpacity activeOpacity={0.9} key={index} onPress={()=>handelRoute(el.Route)}>
-             <View  style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, borderBottomWidth: 0.2, padding: 10, borderColor: 'grey' }}>
-          <View style={{ height: 30, width: 30, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+             <View  style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, padding: 10, borderColor: 'grey' }}>
+          <View style={{ height: 45, width: 45, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',borderRadius:20,padding:5,backgroundColor:"#D2E1FD40" }}>
             {el.Icon}
           </View>
-          <Text style={{ fontSize: 16, fontWeight: '600', color: 'grey', marginLeft: 20 }}>{el.Title}</Text>
+          <Text style={{ fontSize: 17, color: '#586B90', marginLeft: 20 }}>{el.Title}</Text>
         </View>
         </TouchableOpacity>
         
       ))}
+
+           <Block style={{marginLeft:10,marginTop:20}}>
+            <Text style={{fontSize:16,color:"#EA6C13"}}>Privacy Policy</Text>
+            <Text style={{fontSize:16,color:"#EA6C13",marginTop:5}}>Terms & Conditions</Text>
+           </Block>
+
+<TouchableOpacity activeOpacity={0.9} style={{borderRadius:17,backgroundColor:"#FFE9E9",height:60,marginBottom:30,marginTop:30}}  onPress={()=>handelRoute("logout")}>
+             <Block center  style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, padding: 10, borderColor: 'grey' }}>
+          <View style={{ height: 45, width: 45, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',borderRadius:20,padding:5 }}>
+          <AntDesign name="logout" size={22} color="#FC2C2C" />
+          </View>
+          <Text style={{ fontSize: 17, color: '#FC2C2C', marginLeft: 20 }}>Logout</Text>
+        </Block>
+        </TouchableOpacity>
     </ScrollView>
          
         

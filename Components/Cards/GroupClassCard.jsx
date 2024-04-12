@@ -13,75 +13,64 @@ import { Fontisto } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import CustomButton from '../Buttons/CustomButton';
 import { LinearGradient } from "expo-linear-gradient";
-const Card = ({ title, description,ClassClick ,book,join,mn}) => (
+const GroupClassCard = ({ title, description,ClassClick ,book,join,mn}) => (
   <View style={styles.card}>
-      <LinearGradient
-      colors={['#a9d2fe', '#000000']}
-      locations={[0.3, 0.91]}
-       style={[{backgroundColor:"#a9d2fe",height:"45%",borderTopRightRadius:20,borderTopLeftRadius: 20}]} >
-             
-             
-             <Block center style={{position:"absolute",bottom:0}}>
-             <Image   source={require('../../assets/Images/CardImg.png')} />
+     
+
+      <Block style={{padding:15}}>
+             <Block>
+                <Text style={{color:"#EA6C13",fontSize:16}}>Class Title</Text>
+                <Text style={{fontSize:20,marginTop:5}}>
+                    Yoga Meditation
+                </Text>
              </Block>
 
-             <Block style={{position:"absolute",right:10,top:10}}>
-               <TouchableOpacity style={{backgroundColor:"#667f99",borderRadius:20,padding:10,width:115,flexDirection:"row",justifyContent:'space-between',alignItems:"center"}}>
-               <Feather name="bell" size={16} color="white" />
-                     <Text style={{color:"#fff",fontSize:14,marginTop:-2}}>Remind Me</Text>
-               </TouchableOpacity>
+             <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:20}}>
+
              </Block>
 
-             <Block style={{padding:10,position:"absolute",bottom:0,width:"100%"}}>
-              <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+             <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}> 
+                <Block>
+                    <Text style={{fontSize:20}}>Fri ,26 Jan 2024</Text>
+                    <Text style={{fontSize:15,color:"#4F4F4F",marginTop:3}}>4.30 PM - 5:30 PM (IST)</Text>
+                </Block>
+
+                <Block>
+                <Image   source={require('../../assets/Images/view group class details.png')} />
+                </Block>
+             </Block>
+
+             <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:20}}>
+
+             </Block>
+
+             <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
                   
-                  <Block>
-                  <Text style={{fontSize:20,color:"rgba(255, 255, 255, 1)",fontWeight:600}}>Pradeep Singh</Text>
-                   
-                   <Block style={{marginTop:5,flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
-                    <Block style={{borderRadius:20,padding:6,width:65,flexDirection:"row",justifyContent:"space-around",alignItems:"center",backgroundColor:"#DEFFE9"}}>
+                <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+                <Image style={{width:45,height:45,borderRadius:10}} source={require('../../assets/Samsra-app.jpg')} />
+                
+                <Block style={{marginLeft:10}}>
+                    <Text style={{color:"#787878",fontSize:13}}>Instructor</Text>
+                    <Text style={{fontSize:16}}>Pradeep Singh</Text>
+                </Block>
+                
+                
+                </Block>
+
+
+
+             <Block style={{borderRadius:18,padding:6,width:65,flexDirection:"row",justifyContent:"space-around",alignItems:"center",backgroundColor:"#DEFFE9"}}>
                     <Octicons name="star-fill" size={12} color="#1CBC52" />
                     <Text style={{fontSize:14,color:"#1CBC52"}}>4.3</Text>
                     </Block>
-
-                    <Text style={{marginLeft:10,color:"#fff",fontSize:14}}>98 Reviews</Text>
-                   </Block>
-                  </Block>
-
-                  <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center",height:35,width:35,borderRadius:20,backgroundColor:"#667f99"}}>
-                  <Fontisto name="angle-down" size={18} color="white" />
-                  </Block>
-              </Block>
-                
-             </Block>
-             
-      </LinearGradient>
-
-      <Block style={{padding:10}}>
-             
-             <LinearGradient 
-            colors={['rgba(255, 240, 229, 1)', 'rgba(254, 242, 234, 0)']}
-             style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
-              <Text style={{fontSize:48,color:"#EA6C13"}}>I</Text>
-              <Text style={{fontSize:20,marginLeft:10}}>Yoga Meditation</Text>
-             </LinearGradient>
-
-             <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
-                  <Block style={[{width:50,height:50,backgroundColor:"#E9ECF3",borderRadius:20},styles.Center]}>
-                  <MaterialCommunityIcons name="calendar-month-outline" size={26} color="#617CB2" />
-                  </Block>
-
-                  <Block style={{marginLeft:10}}>
-                    <Text style={{fontSize:16}}>Mon, Tue, Wed</Text>
-                    <Text style={{color:"#787878",marginTop:3,fontSize:13}}>1:20 PM to 3:30 PM</Text>
-                  </Block>
              </Block>
 
-             <Block style={[styles.Center,{marginTop:20}]}>
+
+              <Block style={[styles.Center,{marginTop:30}]}>
              <TouchableOpacity style={styles.button} >
       <Text style={styles.buttonText}>Join Now</Text>
     </TouchableOpacity>
-             </Block>
+             </Block> 
       </Block>
        
 
@@ -91,7 +80,7 @@ const Card = ({ title, description,ClassClick ,book,join,mn}) => (
 const styles = StyleSheet.create({
   button: {
     height: 55, // Adjust height as needed
-    width:"80%", // Take entire width
+    width:"90%", // Take entire width
     borderRadius: 17, // Border radius for rounded corners
     backgroundColor: '#EA6C13', // Orange background color
     justifyContent: 'center', // Center content vertically
@@ -125,9 +114,9 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     borderWidth:1,
     borderColor: '#D9E2F2',
-    width:"85%",
-    borderBottomLeftRadius:10,
-    borderBottomRightRadius:10,
+    
+    borderBottomLeftRadius:20,
+    borderBottomRightRadius:20,
   
   },
   title: {
@@ -145,7 +134,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Card;
+export default GroupClassCard;
 
 
 {/* <View style={styles.card}>

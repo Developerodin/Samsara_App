@@ -30,57 +30,46 @@ import {  ZoomWebView } from './Pages/WebViewPage/WebView';
 import { ZoomPage } from './Pages/ZoomSdkPage/ZoomPage';
 import { AppProvider } from './Context/AppContext';
 import { PersonalInfo2 } from './Pages/SignUp/Registration/PersonalInfo2';
+import { GroupClasses } from './Pages/Class/GroupClasses';
+import { PersonalClasses } from './Pages/Class/PersonalClasses';
+
 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// const Tabs = ({navigation}) => {
-//   return (
+const Tabs = ({navigation}) => {
+  return (
  
-// <Tab.Navigator
-//     screenOptions={{
-//       tabBarActiveTintColor: 'black',
-//       tabBarInactiveTintColor :'grey',
-//       tabBarLabelStyle:{color:"black"},
-//       tabBarStyle: { backgroundColor: '#F1F1F1',color:"#fff",position:'absolute',bottom:0,paddingTop:2,paddingBottom:3},
-//     }}
-//     >
-//       <Tab.Screen
-//         name="Home"
-//         component={Home}
-//         options={{
-//           tabBarIcon: ({ color, size }) => (
+<Tab.Navigator
+    screenOptions={{
+      tabBarActiveTintColor: 'black',
+      tabBarInactiveTintColor :'grey',
+      tabBarLabelStyle:{color:"black"},
+      tabBarStyle: {borderWidth:1, backgroundColor: '#F1F1F1',color:"#fff",position:'absolute',bottom:0,paddingTop:2,paddingBottom:3},
+    }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ color, size }) => (
 
           
-//             <Ionicons name="home" color={color} size={size}  />
-//           ),
-//           headerShown: false,
-//         }}
+            <Ionicons name="home" color={color} size={size}  />
+          ),
+          headerShown: false,
+        }}
        
      
-//       />
-      
-      
+      />
 
-
-      
-
-
-
-
-
-
-
-    
-     
-      
-//     </Tab.Navigator>
+    </Tab.Navigator>
 
  
     
-//   );
-// };
+  );
+};
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -181,6 +170,16 @@ export default function App() {
             headerShown: false,
           }}
         />
+         <Stack.Screen name="GroupClasses" component={GroupClasses}
+          options={{
+            headerShown: false,
+          }}
+        />
+          <Stack.Screen name="PersonalClasses" component={PersonalClasses}
+          options={{
+            headerShown: false,
+          }}
+        />
 
 <Stack.Screen name="ZoomPage" component={ZoomPage}
           options={{
@@ -227,7 +226,7 @@ export default function App() {
             headerShown: false,
           }}/>
 
-<Stack.Screen name="Teacher" component={Teacher} options={{
+<Stack.Screen name="About Instructor" component={Teacher} options={{
             headerShown: true,
           }}/>
 

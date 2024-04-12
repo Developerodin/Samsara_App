@@ -7,7 +7,8 @@ import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import Logo from "./Logo_1.png"
 import HamburgerMenu from '../HamburgerMenu/HamburgerMenu ';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 export const Header = () => {
  
   const [isMenuVisible, setMenuVisible] = useState(false);
@@ -19,17 +20,21 @@ export const Header = () => {
     setMenuVisible(true)
   }
   return (
-    <View style={[{marginTop:10,padding:10,borderBottomWidth:1,borderColor:"#d3d7d9",paddingTop:20},styles.container]}>
+    <View style={[{marginTop:10,padding:10,borderColor:"#d3d7d9",paddingTop:20},styles.container]}>
         {/* <StatusBar  hidden/> */}
         <Block  style={styles.Space_Between}>
         <TouchableOpacity onPress={showMenue}>
-          <Entypo name="menu" size={40} color="grey"  />
+          {/* <Entypo name="menu" size={40} color="grey"  /> */}
+          <Image    source={require('../../assets/Images/ri_menu-2-line.png')} />
           </TouchableOpacity>
           <Block style={{alignItems:"center"}}>
-            <Text style={[styles.textPlayfair,{letterSpacing:2,color:"#ffa500"}]}>SAMSARA</Text>
+          {/* samsaraLogo.png */}
+          <Image    source={require('../../assets/samsaraLogo.png')} />
           </Block>
           <Block>
-          <FontAwesome5 name="bell" size={30} color="grey" />
+          {/* <FontAwesome5 name="bell" size={30} color="grey" /> */}
+          {/* <MaterialCommunityIcons name="bell" size={30} color="black" /> */}
+          <FontAwesome name="bell-o" size={24} color="black" />
           </Block>
         </Block>
        <HamburgerMenu isVisible={isMenuVisible} onClose={CloseMenu}  />
