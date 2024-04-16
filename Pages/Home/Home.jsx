@@ -162,256 +162,263 @@ export const Home = () => {
     <View style={styles.container}>
       <Header />
       <StatusBar style="dark" />
+       {isLoading ? <Block center style={{height:height*0.8,flexDirection:"row",justifyContent:"center",alignItems:"center"}}> 
+
+        <ActivityIndicator size="large" color="orange" />
+       </Block> 
+      :
       <ScrollView>
-        {isLoading && <ActivityIndicator size="large" color="orange" />}
-        <Block style={{ backgroundColor: "#eef3f7" }}>
-          <Block
-            style={{
-              width: width,
-            }}
-          >
-            <Block >
-              <Swiper
-                style={{ height: height * 0.25 }}
-                showsPagination={false}
-                overlayEnabled
-                overlayColor={"transparent"} // Set the color of the overlay
-                overlayOpacity={0.5}
-              >
-                <View>
-                  <Image
-                    source={require("../../assets/Images/Frame1.png")}
-                    resizeMode="contain"
-                  />
-                </View>
-                <View>
-                  <Image
-                    source={require("../../assets/Images/Frame1.png")}
-                    resizeMode="contain"
-                  />
-                </View>
-              </Swiper>
-            </Block>
-          </Block>
-
-          <Block style={{ padding: 10 }}>
-            <Block style={{ marginTop: 10 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: "black",
-
-                  marginTop: 5,
-                }}
-              >
-                Group Classes
-              </Text>
-            </Block>
-
-            <Block style={{ marginTop: 10 }}>
-              <Swiper
-                style={{ height: swiperHeight }}
-                showsPagination={false}
-                overlayEnabled={true}
-                overlayColor={"transparent"} // Set the color of the overlay
-                overlayOpacity={0.5}
-                spaceBetween={3}
-              >
-                {classes &&
-                  classes.map((card, index) => (
-                    <View key={index}>
-                      <View style={{ flexDirection: "row" }}>
-                        {/* Current card */}
-                        <Card
-                          mn={card.mn}
-                          title={card.Title}
-                          description={card.Teacher}
-                          ClassClick={handelClassClick}
-                          book={handelMembershipModel}
-                          join={() =>
-                            handelWebZommClassClick({
-                              number: card.mn,
-                              pass: card.pass,
-                            })
-                          }
-                          // Pass overlay color to the Card component
-                        />
-                        {/* Next card */}
-                        {classes[index + 1] && (
-                          <Card
-                            mn={classes[index + 1].mn}
-                            title={classes[index + 1].Title}
-                            description={classes[index + 1].Teacher}
-                            overlayColor={classes[index + 1].overlayColor} // Pass overlay color to the next card
-                          />
-                        )}
-                      </View>
-                    </View>
-                  ))}
-              </Swiper>
-            </Block>
-
-            <Block style={{ marginTop: 30 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: "black",
-
-                  marginTop: 5,
-                }}
-              >
-                Upcoming Events
-              </Text>
-            </Block>
-
-            <Block style={{ marginTop: 10 }}>
-              <Swiper
-                style={{ height: swiperHeight }}
-                showsPagination={false}
-                overlayEnabled={true}
-                overlayColor={"transparent"} // Set the color of the overlay
-                overlayOpacity={0.5}
-                spaceBetween={3}
-              >
-                {classes &&
-                  classes.map((card, index) => (
-                    <View key={index}>
-                      <View style={{ flexDirection: "row" }}>
-                        {/* Current card */}
-                        <Card
-                          mn={card.mn}
-                          title={card.Title}
-                          description={card.Teacher}
-                          ClassClick={handelClassClick}
-                          book={handelMembershipModel}
-                          join={() =>
-                            handelWebZommClassClick({
-                              number: card.mn,
-                              pass: card.pass,
-                            })
-                          }
-                          // Pass overlay color to the Card component
-                        />
-                        {/* Next card */}
-                        {classes[index + 1] && (
-                          <Card
-                            mn={classes[index + 1].mn}
-                            title={classes[index + 1].Title}
-                            description={classes[index + 1].Teacher}
-                            overlayColor={classes[index + 1].overlayColor} // Pass overlay color to the next card
-                          />
-                        )}
-                      </View>
-                    </View>
-                  ))}
-              </Swiper>
-            </Block>
-
-            <Block style={{ marginTop: 40 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: "black",
-                  marginTop: 5,
-                }}
-              >
-                Book 1:1 Session
-              </Text>
-              <Text style={{ fontSize: 14, color: "grey" }}>
-                With your favorite Instructor
-              </Text>
-            </Block>
-
-            <Block style={{ marginTop: 10 }}>
-              <Swiper
-                style={{ height: screenHeight * 0.25 }}
-                showsPagination={false}
-                overlayEnabled
-                overlayColor={"transparent"} // Set the color of the overlay
-                overlayOpacity={0.5}
-              >
-                {cards.map((card, index) => (
-                  <View key={index}>
-                    <OneOnOneClassCard
-                      title={card.title}
-                      description={card.description}
-                      onTeacherClick={handelTeacherClick}
-                      book={handelMembershipModel}
-                    />
-                  </View>
-                ))}
-              </Swiper>
-            </Block>
-
-            <LinearGradient
-      colors={['#FFFFFF', '#E6FBEB']}
-      style={{
-        flex: 1,
-        marginBottom: 120,
-        marginTop: 30,
-        padding: 10,
-        borderRadius: 25,
-        borderWidth: 1,
-        borderColor: '#D9E2F2',
-      }}>
-      <View
-        style={{
-          marginTop: 20,
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-
-        }}>
-        <View>
-          <Text style={{ fontSize: 24 }}>We are here to help you</Text>
-          <Text style={{ color: 'grey', marginTop: 3 }}>
-            Feel free to reach us out
-          </Text>
-        </View>
-
-        <View>
-          <Image
-            source={require('../../assets/Images/streamline_customer-support-1.png')}
-          />
-        </View>
-      </View>
-      <Block center>
-                <LottieView
-                  style={styles.lottie}
-                  source={require("../../assets/Animations/Animation - 1712820681578.json")}
-                  autoPlay
-                  loop
+      
+      <Block style={{ backgroundColor: "#eef3f7" }}>
+        <Block
+          style={{
+            width: width,
+          }}
+        >
+          <Block >
+            <Swiper
+              style={{ height: height * 0.25 }}
+              showsPagination={false}
+              overlayEnabled
+              overlayColor={"transparent"} // Set the color of the overlay
+              overlayOpacity={0.5}
+            >
+              <View>
+                <Image
+                  source={require("../../assets/Images/Frame1.png")}
+                  resizeMode="contain"
                 />
-              </Block>
-    </LinearGradient>
-            
+              </View>
+              <View>
+                <Image
+                  source={require("../../assets/Images/Frame1.png")}
+                  resizeMode="contain"
+                />
+              </View>
+            </Swiper>
           </Block>
         </Block>
 
-        {/* ============================================================================ */}
+        <Block style={{ padding: 10 }}>
+          <Block style={{ marginTop: 10 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: "black",
 
-        {/* <Button onPress={handelWebZommPageClick} color='info' style={{width:120}}>
-              <Text style={{fontSize:16,fontWeight:400,color:"#fff"}}>
-              Zoom Page  
-              </Text>
-            
-              </Button> */}
-        <MemberShipModel
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          handelComplete={handelComplete}
-        />
+                marginTop: 5,
+              }}
+            >
+              Group Classes
+            </Text>
+          </Block>
 
-        <WebModel
-          webUrl={
-            "https://us05web.zoom.us/j/85135267203?pwd=6lbUCFVHcELptiad0J0aVi5IfSD8Ht.1"
-          }
-          modalVisible={webmodalVisible}
-          setModalVisible={setWebModalVisible}
-          handelComplete={handelWebModelComplete}
+          <Block style={{ marginTop: 10 }}>
+            <Swiper
+              style={{ height: swiperHeight }}
+              showsPagination={false}
+              overlayEnabled={true}
+              overlayColor={"transparent"} // Set the color of the overlay
+              overlayOpacity={0.5}
+              spaceBetween={3}
+            >
+              {classes &&
+                classes.map((card, index) => (
+                  <View key={index}>
+                    <View style={{ flexDirection: "row" }}>
+                      {/* Current card */}
+                      <Card
+                        mn={card.mn}
+                        title={card.Title}
+                        description={card.Teacher}
+                        ClassClick={handelClassClick}
+                        book={handelMembershipModel}
+                        join={() =>
+                          handelWebZommClassClick({
+                            number: card.mn,
+                            pass: card.pass,
+                          })
+                        }
+                        // Pass overlay color to the Card component
+                      />
+                      {/* Next card */}
+                      {classes[index + 1] && (
+                        <Card
+                          mn={classes[index + 1].mn}
+                          title={classes[index + 1].Title}
+                          description={classes[index + 1].Teacher}
+                          overlayColor={classes[index + 1].overlayColor} // Pass overlay color to the next card
+                        />
+                      )}
+                    </View>
+                  </View>
+                ))}
+            </Swiper>
+          </Block>
+
+          <Block style={{ marginTop: 30 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: "black",
+
+                marginTop: 5,
+              }}
+            >
+              Upcoming Events
+            </Text>
+          </Block>
+
+          <Block style={{ marginTop: 10 }}>
+            <Swiper
+              style={{ height: swiperHeight }}
+              showsPagination={false}
+              overlayEnabled={true}
+              overlayColor={"transparent"} // Set the color of the overlay
+              overlayOpacity={0.5}
+              spaceBetween={3}
+            >
+              {classes &&
+                classes.map((card, index) => (
+                  <View key={index}>
+                    <View style={{ flexDirection: "row" }}>
+                      {/* Current card */}
+                      <Card
+                        mn={card.mn}
+                        title={card.Title}
+                        description={card.Teacher}
+                        ClassClick={handelClassClick}
+                        book={handelMembershipModel}
+                        join={() =>
+                          handelWebZommClassClick({
+                            number: card.mn,
+                            pass: card.pass,
+                          })
+                        }
+                        // Pass overlay color to the Card component
+                      />
+                      {/* Next card */}
+                      {classes[index + 1] && (
+                        <Card
+                          mn={classes[index + 1].mn}
+                          title={classes[index + 1].Title}
+                          description={classes[index + 1].Teacher}
+                          overlayColor={classes[index + 1].overlayColor} // Pass overlay color to the next card
+                        />
+                      )}
+                    </View>
+                  </View>
+                ))}
+            </Swiper>
+          </Block>
+
+          <Block style={{ marginTop: 40 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: "black",
+                marginTop: 5,
+              }}
+            >
+              Book 1:1 Session
+            </Text>
+            <Text style={{ fontSize: 14, color: "grey" }}>
+              With your favorite Instructor
+            </Text>
+          </Block>
+
+          <Block style={{ marginTop: 10 }}>
+            <Swiper
+              style={{ height: screenHeight * 0.25 }}
+              showsPagination={false}
+              overlayEnabled
+              overlayColor={"transparent"} // Set the color of the overlay
+              overlayOpacity={0.5}
+            >
+              {cards.map((card, index) => (
+                <View key={index}>
+                  <OneOnOneClassCard
+                    title={card.title}
+                    description={card.description}
+                    onTeacherClick={handelTeacherClick}
+                    book={handelMembershipModel}
+                  />
+                </View>
+              ))}
+            </Swiper>
+          </Block>
+
+          <LinearGradient
+    colors={['#FFFFFF', '#E6FBEB']}
+    style={{
+      flex: 1,
+      marginBottom: 120,
+      marginTop: 30,
+      padding: 10,
+      borderRadius: 25,
+      borderWidth: 1,
+      borderColor: '#D9E2F2',
+    }}>
+    <View
+      style={{
+        marginTop: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+
+      }}>
+      <View>
+        <Text style={{ fontSize: 24 }}>We are here to help you</Text>
+        <Text style={{ color: 'grey', marginTop: 3 }}>
+          Feel free to reach us out
+        </Text>
+      </View>
+
+      <View>
+        <Image
+          source={require('../../assets/Images/streamline_customer-support-1.png')}
         />
-       
-      </ScrollView>
+      </View>
+    </View>
+    <Block center>
+              <LottieView
+                style={styles.lottie}
+                source={require("../../assets/Animations/Animation - 1712820681578.json")}
+                autoPlay
+                loop
+              />
+            </Block>
+  </LinearGradient>
+          
+        </Block>
+      </Block>
+
+      {/* ============================================================================ */}
+
+      {/* <Button onPress={handelWebZommPageClick} color='info' style={{width:120}}>
+            <Text style={{fontSize:16,fontWeight:400,color:"#fff"}}>
+            Zoom Page  
+            </Text>
+          
+            </Button> */}
+      <MemberShipModel
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        handelComplete={handelComplete}
+      />
+
+      <WebModel
+        webUrl={
+          "https://us05web.zoom.us/j/85135267203?pwd=6lbUCFVHcELptiad0J0aVi5IfSD8Ht.1"
+        }
+        modalVisible={webmodalVisible}
+        setModalVisible={setWebModalVisible}
+        handelComplete={handelWebModelComplete}
+      />
+     
+    </ScrollView>
+      }
+      
       <BottomTabs ActiveTab={"home"}/>
     </View>
   );

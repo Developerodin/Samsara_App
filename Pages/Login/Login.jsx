@@ -289,8 +289,8 @@ export const Login = ({ navigation }) => {
          
         </Block>}
 
-        <Block center style={{marginTop:20}}>
-        <Image source={require("../../assets/samsaraLogo.png")}  />
+        <Block center style={{marginTop:20,height:40,width:190}}>
+        <Image style={{height:40,width:190}} source={require("../../assets/samsaraLogo.png")}  />
         </Block>
         
         {

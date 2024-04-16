@@ -12,7 +12,7 @@ import CustomButton from '../../Components/Buttons/CustomButton';
 
 
 
-export const MyClass = () => {
+export const MySessions = () => {
  
   return (
     <View style={styles.container}>

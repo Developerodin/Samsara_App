@@ -27,14 +27,14 @@ export const Header = () => {
           {/* <Entypo name="menu" size={40} color="grey"  /> */}
           <Image    source={require('../../assets/Images/ri_menu-2-line.png')} />
           </TouchableOpacity>
-          <Block style={{alignItems:"center"}}>
+          <Block style={{alignItems:"center",height:40,width:190}}>
           {/* samsaraLogo.png */}
-          <Image    source={require('../../assets/samsaraLogo.png')} />
+          <Image  style={{height:"100%",width:"100%"}}  source={require('../../assets/samsaraLogo.png')} />
           </Block>
           <Block>
           {/* <FontAwesome5 name="bell" size={30} color="grey" /> */}
           {/* <MaterialCommunityIcons name="bell" size={30} color="black" /> */}
-          <FontAwesome name="bell-o" size={24} color="black" />
+          {/* <FontAwesome name="bell-o" size={24} color="black" /> */}
           </Block>
         </Block>
        <HamburgerMenu isVisible={isMenuVisible} onClose={CloseMenu}  />

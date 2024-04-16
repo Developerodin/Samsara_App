@@ -48,9 +48,9 @@ const Card = ({ title, description,ClassClick ,book,join,mn}) => (
                    </Block>
                   </Block>
 
-                  <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center",height:35,width:35,borderRadius:20,backgroundColor:"#667f99"}}>
-                  <Fontisto name="angle-down" size={18} color="white" />
-                  </Block>
+                  <TouchableOpacity onPress={ClassClick} style={{flexDirection:"row",justifyContent:"center",alignItems:"center",height:35,width:35,borderRadius:20,backgroundColor:"#667f99"}}>
+                  <Fontisto  name="angle-down" size={18} color="white" />
+                  </TouchableOpacity>
               </Block>
                 
              </Block>
@@ -63,7 +63,7 @@ const Card = ({ title, description,ClassClick ,book,join,mn}) => (
             colors={['rgba(255, 240, 229, 1)', 'rgba(254, 242, 234, 0)']}
              style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
               <Text style={{fontSize:48,color:"#EA6C13"}}>I</Text>
-              <Text style={{fontSize:20,marginLeft:10}}>Yoga Meditation</Text>
+              <Text style={{fontSize:20,marginLeft:10}}>{title}</Text>
              </LinearGradient>
 
              <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
@@ -78,7 +78,7 @@ const Card = ({ title, description,ClassClick ,book,join,mn}) => (
              </Block>
 
              <Block style={[styles.Center,{marginTop:20}]}>
-             <TouchableOpacity style={styles.button} >
+             <TouchableOpacity onPress={join} style={styles.button} >
       <Text style={styles.buttonText}>Join Now</Text>
     </TouchableOpacity>
              </Block>

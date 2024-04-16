@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet,Dimensions, ScrollView,Share, Image } from 'react-native';
 import Modal from "react-native-modal";
 const {width, height} = Dimensions.get('window');
@@ -14,12 +14,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EvilIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 const HamburgerMenu = ({ isVisible, onClose }) => {
  const navigation = useNavigation()
+ const [userData, setUserData] = useState(null);
   const RoutesData =[
     // {Icon:<AntDesign name="user" size={24} color="#586B90" />,Title:"My account" , Route:"My Account"},
-    {Icon:<MaterialCommunityIcons name="google-classroom" size={24} color="#586B90" />,Title:"My classes" , Route:"My Classes"},
-    {Icon:<MaterialCommunityIcons name="google-classroom" size={24} color="#586B90" />,Title:"My Sessions" , Route:"My Classes"},
+    {Icon:<FontAwesome5 name="chalkboard-teacher" size={24} color="#586B90" />,Title:"My classes" , Route:"My Classes"},
+    {Icon:<MaterialCommunityIcons name="google-classroom" size={24} color="#586B90" />,Title:"My Sessions" , Route:"My Sessions"},
     {Icon:<AntDesign name="playcircleo" size={24} color="#586B90" />,Title:"How It works ?" , Route:""},
     // {Icon:<Ionicons name="chatbox-ellipses-outline" size={24} color="grey" />,Title:"Chat" , Route:"Chat"},
     {Icon:<EvilIcons name="share-google" size={26} color="#586B90" />,Title:"Share App" , Route:"Refer"},
@@ -63,6 +65,7 @@ const handleShare = async () => {
       // Share was dismissed/cancelled
       console.log('Share dismissed');
     }
+    onClose()
   } catch (error) {
     console.error('Error sharing:', error.message);
   }
@@ -83,6 +86,25 @@ const handelLogout=async()=>{
    routes: [{ name: 'Login' }],
  });
  }
+
+ const handelProfileClick = ()=>{
+  
+  navigation.navigate("My Account");
+  onClose()
+ }
+
+ useEffect(() => {
+  const userDetailsFromStorage = async () => {
+    const Details = (await AsyncStorage.getItem("userDetails")) || null;
+    const ParseData = JSON.parse(Details);
+
+    console.log("Parse Data ===>", ParseData.data.user);
+    const data = ParseData.data.user;
+    setUserData(data);
+  };
+
+  userDetailsFromStorage();
+}, []);
 
   return (
     <View>
@@ -116,7 +138,7 @@ const handelLogout=async()=>{
 
           <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:60}}>
                  
-                 <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+                 <TouchableOpacity onPress={handelProfileClick} style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
                       <Block>
                       <Image
                     source={require("../../assets/Images/Rectangle 5.png")}
@@ -125,9 +147,9 @@ const handelLogout=async()=>{
                       </Block>
                       <Block style={{marginLeft:10}}>
                         <Text style={{color:"#787878",fontSize:13}}>Welcome Back</Text>
-                        <Text style={{fontSize:18}}>Akshay Pareek</Text>
+                        <Text style={{fontSize:18}}>{userData && userData.name}</Text>
                       </Block>
-                 </Block>
+                 </TouchableOpacity>
 
                  <Block>
                   <TouchableOpacity activeOpacity={0.4} onPress={onClose}>

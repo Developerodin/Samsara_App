@@ -21,19 +21,100 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import YoutubePlayer from "../../Components/VideoPlayer/YoutubePlayer";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
+import CustomButton from "../../Components/Buttons/CustomButton";
+import { MemberShipModel } from "../../Components/Model/MemberShipModel";
 
 export const Teacher = () => {
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
   const stars = Array.from({ length: 5 }, (v, i) => (
     <AntDesign key={i} name="star" size={18} color="green" />
   ));
   const youtubeVideoUrl = 'https://youtu.be/QkYmX6FQOn4?feature=shared';
+  const handelComplete = () => {};
+
+  const handelMembershipModel = () => {
+    setModalVisible(true);
+  };
+  const handelBookSession = ()=>{
+    navigation.navigate("Book Session")
+  }
   return (
     <View style={styles.container}>
       <ScrollView>
      <Block style={{padding:15}}>
+
+          
+          <Block>
+
+            <Block >
+                 
+            <LinearGradient
+      colors={['#a9d2fe', '#000000']}
+      locations={[0.3, 0.91]}
+       style={[{backgroundColor:"#a9d2fe",height:200,borderRadius:20}]} >
+             
+             
+             <Block center style={{position:"absolute",bottom:0}}>
+             <Image   source={require('../../assets/Images/CardImg.png')} />
+             </Block>
+
+          
+
+             <Block style={{padding:10,position:"absolute",bottom:0,width:"100%"}}>
+              <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                  
+                  <Block>
+                  <Text style={{fontSize:20,color:"rgba(255, 255, 255, 1)",fontWeight:600}}>Pradeep Singh</Text>
+                   
+                   <Block style={{marginTop:5,flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+                    <Block style={{borderRadius:20,padding:6,width:65,flexDirection:"row",justifyContent:"space-around",alignItems:"center",backgroundColor:"#DEFFE9"}}>
+                    <Octicons name="star-fill" size={12} color="#1CBC52" />
+                    <Text style={{fontSize:14,color:"#1CBC52"}}>4.3</Text>
+                    </Block>
+
+                    <Text style={{marginLeft:10,color:"#fff",fontSize:14}}>98 Reviews</Text>
+                   </Block>
+                  </Block>
+
+                  <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center",borderRadius:20,backgroundColor:"#667f99",padding:6,borderColor:"#667f99",borderWidth:1}}>
+                  <Octicons name="star-fill" size={16} color="#fff" />
+                   <Text style={{marginLeft:5,color:"#fff"}}>Feedback</Text>
+                  </Block>
+              </Block>
+                
+             </Block>
+             
+      </LinearGradient>
+
+            </Block>
+             
+             <Block style={{padding:5,marginTop:20}}>
+            
+              <Text style={{fontSize:15,color:"#787878"}}>
+              Meet Sarah, a passionate yoga teacher dedicated to guiding students on their journey 
+              to wellness and self-discovery.
+            
+              </Text>
+              <Text style={{fontSize:15,color:"#787878",marginTop:10}}>
+              With years of experience 
+              and a nurturing approach, Sarah creates a supportive environment where students can
+               explore the transformative power of yoga.
+              </Text>
+
+              <Text style={{fontSize:15,color:"#787878",marginTop:10}}>
+              Join her for classes that inspire, empower, 
+               and uplift.
+              </Text>
+             </Block>
+          </Block>
+ 
+
         
-     <Block style={{borderWidth:1,backgroundColor:"#fff",borderColor: '#D9E2F2',borderRadius:20}}>
+     <Block style={{borderWidth:1,backgroundColor:"#fff",borderColor: '#D9E2F2',borderRadius:20,marginTop:30}}>
      <LinearGradient 
             colors={['rgba(255, 240, 229, 1)', 'rgba(254, 242, 234, 0)']}
              style={{flexDirection:"row",justifyContent:"left",alignItems:"center",padding:20,borderRadius:20}}>
@@ -145,122 +226,198 @@ export const Teacher = () => {
 
 
 
-      {/* <Block style={{padding:20,backgroundColor:"#fff",marginTop:20 }}>
-
-       <Block>
-          <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
-          <FontAwesome name="user-circle" size={24} style={{color:"#C499F3"}} />
-          <Text style={{marginLeft:10,fontWeight:600}}>About Me</Text>
-          </Block>
-       </Block>
-
-       <Block>
-        <Block style={{marginTop:10}}>
-          <Text style={{color:"#FC6736",fontWeight:600}}>Friendly and always happy to help</Text>
-        </Block>
-
-        <Block center style={{marginTop:10}}>
-          <Text style={{letterSpacing:1,lineHeight:20}}>With over three years of dedicated practice and expertise in the transformative realm of yoga, I am a passionate and experienced yoga teacher committed to guiding individuals on their wellness journey. My journey into the world of yoga began with a deep personal exploration, and it has evolved into a mission to share the profound benefits with others.
-     participating in numerous workshops that have enriched my understanding of various yoga....</Text>
-        </Block>
-       </Block>
-
-      </Block> */}
+      
 
     
 
-      <Block style={{padding:20,backgroundColor:"#fff",marginTop:20}}>
-
-       <Block>
+         <Block style={{borderWidth:1,backgroundColor:"#fff",marginTop:30,borderColor: '#D9E2F2',borderRadius:22,padding:20}}> 
           <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
-          <MaterialCommunityIcons name="flower" size={28} style={{color:"#C499F3"}} />
-        
-          <Text style={{marginLeft:10,fontWeight:600}}>Teaching Styles(s)</Text>
+              
+              <Block>
+              <FontAwesome5 name="chalkboard-teacher" size={20} color="#586B90" />
+              </Block>
+              
+               <Block style={{marginLeft:20}}>
+                <Text style={{fontSize:19,color:"#586B90"}}>Teaching Styles(s)</Text>
+               </Block>
           </Block>
 
-          <Block style={{borderWidth:1,padding:10,width:70,borderRadius:10,backgroundColor:"#D2E1FD40"}}>
-          <Text style={{fontSize:14,fontWeight:600}}>Gentle</Text>
+
+          <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",flexWrap:"wrap",gap:20,marginTop:30}}>
+            
+            <Block style={{borderWidth:1,backgroundColor:"#eff2f7",borderColor: '#D9E2F2',borderRadius:15,padding:15}}>
+                <Text style={{color:"#586B90",fontSize:17}}>Gentle</Text>
+            </Block>
+
+            <Block style={{borderWidth:1,backgroundColor:"#eff2f7",borderColor: '#D9E2F2',borderRadius:15,padding:15}}>
+                <Text style={{color:"#586B90",fontSize:17}}>Power Yoga</Text>
+            </Block>
+
+
+            <Block style={{borderWidth:1,backgroundColor:"#eff2f7",borderColor: '#D9E2F2',borderRadius:15,padding:15}}>
+                <Text style={{color:"#586B90",fontSize:17}}>Calisthenic Yoga</Text>
+            </Block>
+
+            <Block style={{borderWidth:1,backgroundColor:"#eff2f7",borderColor: '#D9E2F2',borderRadius:15,padding:15}}>
+                <Text style={{color:"#586B90",fontSize:17}}>Meditative Yoga</Text>
+            </Block>
+
+            <Block style={{borderWidth:1,backgroundColor:"#eff2f7",borderColor: '#D9E2F2',borderRadius:15,padding:15}}>
+                <Text style={{color:"#586B90",fontSize:17}}>Normal</Text>
+            </Block>
+          
+
           </Block>
 
-          <Block style={{marginTop:10}}>
-            <Block style={{marginTop:5,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-              <Text style={{fontSize:14,fontWeight:600}}>Gentle</Text>
-              <Text style={{fontSize:14,fontWeight:600}}>Vinyasa</Text>
-            </Block>
-
-            <Block  style={{marginTop:5,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-              <Text style={{fontSize:14,fontWeight:600}}>Power yoga</Text>
-              <Text style={{fontSize:14,fontWeight:600}}>Hatha / hatha flow</Text>
-            </Block>
-
-            <Block style={{marginTop:5,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-              <Text style={{fontSize:14,fontWeight:600}}>Ashtanga</Text>
-              <Text style={{fontSize:14,fontWeight:600}}>Iyenger</Text>
-            </Block>
-
-            <Block style={{marginTop:5,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-              <Text style={{fontSize:14,fontWeight:600}}>Meditation</Text>
-              <Text style={{fontSize:14,fontWeight:600}}>Pranayama (Breathing)</Text>
-            </Block>
-
-            <Block style={{marginTop:5,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-              <Text style={{fontSize:14,fontWeight:600}}>Kids yoga</Text>
-              <Text style={{fontSize:14,fontWeight:600}}></Text>
-            </Block>
-          </Block>
-       </Block>
-
-        <Block>
-           
-        </Block>
-
-      </Block>
+         </Block>
 
    
        
-       <Block>
-       <Block style={{padding:20}}>
-          <Text style={{fontSize:18,fontWeight:600}}>Rating & Reviews</Text>
-      </Block>
+        <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",padding:10,marginTop:20}}>
+              
+             
+                <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+                  
+                <AntDesign name="star" size={24} color="#EA6C13" />
+                   <Text style={{fontSize:20,marginLeft:20}}>Feedbacks</Text>
+                </Block>
 
-      <Block style={{padding:20,backgroundColor:"#fff",margin:15 }}>
-      <Image style={{width:50,height:50,borderRadius:100}} source={require('../../assets/Samsra-app.jpg')} />
-        <Text style={{fontSize:16,fontWeight:600,marginTop:10}}>Sailaja</Text>
-        <Text style={{color:"grey",fontSize:13,marginTop:5}}>Excellent</Text>
-        <Text style={{color:"grey",fontSize:13,marginTop:10}}>Dec 22 2023</Text>
-        <Block style={{flexDirection:"row",marginTop:10}}>
-          {stars}
+                <Block >
+                  <Text style={{color:"#b2bbcc",fontSize:13}}>98 Reviews</Text>
+                </Block>
+             
+
         </Block>
-      </Block>
+        
 
-      <Block style={{padding:20,backgroundColor:"#fff",margin:15 }}>
-      <Image style={{width:50,height:50,borderRadius:100}} source={require('../../assets/Samsra-app.jpg')} />
-        <Text style={{fontSize:16,fontWeight:600,marginTop:10}}>Senait</Text>
-        <Text style={{color:"grey",fontSize:13,marginTop:5}}>Excellent class love it</Text>
-        <Text style={{color:"grey",fontSize:13,marginTop:10}}>Dec 15 2023</Text>
-        <Block style={{flexDirection:"row",marginTop:10}}>
-          {stars}
+        <Block style={{borderWidth:1,backgroundColor:"#fff",marginTop:30,borderColor: '#D9E2F2',borderRadius:22,padding:20}}>
+               <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                  <Block>
+                    <Text style={{fontSize:18,color:"#586B90"}}>Aadil Khan</Text>
+                    <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",marginTop:3}}>
+                    <AntDesign name="star" size={18}  color="#EA6C13" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#EA6C13" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#EA6C13" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#d9e2f2" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#d9e2f2" />
+                    </Block>
+                  </Block>
+
+                  <Block>
+                  <Text style={{fontSize:14,color:"#586B90"}}>12 Dec 2024</Text>
+                  <Block right>
+                    <Text style={{fontSize:12,color:"#586B90"}}>Wednesday</Text>
+                  </Block>
+                  </Block>
+               </Block>
+
+               <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:16}}>
+    </Block>
+
+               <Block style={{marginTop:10}}>
+                <Text style={{marginTop:10 ,color:"#586B90",fontSize:16}}>
+                  hii, I have joined mr Pulkket's class on yesterday and it has been a wonderful experience.
+                </Text>
+                <Text style={{color:"#586B90",fontSize:16}}>
+                  I got to know various asspects of my own body , which i was like completely unaware of
+                </Text>
+               </Block>
         </Block>
-      </Block>
 
-      <Block style={{padding:20,backgroundColor:"#fff",margin:15 }}>
-      <Image style={{width:50,height:50,borderRadius:100}} source={require('../../assets/Samsra-app.jpg')} />
-        <Text style={{fontSize:16,fontWeight:600,marginTop:10}}>Bharti</Text>
-        <Text style={{color:"grey",fontSize:13,marginTop:5}}>knowledgeable and understand the problem</Text>
-        <Text style={{color:"grey",fontSize:13,marginTop:10}}>Oct 18 2023</Text>
-        <Block style={{flexDirection:"row",marginTop:10}}>
-          {stars}
+        <Block style={{borderWidth:1,backgroundColor:"#fff",marginTop:30,borderColor: '#D9E2F2',borderRadius:22,padding:20}}>
+               <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                  <Block>
+                    <Text style={{fontSize:18,color:"#586B90"}}>Aadil Khan</Text>
+                    <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",marginTop:3}}>
+                    <AntDesign name="star" size={18}  color="#EA6C13" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#EA6C13" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#EA6C13" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#d9e2f2" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#d9e2f2" />
+                    </Block>
+                  </Block>
+
+                  <Block>
+                  <Text style={{fontSize:14,color:"#586B90"}}>12 Dec 2024</Text>
+                  <Block right>
+                    <Text style={{fontSize:12,color:"#586B90"}}>Wednesday</Text>
+                  </Block>
+                  </Block>
+               </Block>
+
+               <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:16}}>
+    </Block>
+
+               <Block style={{marginTop:10}}>
+                <Text style={{marginTop:10 ,color:"#586B90",fontSize:16}}>
+                  hii, I have joined mr Pulkket's class on yesterday and it has been a wonderful experience.
+                </Text>
+                <Text style={{color:"#586B90",fontSize:16}}>
+                  I got to know various asspects of my own body , which i was like completely unaware of
+                </Text>
+               </Block>
         </Block>
-      </Block>
 
-       </Block>
+        <Block style={{borderWidth:1,backgroundColor:"#fff",marginTop:30,borderColor: '#D9E2F2',borderRadius:22,padding:20}}>
+               <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                  <Block>
+                    <Text style={{fontSize:18,color:"#586B90"}}>Aadil Khan</Text>
+                    <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",marginTop:3}}>
+                    <AntDesign name="star" size={18}  color="#EA6C13" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#EA6C13" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#EA6C13" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#d9e2f2" />
+                    <AntDesign name="star" size={18} style={{marginLeft:3}} color="#d9e2f2" />
+                    </Block>
+                  </Block>
 
+                  <Block>
+                  <Text style={{fontSize:14,color:"#586B90"}}>12 Dec 2024</Text>
+                  <Block right>
+                    <Text style={{fontSize:12,color:"#586B90"}}>Wednesday</Text>
+                  </Block>
+                  </Block>
+               </Block>
+
+               <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:16}}>
+    </Block>
+
+               <Block style={{marginTop:10}}>
+                <Text style={{marginTop:10 ,color:"#586B90",fontSize:16}}>
+                  hii, I have joined mr Pulkket's class on yesterday and it has been a wonderful experience.
+                </Text>
+                <Text style={{color:"#586B90",fontSize:16}}>
+                  I got to know various asspects of my own body , which i was like completely unaware of
+                </Text>
+               </Block>
+        </Block>
 
      </Block>
     
            
 
       </ScrollView>
+
+      <Block style={{height:80,backgroundColor:"#fff",flexDirection:"row",alignItems:"center",justifyContent:"center",padding:20}}>
+         <Block>
+         <TouchableOpacity onPress={handelBookSession} style={{height:55, width:160,borderRadius: 20,backgroundColor: '#EA6C13',justifyContent: 'center',alignItems: 'center',}} >
+      <Text style={{fontSize:16,color:"white"}}>Book Session</Text>
+    </TouchableOpacity>
+         </Block>
+
+         {/* <Block>
+          <TouchableOpacity style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+          <AntDesign name="message1" size={18} color="#EA6C13" />
+            <Text style={{color:"#EA6C13",marginLeft:5,fontSize:17}}>Message</Text>
+          </TouchableOpacity>
+         </Block> */}
+      </Block>
+
+      <MemberShipModel
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          handelComplete={handelComplete}
+        />
     </View>
   );
 };

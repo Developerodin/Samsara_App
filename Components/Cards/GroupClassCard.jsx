@@ -21,7 +21,7 @@ const GroupClassCard = ({ title, description,ClassClick ,book,join,mn}) => (
              <Block>
                 <Text style={{color:"#EA6C13",fontSize:16}}>Class Title</Text>
                 <Text style={{fontSize:20,marginTop:5}}>
-                    Yoga Meditation
+                    {title}
                 </Text>
              </Block>
 
@@ -67,7 +67,7 @@ const GroupClassCard = ({ title, description,ClassClick ,book,join,mn}) => (
 
 
               <Block style={[styles.Center,{marginTop:30}]}>
-             <TouchableOpacity style={styles.button} >
+             <TouchableOpacity onPress={join} style={styles.button} >
       <Text style={styles.buttonText}>Join Now</Text>
     </TouchableOpacity>
              </Block> 

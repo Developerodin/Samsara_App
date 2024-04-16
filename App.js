@@ -32,6 +32,9 @@ import { AppProvider } from './Context/AppContext';
 import { PersonalInfo2 } from './Pages/SignUp/Registration/PersonalInfo2';
 import { GroupClasses } from './Pages/Class/GroupClasses';
 import { PersonalClasses } from './Pages/Class/PersonalClasses';
+import { BookSession } from './Pages/Class/BookSession';
+import { SessionStatus } from './Pages/Class/SessionStatus';
+import { MySessions } from './Pages/MyClasses/MySessions';
 
 
 
@@ -229,12 +232,23 @@ export default function App() {
 <Stack.Screen name="About Instructor" component={Teacher} options={{
             headerShown: true,
           }}/>
+          <Stack.Screen name="Book Session" component={BookSession} options={{
+            headerShown: true,
+          }}/>
+
+<Stack.Screen name="Session Status" component={SessionStatus} options={{
+            headerShown: true,
+          }}/>
 
 <Stack.Screen name="Chat" component={Chat} options={{
             headerShown: true,
           }}/>
 
 <Stack.Screen name="My Classes" component={MyClass} options={{
+            headerShown: true,
+          }}/>
+
+<Stack.Screen name="My Sessions" component={MySessions} options={{
             headerShown: true,
           }}/>
 

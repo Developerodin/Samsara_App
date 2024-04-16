@@ -26,7 +26,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const Profile = () => {
 
   const [userData,setUserData] = useState(null)
-
+  const [healthIssues,setHealthIssues] = useState([])
 
   const CardData =[
     {"icon": <MaterialCommunityIcons name="yoga" size={26} color="grey" />,"title":"Date of Birth & Gender","sub1":userData && userData.dob,"sub2":`Gender : ${userData && userData.gender}`,"route":"/details"},
@@ -40,9 +40,13 @@ export const Profile = () => {
       const Details = await AsyncStorage.getItem('userDetails') || null;
       const ParseData = JSON.parse(Details);
 
-      console.log("Parse Data ===>",ParseData.data.user)
+      console.log("Parse Data users    ===>",ParseData.data.user)
       const data = ParseData.data.user
       setUserData(data)
+      const healthIssuesArray = data && data.health_issues[0].split(',');
+
+      console.log("Health issuess ==>", healthIssuesArray)
+      setHealthIssues(healthIssuesArray)
 
     }
     
@@ -51,71 +55,293 @@ export const Profile = () => {
   return (
     <View style={styles.container}>
         <ScrollView>
-
-         <Block style={{height:height*0.22,backgroundColor:"#9290C3",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
-              <Block>
-              <AntDesign name="camera" size={26} color="white" />
-              </Block>
-              <Block style={{marginTop:10,flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-                <Text style={{color:"#fff",marginRight:5,fontSize:18,fontWeight:600}}>{userData && userData.name}</Text>
-                <Feather name="edit-2" size={13} color="white" />
-              </Block>
-
-              <Block style={{marginTop:10}}>
-                <Text style={{color:"#F1F1F1",fontSize:14}}>{userData && userData.email}</Text>
-              </Block>
-         </Block>
-
-         <TouchableOpacity
-    activeOpacity={0.8}
-            style={{
-              backgroundColor: "#fff",
-              borderColor: "#E4E4E4",
-              borderRadius: 5,
-              padding: 15,
-             
-            }}
-          >
-           <Block style={[styles.Space_Between]}>
-
-            <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}} >
-                <Block>
-                <Feather name="refresh-ccw" size={24} color="grey" />
-                </Block>
-
-                <Block style={{marginLeft:15}}>
-                  <Block>
-                    <Text style={{color:"grey",fontSize:12}}>Membership plan</Text>
-                  </Block>
-                  <Block style={{marginTop:5}}>
-                    <Text style={{color:"crimson",fontSize:14}}>Your free trial expired</Text>
-                  </Block>
-                  <Block style={{marginTop:25}}>
-                    <Text style={{color:"#0C359E",fontSize:14}}>See Membership Options</Text>
-                  </Block>
-                </Block>
+          
+          <Block style={{padding:20}}>
+              
+          <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}} >
+            <Block center style={{width:70,height:70}}>
+     
+                      <Image
+                      style={{width:"100%",height:"100%"}}
+                    source={require("../../assets/Images/Rectangle 5.png")}
+                    
+                  />
+                   
             </Block>
-
-            <Block >
-            <FontAwesome5 name="caret-right" size={24} color="grey" />
+            <Block style={{marginLeft:20}}>
+              <Text style={{fontSize:25}}>{userData && userData.name}</Text>
+              <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+              <Feather name="phone" size={20} color="black" />
+               <Text style={{color:"#4F4F4F",marginLeft:3}}>+91 {userData && userData.mobile}</Text>
+              </Block>
             </Block>
-
-           </Block>
-          </TouchableOpacity>
-
-          <Block style={{padding:15,marginBottom:-15}}>
-            <Text style={{color:"grey",letterSpacing:1}}>PERSONAL DETAILS</Text>
           </Block>
-         <Block style={{marginBottom:15}}>
-         {
-            CardData.map((el,index)=>{
-              return  <Block  key={index} style={{marginTop:15}}>
-                 <ProfileDetailCard key={index} data={el}/>
+
+          <Block style={{marginTop:20}}>
+            <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+              <Text style={{fontSize:17,color:"#4F4F4F"}}>Personal Information</Text>
+
+              <TouchableOpacity style={{backgroundColor:"#EDF1F9",borderWidth:1, borderColor: '#D9E2F2',padding:10,width:80,flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+              <Feather name="edit-2" size={14} color="#3F5162" />
+                  <Text style={{color:"#3F5162",fontSize:17,marginLeft:3}}>Edit</Text>
+              </TouchableOpacity> 
+            </Block>
+
+            <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
+
+            <Block style={{marginTop:25,flexDirection:"row",justifyContent:"space-between",alignItems:"center",width:"100%"}}>
+               <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                
+               <Image
+                      
+                    source={require("../../assets/Images/Vector.png")}
+                    
+                  />
+                    <Text style={{fontSize:16,color:"#3E5072",marginLeft:10}}>My Gender</Text>
+               </Block>
+
+               <Block left style={{width:"50%"}}>
+                 <Text style={{fontSize:20,color:"#3E5072"}}>{userData && userData.gender}</Text>
+               </Block>
+            </Block>
+             
+            <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
+             
+
+            <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center",width:"100%"}}>
+               <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                
+               <Image
+                      
+                    source={require("../../assets/Images/guidance_guest-height-limit.png")}
+                    
+                  />
+                    <Text style={{fontSize:16,color:"#3E5072",marginLeft:10}}>My Height</Text>
+               </Block>
+
+               <Block style={{width:"50%"}}>
+                 <Text style={{fontSize:20,color:"#3E5072"}}>{userData && userData.height}</Text>
+               </Block>
+            </Block>
+
+            <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
+             
+
+             <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center",width:"100%"}}>
+                <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                 
+                <Image
+                       
+                     source={require("../../assets/Images/icon-park-outline_weight.png")}
+                     
+                   />
+                     <Text style={{fontSize:16,color:"#3E5072",marginLeft:10}}>My Weight</Text>
+                </Block>
+ 
+                <Block style={{width:"50%"}}>
+                  <Text style={{fontSize:20,color:"#3E5072"}}>{userData && userData.weight } Kg</Text>
+                </Block>
+             </Block>
+
+
+             <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
+             
+
+             <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center",width:"100%"}}>
+                <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                 
+                <Image
+                       
+                     source={require("../../assets/Images/ph_baby-thin.png")}
+                     
+                   />
+                     <Text style={{fontSize:16,color:"#3E5072",marginLeft:10}}>My DOB</Text>
+                </Block>
+ 
+                <Block style={{width:"50%"}}>
+                  <Text style={{fontSize:20,color:"#3E5072"}}>{userData && userData.dob}</Text>
+                </Block>
+             </Block>
+
+
+             <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
+             
+
+             <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center",width:"70%"}}>
+                <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                 
+                <Image
+                       
+                     source={require("../../assets/Images/material-symbols-light_mail-outline.png")}
+                     
+                   />
+                   <Block>
+                   <Text style={{fontSize:14,color:"#3E5072",marginLeft:10}}>Email</Text>
+                   <Text style={{fontSize:15,color:"#3E5072",marginLeft:10}}>{userData && userData.email}</Text>
+                   </Block>
+                    
+                </Block>
+ 
+            
+             </Block>
+
+             <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
+             
+
+             <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center",width:"70%"}}>
+                <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                 
+                <Image
+                       
+                     source={require("../../assets/Images/fa-regular_building.png")}
+                     
+                   />
+                   <Block>
+                   <Text style={{fontSize:14,color:"#3E5072",marginLeft:10}}>Company Name</Text>
+                   <Text style={{fontSize:15,color:"#3E5072",marginLeft:10}}>{userData && userData.company_name && userData.company_name.companyName}</Text>
+                   </Block>
+                    
+                </Block>
+ 
+             
+             </Block>
+
+             <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
+             
+
+             <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center",width:"70%"}}>
+                <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                 
+                <Image
+                       
+                     source={require("../../assets/Images/solar_user-id-outline.png")}
+                     
+                   />
+                   <Block>
+
+                   <Text style={{fontSize:14,color:"#3E5072",marginLeft:10}}>Corporate ID</Text>
+                   <Text style={{fontSize:15,color:"#3E5072",marginLeft:10}}>{userData && userData.corporate_id}</Text>
+                   </Block>
+                   
+                </Block>
+ 
+                
+             </Block>
+         
+
+             <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
+
+          </Block>
+
+
+
+          <Block style={{marginTop:30}}>
+
+            <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+            <Image
+                      
+                    source={require("../../assets/Images/solar_health-outline.png")}
+                    
+                  />
+
+                  <Text style={{fontSize:18,color:"#3E5072",marginLeft:10}}>Health Issues</Text>
+            </Block>
+
+
+            <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",flexWrap:"wrap",gap:20,marginTop:30}}>
+                
+              {
+                healthIssues && healthIssues.map((el,index)=>{
+                  return   <Block key={index} style={{borderWidth:1,backgroundColor:"#eff2f7",borderColor: '#D9E2F2',borderRadius:5,padding:7}}>
+                  <Text style={{color:"#586B90",fontSize:15}}>{el}</Text>
+              </Block>
+                })
+              }
+
+
+           
+
+           
+          
+
+          </Block>
+
+
+
+
+          </Block>
+
+
+          <Block style={{marginTop:30}}>
+          <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+           
+
+                  <Text style={{fontSize:18,color:"#3E5072"}}>Medical History</Text>
+            </Block>
+
+            <Block style={{marginTop:5}}>
+              <Text style={{fontSize:14,color:"#3E5072"}}>{userData && userData.description}</Text>
+            </Block>
+          </Block>
+
+          <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:30}}></Block>
+              
+              <Block style={{marginTop:30}}>
+              <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+          
+              <FontAwesome6 name="address-book" size={20} color="#3E5072" />
+                  <Text style={{fontSize:18,color:"#3E5072",marginLeft:10}}>Address</Text>
+            </Block>
+
+
+            <Block>
+              
+              <Block style={{padding:15,borderWidth:1,marginTop:20,borderColor:"#D9E2F2",borderRadius:10}}>
+                <Text style={{color:"#3E5072"}}>{userData && userData.Address}</Text>
+              </Block>
+
+              <Block style={{padding:15,borderWidth:1,marginTop:10,borderColor:"#D9E2F2",borderRadius:10}}>
+                <Text style={{color:"#3E5072"}}>Address Line 2</Text>
               </Block>
               
-            })
-          }
-         </Block>
+              <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                   
+              <Block style={{width:"45%",padding:15,borderWidth:1,marginTop:10,borderColor:"#D9E2F2",borderRadius:10}}>
+                <Text style={{color:"#3E5072"}}>{userData && userData.city}</Text>
+              </Block>
+
+              <Block style={{width:"45%",padding:15,borderWidth:1,marginTop:10,borderColor:"#D9E2F2",borderRadius:10}}>
+                <Text style={{color:"#3E5072"}}>{userData && userData.country}</Text>
+              </Block>
+
+
+              </Block>
+
+
+              <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+                   
+              <Block style={{padding:15,borderWidth:1,marginTop:10,borderColor:"#D9E2F2",borderRadius:10,width:"45%"}}>
+                <Text style={{color:"#3E5072"}}>{userData && userData.pincode}</Text>
+              </Block>
+
+              <Block style={{padding:15,marginTop:10,borderColor:"#D9E2F2",borderRadius:10,width:"45%"}}>
+                
+              </Block>
+
+
+              </Block>
+                 
+              
+
+              
+              
+
+            </Block>
+              </Block>
+       
+
+          </Block>
+         
           
        
        

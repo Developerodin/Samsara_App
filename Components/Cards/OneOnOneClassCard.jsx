@@ -35,7 +35,7 @@ export const OneOnOneClassCard = ({ title, description,onTeacherClick,book }) =>
    
       
     <Block>
-        <TouchableOpacity style={{borderWidth:1,padding:10,borderRadius:20,width:80,flexDirection:"row",justifyContent:"center",alignItems:"center"}} >
+        <TouchableOpacity onPress={onTeacherClick} style={{borderWidth:1,padding:10,borderRadius:20,width:80,flexDirection:"row",justifyContent:"center",alignItems:"center"}} >
              <Text style={{fontSize:16}}>Book</Text>
         </TouchableOpacity>
     </Block>

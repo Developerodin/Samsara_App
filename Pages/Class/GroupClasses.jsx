@@ -26,9 +26,83 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { BottomTabs } from "../../Components/Tabs/BottomTabs";
 import GroupClassCard from "../../Components/Cards/GroupClassCard";
+import { Base_url } from "../../Config/BaseUrl";
 
 
 export const GroupClasses = () => {
+  const navigation = useNavigation();
+  const [userData, setUserData] = useState(null);
+  const [classes, setClasses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const handelClassClick = () => {
+    navigation.navigate("ClassDescription");
+  };
+  const handelTeacherClick = () => {
+    navigation.navigate("About Instructor");
+  };
+
+  const handelMembershipModel = () => {
+    setModalVisible(true);
+  };
+
+  const handelWebZommClassClick = (data) => {
+    console.log("Data details =====>", data);
+    const ZoomMeetingNumber = {
+      number: data.number,
+      pass: data.pass,
+      userName: userData && userData.name,
+      email: userData && userData.email,
+    };
+
+    if (data.number) {
+      navigation.navigate("ZoomWebView", { ZoomMeetingNumber });
+      return;
+    }
+
+    ToastAndroid.show("Class Not Available", ToastAndroid.SHORT);
+  };
+
+  useEffect(() => {
+    const userDetailsFromStorage = async () => {
+      const Details = (await AsyncStorage.getItem("userDetails")) || null;
+      const ParseData = JSON.parse(Details);
+
+      console.log("Parse Data ===>", ParseData.data.user);
+      const data = ParseData.data.user;
+      setUserData(data);
+    };
+
+    userDetailsFromStorage();
+  }, []);
+
+  const getAllClasses = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`${Base_url}api/classes`); // Update the API endpoint accordingly
+
+      const Data = response.data.data;
+      setIsLoading(false);
+      if (Data) {
+        const formattedData = Data.map((item) => ({
+          Title: item.title,
+          Teacher: item.teacher && item.teacher.name,
+          Date: item.schedule,
+          mn: item.meeting_number,
+          pass: item.password,
+        }));
+
+        setClasses(formattedData);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error fetching classes:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    getAllClasses();
+  }, []);
   return (
     <View style={styles.container}>
     <Header />
@@ -36,34 +110,60 @@ export const GroupClasses = () => {
            <Text style={{fontSize:21}}>My Upcoming Group</Text>
            <Text style={{fontSize:21,marginTop:3}}>Classes Sessions</Text>
           </Block>
-    <ScrollView>
+          {isLoading ? <Block center style={{height:height*0.8,flexDirection:"row",justifyContent:"center",alignItems:"center"}}> 
+
+<ActivityIndicator size="large" color="orange" />
+</Block> 
+:
+<ScrollView>
    
-      <Block style={{ backgroundColor: "#eef3f7",padding:10 }}>
-          
-        
-
-       <Block style={{marginBottom:100}}>
-       <GroupClassCard />
-
-       <GroupClassCard />
-
-       <GroupClassCard />
-
-       <GroupClassCard />
-       </Block>
-
-       
-     
-
-       
-      </Block>
-
-     
+<Block style={{ backgroundColor: "#eef3f7",padding:10 }}>
     
+  
 
+ <Block style={{marginBottom:100}}>
      
-     
-    </ScrollView>
+ {classes &&
+            classes.map((card, index) => (
+              <View key={index}>
+                <View >
+                  {/* Current card */}
+                  <GroupClassCard
+                    mn={card.mn}
+                    title={card.Title}
+                    description={card.Teacher}
+                    ClassClick={handelClassClick}
+                    book={handelMembershipModel}
+                    join={() =>
+                      handelWebZommClassClick({
+                        number: card.mn,
+                        pass: card.pass,
+                      })
+                    }
+                    // Pass overlay color to the Card component
+                  />
+                
+                </View>
+              </View>
+            ))}
+
+
+ </Block>
+
+ 
+
+
+ 
+</Block>
+
+
+
+
+
+
+</ScrollView>
+  }
+  
     <BottomTabs ActiveTab={"groupClasses"}/>
   </View>
   )
