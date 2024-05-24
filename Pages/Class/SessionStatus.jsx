@@ -27,9 +27,9 @@ import { Octicons } from '@expo/vector-icons';
 import CustomButton from "../../Components/Buttons/CustomButton";
 import { MemberShipModel } from "../../Components/Model/MemberShipModel";
 import { FontAwesome6 } from '@expo/vector-icons';
-export const SessionStatus = () => {
+export const SessionStatus = ({ route }) => {
     const navigation = useNavigation();
-
+    const { status } = route.params;
     const handelHomeClick=()=>{
         navigation.reset({
             index: 0,

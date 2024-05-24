@@ -90,6 +90,7 @@ export const GroupClasses = () => {
           Date: item.schedule,
           mn: item.meeting_number,
           pass: item.password,
+          time: item.startTime ? `${item.startTime} to ${item.endTime} ` : ""
         }));
 
         setClasses(formattedData);
@@ -131,6 +132,7 @@ export const GroupClasses = () => {
                   <GroupClassCard
                     mn={card.mn}
                     title={card.Title}
+                    time={card.time}
                     description={card.Teacher}
                     ClassClick={handelClassClick}
                     book={handelMembershipModel}

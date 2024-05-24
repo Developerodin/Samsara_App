@@ -13,7 +13,7 @@ import { Fontisto } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import CustomButton from '../Buttons/CustomButton';
 import { LinearGradient } from "expo-linear-gradient";
-const Card = ({ title, description,ClassClick ,book,join,mn}) => (
+const Card = ({ title, description,ClassClick ,book,join,mn,time}) => (
   <View style={styles.card}>
       <LinearGradient
       colors={['#a9d2fe', '#000000']}
@@ -25,12 +25,12 @@ const Card = ({ title, description,ClassClick ,book,join,mn}) => (
              <Image   source={require('../../assets/Images/CardImg.png')} />
              </Block>
 
-             <Block style={{position:"absolute",right:10,top:10}}>
+             {/* <Block style={{position:"absolute",right:10,top:10}}>
                <TouchableOpacity style={{backgroundColor:"#667f99",borderRadius:20,padding:10,width:115,flexDirection:"row",justifyContent:'space-between',alignItems:"center"}}>
                <Feather name="bell" size={16} color="white" />
                      <Text style={{color:"#fff",fontSize:14,marginTop:-2}}>Remind Me</Text>
                </TouchableOpacity>
-             </Block>
+             </Block> */}
 
              <Block style={{padding:10,position:"absolute",bottom:0,width:"100%"}}>
               <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
@@ -73,7 +73,7 @@ const Card = ({ title, description,ClassClick ,book,join,mn}) => (
 
                   <Block style={{marginLeft:10}}>
                     <Text style={{fontSize:16}}>Mon, Tue, Wed</Text>
-                    <Text style={{color:"#787878",marginTop:3,fontSize:13}}>1:20 PM to 3:30 PM</Text>
+                    <Text style={{color:"#787878",marginTop:3,fontSize:13}}>{time}</Text>
                   </Block>
              </Block>
 

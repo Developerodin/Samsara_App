@@ -353,16 +353,16 @@ export const Login = ({ navigation }) => {
                 <Text style={{ fontSize: 27,letterSpacing:1,color:"grey"  }}>
                 {loading ? 
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large"  color="#65be34" />
+          <ActivityIndicator size="large"  color="#EA6C13" />
         </View>
         :
-        "4 Digit OTP"
+        "4 Digit Pin"
       }
                  
                   
                   
                   </Text>
-                <Text
+                {/* <Text
                    style={{
                     fontSize: 12,
                     fontWeight: 500,
@@ -376,7 +376,7 @@ export const Login = ({ navigation }) => {
                   OTP Sent to  <Text style={{color:"#EA6C13"}}>
                   +91 {formData.phoneNumber}
                     </Text>
-                </Text>
+                </Text> */}
               
                 <Block
                   style={[
@@ -399,9 +399,9 @@ export const Login = ({ navigation }) => {
                     }}
                   >
                    
-                    <Text style={{ color: "#EA6C13", fontWeight: 500 }}>
+                    {/* <Text style={{ color: "#EA6C13", fontWeight: 500 }}>
                       Resend OTP
-                    </Text>
+                    </Text> */}
                   </Text>
                 </Block>
               </View>

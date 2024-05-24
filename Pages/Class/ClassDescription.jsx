@@ -1,15 +1,26 @@
-import React, { useState } from 'react'
-import { ScrollView, StyleSheet, View,Dimensions, ImageBackground, TouchableOpacity} from 'react-native'
+import React, { useDebugValue, useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, View,Dimensions, ImageBackground, TouchableOpacity, ToastAndroid, Image} from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import { Block, Text, Input, theme, Button } from "galio-framework";
 const {width, height} = Dimensions.get('window');
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { Base_url } from '../../Config/BaseUrl';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from "expo-linear-gradient";
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 export const ClassDescription = () => {
-  const navigation= useNavigation()
+  const navigation= useNavigation();
+    const route = useRoute();
+    const [classData,setClassData] = useState(null);
+    const [teacherData,setTeacherData] = useState(null)
+    const [userData, setUserData] = useState(null);
+  const { value } = route.params;
   const handelBack = () => {
     navigation.goBack()
   };
@@ -33,6 +44,61 @@ export const ClassDescription = () => {
       setSelectedClasses([...selectedClasses, classId]);
     }
   };
+
+  const getClasse = async (id) => {
+    // setIsLoading(true);
+    try {
+      const response = await axios.get(`${Base_url}api/classes/${id}`); // Update the API endpoint accordingly
+
+      const Data = response.data.data;
+      // setIsLoading(false);
+      if (Data) {
+       console.log("Data ==>",Data)
+        
+        setClassData(Data);
+        setTeacherData(Data.teacher);
+      }
+    } catch (error) {
+      // setIsLoading(false);
+      console.error("Error fetching classes:", error.message);
+    }
+  };
+
+  const handelWebZommClassClick = () => {
+    console.log("Data details =====>");
+    const ZoomMeetingNumber = {
+      number: classData.meeting_number,
+      pass: classData.password,
+      userName: userData && userData.name,
+      email: userData && userData.email,
+    };
+
+    if (classData.meeting_number) {
+      navigation.navigate("ZoomWebView", { ZoomMeetingNumber });
+      return;
+    }
+
+    ToastAndroid.show("Class Not Available", ToastAndroid.SHORT);
+  };
+
+  useEffect(() => {
+    const userDetailsFromStorage = async () => {
+      const Details = (await AsyncStorage.getItem("userDetails")) || null;
+      const ParseData = JSON.parse(Details);
+
+      console.log("Parse Data ===>", ParseData.data.user);
+      const data = ParseData.data.user;
+      setUserData(data);
+    };
+
+    userDetailsFromStorage();
+  }, []);
+
+
+  useEffect(()=>{
+      console.log("Id",value)
+      getClasse(value);
+  },[])
  
   return (
     <View style={styles.container}>
@@ -60,7 +126,7 @@ export const ClassDescription = () => {
 
 
            <Block style={{marginTop:20}}>
-            <Text style={{color:"#fff",fontSize:35,fontWeight:600}}>Hatha Yoga : Start Your Day Out Right</Text>
+            <Text style={{color:"#fff",fontSize:35,fontWeight:600}}>{classData && classData.title}</Text>
            </Block>
 
            <Block style={{flexDirection:"row",alignItems:"center",marginTop:20}}>
@@ -94,9 +160,9 @@ export const ClassDescription = () => {
             </Block>
            </Block>
 
-           <Block>
+           {/* <Block>
               <Button color='orange' size={"small"}>Share</Button>
-           </Block>
+           </Block> */}
            </Block>
 
           
@@ -114,117 +180,168 @@ export const ClassDescription = () => {
              
              <Block>
              <Text style={{fontSize:16,color:"grey",lineHeight:23}}>
-              The main focus is on practicing a series of physical postures (asanas)
-               that range from beginner to advanced, emphasizing strength, flexibility, 
-               and balance. Breath control (pranayama) is integrated to enhance energy flow, 
-               and each pose is held with mindfulness. The class concludes with relaxation poses 
-               and Savasana for absorption of benefits. Closing with a brief meditation or reflection, 
-               Hatha yoga caters to practitioners of all levels, promoting 
-              holistic well-being through its balanced approach to physical and mental health.
+             {classData && classData.description}
                 </Text>
              </Block>
 
-             <Block style={{marginTop:20}}>
-              <Block>
-                <Text style={{color:"black",fontWeight:600,fontSize:16}}>Who it's for</Text>
-              </Block>
-              <Block  style={{marginTop:5}}>
-                <Text style={{fontSize:16,color:"grey",lineHeight:23}}>
-                Hatha yoga is suitable for individuals of all fitness levels, 
-                ages, and body types. It is particularly beneficial for those 
-                looking to improve flexibility, build strength, and enhance overall 
-                physical and mental well-being. Beginners can ease into the practice
-                 with its gentle introduction to foundational poses, while more advanced practitioners
-                 can deepen their practice through more challenging postures.
-
-                </Text>
-              </Block>
-             </Block>
-
-             <Block style={{marginTop:20}}>
-              <Block>
-                <Text style={{color:"black",fontWeight:600,fontSize:16}}>How it will help you</Text>
-              </Block>
-              <Block  style={{marginTop:5}}>
-                <Text style={{fontSize:16,color:"grey",lineHeight:23}}>
-                Hatha yoga offers a holistic approach to well-being by combining physical 
-                postures, breath control, and mindfulness. Through the practice of asanas,
-                 individuals can enhance their flexibility, strength, and balance, leading 
-                 to improved physical fitness. The emphasis on breath awareness and meditation 
-                 aids in stress reduction, promoting a sense of calm and mental relaxation.
-                  Regular practice cultivates a heightened mind-body connection, fostering
-                   mental focus and clarity. Additionally, Hatha yoga contributes to better
-                    posture and alignment, 
-                making it a valuable practice for overall physical and mental health.
-
-                </Text>
-              </Block>
-             </Block>
-             
-             <Block style={{marginTop:20}}>
-              <Block>
-                <Text style={{color:"black",fontWeight:600,fontSize:16}}>Who it's not for</Text>
-              </Block>
-              <Block  style={{marginTop:5}}>
-                <Text style={{fontSize:16,color:"grey",lineHeight:23}}>
-                Hatha yoga may not be suitable for individuals with specific health concerns, 
-                such as severe cardiovascular issues, uncontrolled hypertension, or recent surgeries.
-                 Pregnant individuals should seek guidance from a qualified prenatal yoga instructor,
-                  and those with severe physical limitations or injuries may need to explore alternative 
-                  forms of exercise. It's essential for anyone considering Hatha yoga to consult with
-                   healthcare professionals before starting, ensuring that the practice aligns with their 
-                   individual health needs. Additionally, a lack of interest or commitment to regular practice
-                   may limit the full benefits of Hatha yoga, 
-                as consistency and mindfulness play key roles in its effectiveness.
-
-                </Text>
-              </Block>
-             </Block>
-
-             <Block style={{marginTop:20}}>
-              <Block>
-                <Text style={{color:"black",fontWeight:600,fontSize:16}}>How it will not help you</Text>
-              </Block>
-              <Block  style={{marginTop:5}}>
-                <Text style={{fontSize:16,color:"grey",lineHeight:23}}>
-                Lack of commitment and mindfulness hinders Hatha yoga's potential benefits; 
-                improper practice may lead to injuries.
-
-                </Text>
-              </Block>
-             </Block>
               
            </Block>
 
 
              
-           {classes.map((classItem) => (
-        <Block key={classItem.id} style={{ marginTop: 40 }}>
-          <Text style={{ fontSize: 20, fontWeight: '700' }}>{classItem.date}</Text>
+       
 
-          <Block style={{ backgroundColor: '#fff', marginTop: 20, borderRadius: 20, padding: 20 }}>
-            <Text style={{ fontSize: 16, fontWeight: '600' }}>{classItem.time}</Text>
-            <Text style={{ fontSize: 14, color: 'grey', marginTop: 5 }}>{`60 minute class with ${classItem.instructor}`}</Text>
+            
 
-            <Block center style={{ marginTop: 10 }}>
-              <TouchableOpacity
-                onPress={() => handleClassSelection(classItem.id)}
-                style={{
-                  width: 300,
-                  backgroundColor: selectedClasses.includes(classItem.id) ? 'green' : '#C9D7DD',
-                  paddingVertical: 10,
-                  borderRadius: 5,
-                  alignItems: 'center',
-                }}
-              >
-                <Text style={{ color: selectedClasses.includes(classItem.id) ? 'white' : '#243763', fontWeight: 600, fontSize: 17 }}>
-                  {selectedClasses.includes(classItem.id) ? 'Selected' : 'Select Class'}
-                </Text>
-              </TouchableOpacity>
-            </Block>
           </Block>
+
+          <Block style={{padding:20}}>
+          <Text style={{fontSize:22,fontWeight:700}}>About {teacherData && teacherData.name}</Text>
+
+           <Block style={{marginTop:10}}>
+            
+             <Block style={{marginTop:10}}>
+             <Text style={{fontSize:16,color:"grey",lineHeight:23}}>
+             {teacherData && teacherData.description}
+                </Text>
+             </Block>
+
+             <Block style={{borderWidth:1,backgroundColor:"#fff",borderColor: '#D9E2F2',borderRadius:20,marginTop:30}}>
+     <LinearGradient 
+            colors={['rgba(255, 240, 229, 1)', 'rgba(254, 242, 234, 0)']}
+             style={{flexDirection:"row",justifyContent:"left",alignItems:"center",padding:20,borderRadius:20}}>
+              <Image
+                    source={require("../../assets/Images/healthicons_exercise-yoga-outline.png")}
+                    
+                  />
+              <Text style={{fontSize:24,marginLeft:10}}>Experience</Text>
+             </LinearGradient>
+
+            
+       <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",padding:10,marginBottom:10}}>
+    
+
+    
+      <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",marginLeft:10}}>
+        <Block >
+          <Text style={{fontSize:40,color:"#EA6C13"}}> {teacherData && teacherData.teachingExperience}</Text>
         </Block>
-      ))}
+        <Block style={{marginLeft:6}}>
+          <Text style={{color:"#787878",fontSize:14}}>Years</Text>
+          <Text style={{fontSize:18}}>Teaching Yoga</Text>
+        </Block>
+      </Block>
+
+      
+
+        </Block>
+
+
+       </Block>
+  
+  <Block style={{borderWidth:1,backgroundColor:"#fff",marginTop:30,borderColor: '#D9E2F2',borderRadius:22 }}>
+           
+  <LinearGradient 
+            colors={['rgba(255, 240, 229, 1)', 'rgba(254, 242, 234, 0)']}
+             style={{flexDirection:"row",justifyContent:"left",alignItems:"center",padding:20,borderRadius:20}}>
+              <Ionicons name="trophy-outline" size={24} color="#EA6C13" />
+              <Text style={{fontSize:24,marginLeft:10}}>Certifications</Text>
+             </LinearGradient>
+
+    <Block style={{padding:20,paddingTop:0}}>
+
+        <Block >
+          {
+            teacherData && teacherData.qualification && teacherData.qualification.map((el,key)=>{
+              if(el.label === "Courses" || el.label === "Course"){
+                return <Block style={[{marginTop:20,flexDirection:"row",alignItems:"center"}]}>
+               
+
+                <Block style={{marginRight:20}} >
+                <MaterialCommunityIcons name="certificate-outline" size={26} color="#EA6C13" /> 
+                </Block>
+                <Block style={{width:"90%"}}>
+                     <Text style={{fontSize:14}}>{el.value}</Text>
+                </Block>
+      
+                </Block>
+              }
+             
+            })
+          }
+          {
+            teacherData && teacherData.additional_courses && teacherData.additional_courses.map((el,key)=>{
+              if(el.label === "Courses" || el.label === "Course"  ){
+                return <Block style={[{marginTop:20,flexDirection:"row",alignItems:"center"}]}>
+               
+
+                <Block style={{marginRight:20}} >
+                <MaterialCommunityIcons name="certificate-outline" size={26} color="#EA6C13" /> 
+                </Block>
+                <Block style={{width:"90%"}}>
+                     <Text style={{fontSize:14}}>{el.value}</Text>
+                </Block>
+      
+                </Block>
+              }
+             
+            })
+          }
+          
+
+         
+           
+        </Block>
+
+    </Block>
+
+       
+
+      </Block>
+
+
+
+
+      
+
+    
+
+         <Block style={{borderWidth:1,backgroundColor:"#fff",marginTop:30,borderColor: '#D9E2F2',borderRadius:22,padding:20}}> 
+          <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+              
+              <Block>
+              <FontAwesome5 name="chalkboard-teacher" size={20} color="#586B90" />
+              </Block>
+              
+               <Block style={{marginLeft:20}}>
+                <Text style={{fontSize:19,color:"#586B90"}}>Teaching Styles(s)</Text>
+               </Block>
+          </Block>
+
+
+          <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",flexWrap:"wrap",gap:20,marginTop:30}}>
+            
+          {teacherData && teacherData.expertise && teacherData.expertise.map((el,index)=>{
+              return  <Block key={index} style={{borderWidth:1,backgroundColor:"#eff2f7",borderColor: '#D9E2F2',borderRadius:15,padding:15}}>
+              <Text style={{color:"#586B90",fontSize:17}}>{el}</Text>
+          </Block>
+          })
+        }
+
+            
+
+         
+
+          </Block>
+
+         </Block>
+
+              
+           </Block>
+
+
+             
+       
 
             
 
@@ -235,16 +352,15 @@ export const ClassDescription = () => {
    
       
        </ScrollView>
-{
-  selectedClasses && selectedClasses.length > 0 && <Block style={[styles.Center,{height:120,backgroundColor:"#fff"}]}>
+ <Block style={[styles.Center,{height:120,backgroundColor:"#fff"}]}>
   <Block center >
-           <Button  style={{width:width*0.9,backgroundColor:"#FC6736",height:50}}>
-             <Text style={{letterSpacing:1,color:"#fff",fontWeight:600,fontSize:17}}>Book Classes ({selectedClasses.length})</Text>
+           <Button onPress={handelWebZommClassClick}  style={{width:width*0.9,backgroundColor:"#FC6736",height:50}}>
+             <Text style={{letterSpacing:1,color:"#fff",fontWeight:600,fontSize:17}}>Join Class</Text>
              
              </Button>
           </Block>
 </Block>
-}
+
        
        </View>
   )

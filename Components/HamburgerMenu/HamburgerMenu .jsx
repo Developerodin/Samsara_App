@@ -20,8 +20,8 @@ const HamburgerMenu = ({ isVisible, onClose }) => {
  const [userData, setUserData] = useState(null);
   const RoutesData =[
     // {Icon:<AntDesign name="user" size={24} color="#586B90" />,Title:"My account" , Route:"My Account"},
-    {Icon:<FontAwesome5 name="chalkboard-teacher" size={24} color="#586B90" />,Title:"My classes" , Route:"My Classes"},
-    {Icon:<MaterialCommunityIcons name="google-classroom" size={24} color="#586B90" />,Title:"My Sessions" , Route:"My Sessions"},
+    // {Icon:<FontAwesome5 name="chalkboard-teacher" size={24} color="#586B90" />,Title:"My classes" , Route:"My Classes"},
+    {Icon:<FontAwesome5 name="chalkboard-teacher" size={24} color="#586B90" />,Title:"My Sessions" , Route:"My Sessions"},
     {Icon:<AntDesign name="playcircleo" size={24} color="#586B90" />,Title:"How It works ?" , Route:""},
     // {Icon:<Ionicons name="chatbox-ellipses-outline" size={24} color="grey" />,Title:"Chat" , Route:"Chat"},
     {Icon:<EvilIcons name="share-google" size={26} color="#586B90" />,Title:"Share App" , Route:"Refer"},

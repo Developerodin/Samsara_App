@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Image,TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
-export const OneOnOneClassCard = ({ title, description,onTeacherClick,book }) => {
+export const OneOnOneClassCard = ({ data,onTeacherClick }) => {
   return (
     <View style={styles.card}>
    
@@ -15,7 +15,7 @@ export const OneOnOneClassCard = ({ title, description,onTeacherClick,book }) =>
 
 
     <Block style={{marginLeft:10}}>
-    <Text onPress={onTeacherClick} style={[styles.title]}>Pradeep Singh</Text>
+    <Text onPress={onTeacherClick} style={[styles.title]}>{data && data.name}</Text>
     <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",marginTop:3}}>
   
 
@@ -46,20 +46,20 @@ export const OneOnOneClassCard = ({ title, description,onTeacherClick,book }) =>
     
     <Block style={{padding:20}}>
     
-    <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:-16}}>
+    <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:1}}>
     </Block>
 
-    <Block style={{flexDirection:"row",marginTop:10}}>
+    <Block style={{flexDirection:"row",marginTop:20}}>
+    <FontAwesome6 name="check-double" size={16} color="#1CBC52" />
+   
+    <Text style={{fontSize:14,color:"grey",letterSpacing:1,marginLeft:10}}>{data && data.teachingExperience} Years of Experience</Text>
+    </Block>
+
+    {/* <Block style={{flexDirection:"row",marginTop:10}}>
     <FontAwesome6 name="check-double" size={16} color="#1CBC52" />
    
     <Text style={{fontSize:14,color:"grey",letterSpacing:1,marginLeft:10}}>4+ Years of Experience</Text>
-    </Block>
-
-    <Block style={{flexDirection:"row",marginTop:10}}>
-    <FontAwesome6 name="check-double" size={16} color="#1CBC52" />
-    {/* <Ionicons name="checkmark-done" size={20} color="#1CBC52" /> */}
-    <Text style={{fontSize:14,color:"grey",letterSpacing:1,marginLeft:10}}>4+ Years of Experience</Text>
-    </Block>
+    </Block> */}
 
   
     </Block>

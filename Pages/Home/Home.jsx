@@ -11,6 +11,7 @@ import {
   Image,
   Animated,
   TextInput,
+  RefreshControl
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Block, Text, Input, theme, Button } from "galio-framework";
@@ -38,14 +39,52 @@ export const Home = () => {
   const [classes, setClasses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(null);
+  const [TeacherData, setTeacherData] = useState([]);
+  const [update, setupdate] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+  const handelTeacherClick = (id) => {
+    navigation.navigate("About Instructor", { teacherId: id });
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    // Call your functions here
+    fetchTeachers()
+    getAllClasses();
+    // After fetching data, set refreshing to false
+    setRefreshing(false);
+  };
+
+  const fetchTeachers = async () => {
+    try {
+      const response = await axios.get(`${Base_url}api/teacher`); // Replace with your actual API endpoint
+      // setUsers(response.data.data.users);
+      const Data= response.data.data.teachers
+      console.log("Trainer Data ==>",Data)
+      if(Data){
+        setTeacherData(Data)
+    //  setFilterRows(Data);
+
+    
+    
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error.message);
+    }
+  };
+
+  useEffect(()=>{
+    fetchTeachers();
+ 
+  },[update])
   const cards = [
     { title: "Hatha Yoga", description: "Start Your Day Out Right " },
     { title: "Rise and Shine", description: "Intermediate Power Flow" },
     // Add more cards as needed
   ];
 
-  const handelClassClick = () => {
-    navigation.navigate("ClassDescription");
+  const handelClassClick = (id) => {
+    navigation.navigate("ClassDescription",{ value: id });
   };
 
   const handelWebModelOpen = () => {
@@ -60,9 +99,7 @@ export const Home = () => {
     console.log("web Complete");
   };
 
-  const handelTeacherClick = () => {
-    navigation.navigate("About Instructor");
-  };
+  
   useEffect(() => {
     animationRef.current?.play();
 
@@ -140,11 +177,13 @@ export const Home = () => {
       setIsLoading(false);
       if (Data) {
         const formattedData = Data.map((item) => ({
+          _id:item._id,
           Title: item.title,
           Teacher: item.teacher && item.teacher.name,
           Date: item.schedule,
           mn: item.meeting_number,
           pass: item.password,
+          time: item.startTime ? `${item.startTime} to ${item.endTime} ` : ""
         }));
 
         setClasses(formattedData);
@@ -167,7 +206,12 @@ export const Home = () => {
         <ActivityIndicator size="large" color="orange" />
        </Block> 
       :
-      <ScrollView>
+      <ScrollView    refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }>
       
       <Block style={{ backgroundColor: "#eef3f7" }}>
         <Block
@@ -230,8 +274,9 @@ export const Home = () => {
                       <Card
                         mn={card.mn}
                         title={card.Title}
+                        time={card.time}
                         description={card.Teacher}
-                        ClassClick={handelClassClick}
+                        ClassClick={()=>handelClassClick(card._id)}
                         book={handelMembershipModel}
                         join={() =>
                           handelWebZommClassClick({
@@ -256,7 +301,7 @@ export const Home = () => {
             </Swiper>
           </Block>
 
-          <Block style={{ marginTop: 30 }}>
+          {/* <Block style={{ marginTop: 30 }}>
             <Text
               style={{
                 fontSize: 20,
@@ -282,7 +327,7 @@ export const Home = () => {
                 classes.map((card, index) => (
                   <View key={index}>
                     <View style={{ flexDirection: "row" }}>
-                      {/* Current card */}
+                    
                       <Card
                         mn={card.mn}
                         title={card.Title}
@@ -295,9 +340,9 @@ export const Home = () => {
                             pass: card.pass,
                           })
                         }
-                        // Pass overlay color to the Card component
+                    
                       />
-                      {/* Next card */}
+                    
                       {classes[index + 1] && (
                         <Card
                           mn={classes[index + 1].mn}
@@ -310,7 +355,7 @@ export const Home = () => {
                   </View>
                 ))}
             </Swiper>
-          </Block>
+          </Block> */}
 
           <Block style={{ marginTop: 40 }}>
             <Text
@@ -335,16 +380,17 @@ export const Home = () => {
               overlayColor={"transparent"} // Set the color of the overlay
               overlayOpacity={0.5}
             >
-              {cards.map((card, index) => (
-                <View key={index}>
-                  <OneOnOneClassCard
-                    title={card.title}
-                    description={card.description}
-                    onTeacherClick={handelTeacherClick}
-                    book={handelMembershipModel}
-                  />
-                </View>
-              ))}
+              {
+          TeacherData && TeacherData.map((el,index)=>{
+               return  <Block key={index}> 
+                <OneOnOneClassCard 
+                data={el}
+               onTeacherClick={()=>handelTeacherClick(el._id)}
+              
+             />
+             </Block>
+          })
+        }
             </Swiper>
           </Block>
 

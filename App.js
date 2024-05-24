@@ -35,6 +35,7 @@ import { PersonalClasses } from './Pages/Class/PersonalClasses';
 import { BookSession } from './Pages/Class/BookSession';
 import { SessionStatus } from './Pages/Class/SessionStatus';
 import { MySessions } from './Pages/MyClasses/MySessions';
+import { EditProfile } from './Pages/Profile/EditProfile';
 
 
 
@@ -253,6 +254,9 @@ export default function App() {
           }}/>
 
 <Stack.Screen name="My Account" component={Profile} options={{
+            headerShown: true,
+          }}/>
+          <Stack.Screen name="Edit Profile" component={EditProfile} options={{
             headerShown: true,
           }}/>
           <Stack.Screen name="Contact Us" component={ContactUs} options={{

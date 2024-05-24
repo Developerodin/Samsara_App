@@ -27,14 +27,42 @@ import { LinearGradient } from "expo-linear-gradient";
 import { BottomTabs } from "../../Components/Tabs/BottomTabs";
 import GroupClassCard from "../../Components/Cards/GroupClassCard";
 import { OneOnOneClassCard } from "../../Components/Cards/OneOnOneClassCard";
+import { Base_url } from "../../Config/BaseUrl";
 
 
 export const PersonalClasses = () => {
   const navigation = useNavigation()
-
-  const handelTeacherClick = () => {
-    navigation.navigate("About Instructor");
+  const [TeacherData, setTeacherData] = useState([]);
+  const [update, setupdate] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const handelTeacherClick = (id) => {
+    navigation.navigate("About Instructor", { teacherId: id });
   };
+
+  const fetchTeachers = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`${Base_url}api/teacher`); // Replace with your actual API endpoint
+      // setUsers(response.data.data.users);
+      const Data= response.data.data.teachers
+      console.log("Trainer Data ==>",Data)
+      if(Data){
+        setTeacherData(Data)
+    //  setFilterRows(Data);
+    setIsLoading(false);
+    
+    
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error('Error fetching users:', error.message);
+    }
+  };
+
+  useEffect(()=>{
+    fetchTeachers();
+ 
+  },[update])
   return (
     <View style={styles.container}>
     <Header />
@@ -42,6 +70,11 @@ export const PersonalClasses = () => {
            <Text style={{fontSize:21}}>Book 1:1 Sessions with</Text>
            <Text style={{fontSize:21,marginTop:3}}>our Expert Trainers</Text>
           </Block>
+          {isLoading ? <Block center style={{height:height*0.8,flexDirection:"row",justifyContent:"center",alignItems:"center"}}> 
+
+<ActivityIndicator size="large" color="orange" />
+</Block> 
+:
     <ScrollView>
    
       <Block style={{ backgroundColor: "#eef3f7",padding:10 }}>
@@ -49,29 +82,19 @@ export const PersonalClasses = () => {
         
 
        <Block style={{marginBottom:100}}>
-       <OneOnOneClassCard
-                
-                      onTeacherClick={handelTeacherClick}
-                     
-                    />
+        {
+          TeacherData && TeacherData.map((el,index)=>{
+               return  <Block key={index}> 
+                <OneOnOneClassCard 
+                data={el}
+               onTeacherClick={()=>handelTeacherClick(el._id)}
+              
+             />
+             </Block>
+          })
+        }
+     
 
-<OneOnOneClassCard
-                
-                onTeacherClick={handelTeacherClick}
-               
-              />
-
-<OneOnOneClassCard
-                
-                onTeacherClick={handelTeacherClick}
-               
-              />
-
-<OneOnOneClassCard
-                
-                onTeacherClick={handelTeacherClick}
-               
-              />
 
        
        </Block>
@@ -88,6 +111,7 @@ export const PersonalClasses = () => {
      
      
     </ScrollView>
+}
     <BottomTabs ActiveTab={"PersonalClasses"}/>
   </View>
   )

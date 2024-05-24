@@ -13,7 +13,7 @@ import { Fontisto } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import CustomButton from '../Buttons/CustomButton';
 import { LinearGradient } from "expo-linear-gradient";
-const GroupClassCard = ({ title, description,ClassClick ,book,join,mn}) => (
+const GroupClassCard = ({ title, description,ClassClick ,book,join,mn,time}) => (
   <View style={styles.card}>
      
 
@@ -31,8 +31,8 @@ const GroupClassCard = ({ title, description,ClassClick ,book,join,mn}) => (
 
              <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}> 
                 <Block>
-                    <Text style={{fontSize:20}}>Fri ,26 Jan 2024</Text>
-                    <Text style={{fontSize:15,color:"#4F4F4F",marginTop:3}}>4.30 PM - 5:30 PM (IST)</Text>
+                    <Text style={{fontSize:20}}>Mon, Tue, Wed</Text>
+                    <Text style={{fontSize:15,color:"#4F4F4F",marginTop:3}}>{time} (IST)</Text>
                 </Block>
 
                 <Block>

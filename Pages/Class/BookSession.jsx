@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -27,21 +27,59 @@ import { Fontisto } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import CustomButton from "../../Components/Buttons/CustomButton";
 import DateTimePicker from '@react-native-community/datetimepicker';
-export const BookSession = () => {
+import { Base_url } from "../../Config/BaseUrl";
+import axios from "axios"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+export const BookSession = ({ route }) => {
+  const { teacherId } = route.params;
   const navigation = useNavigation();
+  const [userData, setUserData] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+  const [timeSlots, setTimeSlots] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [customSessions,setCustomSessions] = useState([])
+  const [update, setupdate] = useState(0);
 
-  // Dummy time slots for demonstration
-  const timeSlots = [
-    '9:00 - 9:30',
-    '9:30 - 10:00',
-    '10:00 - 10:30',
-    // Add more time slots as needed
-  ];
+  const createSession = async () => {
+    const currentDate = selectedDate; // Assuming currentDate is in the format "2024-04-18T10:27:17.227Z"
+    const formattedDate = currentDate.toISOString().split('T')[0];
+    const Data = {
+     teacher:teacherId,
+     user:userData._id,
+     date:formattedDate,
+     timeSlot:selectedTimeSlot,
+     message:"1 on 1 yoga session",
+    }
+    console.log("Data Book",Data)
+    setLoading(true)
+   try {
+     const response = await axios.post(`${Base_url}api/custom_session`, Data);
+ 
+   setSelectedTimeSlot("")
+ 
+   setLoading(false)
+   navigation.navigate("Session Status", { status: true });
+     return response.data;
+   } catch (error) {
+
+     setLoading(false)
+     throw error.response ? error.response.data : error.message;
+   }
+ };
+
+ const fetchTimeSlots = async () => {
+  try {
+    const response = await axios.get(`${Base_url}api/custom_session/time-slots`);  // Assuming your backend API endpoint is '/api/time-slots'
+    setTimeSlots(response.data);
+  } catch (error) {
+    console.error('Error fetching time slots:', error);
+  }
+};
 
   const handleDateChange = (event, date) => {
+    setSelectedTimeSlot("")
     setShowDatePicker(Platform.OS === 'ios');
     if (date) {
       setSelectedDate(date);
@@ -56,8 +94,69 @@ export const BookSession = () => {
   };
 
   const handelSessionStatus = ()=>{
-    navigation.navigate("Session Status");
+    
+    const currentDate = selectedDate; // Assuming currentDate is in the format "2024-04-18T10:27:17.227Z"
+    const formattedDate = currentDate.toISOString().split('T')[0];
+    console.log("Time Slots  ===>",selectedTimeSlot,formattedDate)
+
+    createSession()
   }
+
+  const getAllCustomSessions = async () => {
+    try {
+      const response = await axios.get(`${Base_url}api/custom_session`); // Update the API endpoint accordingly
+      setCustomSessions(response.data);
+      const Data = response.data
+      console.log("Data Class DAta in if  : ",response)
+      
+    } catch (error) {
+      console.error('Error fetching classes:', error.message);
+    }
+  };
+
+  const isTimeSlotDisabled = (timeSlot) => {
+    // Check if the time slot matches any data from the backend
+    const currentDate = selectedDate; // Assuming currentDate is in the format "2024-04-18T10:27:17.227Z"
+const formattedDate = currentDate.toISOString().split('T')[0];
+    const matchingData = customSessions.find(
+      (data) => data.timeSlot._id === timeSlot._id && data.date === formattedDate
+    );
+    return matchingData !== undefined; // If matchingData is found, the time slot should be disabled
+  };
+
+  useEffect(()=>{
+    // fetchTeachers();
+    fetchTimeSlots();
+    getAllCustomSessions();
+  },[update,selectedDate])
+  useEffect(() => {
+    const userDetailsFromStorage = async () => {
+      const Details = (await AsyncStorage.getItem("userDetails")) || null;
+      const ParseData = JSON.parse(Details);
+
+      console.log("Parse Data ===>", ParseData.data.user);
+      const data = ParseData.data.user;
+      setUserData(data);
+    };
+
+    userDetailsFromStorage();
+  }, []);
+  // useEffect(() => {
+   
+  //   getAllCustomSessions();
+
+
+  //   const interval = setInterval(() => {
+  //     getAllCustomSessions();
+  //   }, 10000);
+
+
+  //   return () => clearInterval(interval);
+  // }, []);
+
+  // const today = new Date();
+  // const minDate = today.toISOString().split('T')[0];
+  // const maxDate = new Date(today.setDate(today.getDate() + 10));
   return (
     <View style={styles.container}>
         <ScrollView>
@@ -102,6 +201,8 @@ export const BookSession = () => {
             value={selectedDate}
             mode="date"
             display="default"
+            // minimumDate={today}
+            // maximumDate={maxDate}
             onChange={handleDateChange}
           />
         )}
@@ -122,12 +223,19 @@ export const BookSession = () => {
             key={index}
             style={[
               styles2.timeSlotButton,
-              selectedTimeSlot === timeSlot && styles2.selectedTimeSlot
-              ,{padding:20,width:"45%"}
+              selectedTimeSlot === timeSlot._id && styles2.selectedTimeSlot
+              ,{padding:20,
+                width:"45%",
+              backgroundColor: isTimeSlotDisabled(timeSlot) ? "lightgray" : selectedTimeSlot === timeSlot._id ? '#FFEFE4' : 'white',
+              pointerEvents: isTimeSlotDisabled(timeSlot) ? "none" : "auto",
+              opacity: isTimeSlotDisabled(timeSlot) ? 0.5 : 1,
+              borderColor: selectedTimeSlot === timeSlot._id ? '#FFEFE4' : 'white',
+            
+            }
             ]}
-            onPress={() => handleTimeSlotSelect(timeSlot)}>
+            onPress={() => handleTimeSlotSelect(timeSlot._id)}>
 
-            <Text style={[styles2.timeSlotText,selectedTimeSlot === timeSlot && styles2.selectedTimeSlotText]}>{timeSlot}</Text>
+            <Text style={[styles2.timeSlotText,selectedTimeSlot === timeSlot._id && styles2.selectedTimeSlotText]}>{timeSlot.timeRange}</Text>
           </TouchableOpacity>
         ))}
           </Block>
@@ -270,7 +378,7 @@ const styles = StyleSheet.create({
      color: '#EA6C13',
     },
     timeSlotText: {
-      fontSize: 16,
+      fontSize: 12,
       color: '#586B90',
     },
   });

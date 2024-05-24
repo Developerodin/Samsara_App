@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -26,10 +26,13 @@ import { Fontisto } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import CustomButton from "../../Components/Buttons/CustomButton";
 import { MemberShipModel } from "../../Components/Model/MemberShipModel";
-
-export const Teacher = () => {
+import { Base_url } from "../../Config/BaseUrl";
+import axios from "axios";
+export const Teacher = ({ route }) => {
+  const { teacherId } = route.params;
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [teacherData, setTeacherData] = useState(null);
   const stars = Array.from({ length: 5 }, (v, i) => (
     <AntDesign key={i} name="star" size={18} color="green" />
   ));
@@ -40,8 +43,27 @@ export const Teacher = () => {
     setModalVisible(true);
   };
   const handelBookSession = ()=>{
-    navigation.navigate("Book Session")
+    navigation.navigate("Book Session", { teacherId: teacherData._id })
   }
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${Base_url}api/teacher/${teacherId}`);
+
+      if (response.status === 200) {
+        setTeacherData(response.data.data.teacher);
+      } else {
+        console.error('Error fetching data:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+    }
+  };
+
+  useEffect(() => {
+   
+    fetchData();
+  }, []);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -68,7 +90,7 @@ export const Teacher = () => {
               <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
                   
                   <Block>
-                  <Text style={{fontSize:20,color:"rgba(255, 255, 255, 1)",fontWeight:600}}>Pradeep Singh</Text>
+                  <Text style={{fontSize:20,color:"rgba(255, 255, 255, 1)",fontWeight:600}}> {teacherData && teacherData.name}</Text>
                    
                    <Block style={{marginTop:5,flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
                     <Block style={{borderRadius:20,padding:6,width:65,flexDirection:"row",justifyContent:"space-around",alignItems:"center",backgroundColor:"#DEFFE9"}}>

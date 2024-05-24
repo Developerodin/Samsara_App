@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, SafeAreaView, StyleSheet,ScrollView,  View,Dimensions,TouchableOpacity, Image,Animated, TextInput } from 'react-native'
+import { FlatList, SafeAreaView, StyleSheet,ScrollView,  View,Dimensions,TouchableOpacity, Image,Animated, TextInput, ToastAndroid } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import { Block, Text, Input, theme, Button } from "galio-framework";
 
@@ -8,81 +8,143 @@ import { AntDesign } from '@expo/vector-icons';
 const {width, height} = Dimensions.get('window');
 import { TabView, SceneMap } from 'react-native-tab-view';
 import CustomButton from '../../Components/Buttons/CustomButton';
+import axios from 'axios';
+import { Base_url } from '../../Config/BaseUrl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 
 export const MySessions = () => {
- 
+  const navigation= useNavigation();
+  const [customSessions,setCustomSessions] = useState([])
+  const [userData, setUserData] = useState(null);
+
+  const getAllCustomSessions = async (id) => {
+    try {
+      const response = await axios.get(`${Base_url}api/custom_session`); // Update the API endpoint accordingly
+      
+      const Data = response.data
+      const filterData = Data.filter((el)=>el.user._id === id)
+      setCustomSessions(filterData);
+      // console.log("Data Class Data in if  : ",filterData[0].user.name)
+      
+    } catch (error) {
+      console.error('Error fetching classes:', error.message);
+    }
+  };
+
+  const handelWebZommClassClick = (data) => {
+    // console.log("Data details =====>",data);
+    const ZoomMeetingNumber = {
+      number: data.meeting_number,
+      pass: data.password,
+      userName: userData && userData.name,
+      email: userData && userData.email,
+    };
+
+    if (data.meeting_number) {
+      navigation.navigate("ZoomWebView", { ZoomMeetingNumber });
+      return;
+    }
+
+    ToastAndroid.show("Class Not Available", ToastAndroid.SHORT);
+  };
+  useEffect(() => {
+    const userDetailsFromStorage = async () => {
+      const Details = (await AsyncStorage.getItem("userDetails")) || null;
+      const ParseData = JSON.parse(Details);
+
+      // console.log("Parse Data ===>", ParseData.data.user);
+      const data = ParseData.data.user;
+      setUserData(data);
+      getAllCustomSessions(data._id)
+    };
+
+    userDetailsFromStorage();
+  }, []);
+  
   return (
     <View style={styles.container}>
-        <Block>
+      <ScrollView>
+      <Block>
             
-
-        <Block center style={{marginTop:20}}>
-        <View style={styles2.card}>
-   
-   <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",padding:10}}>
-    <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
-
-    <Image style={{width:60,height:60,borderRadius:10}} source={require('../../assets/Samsra-app.jpg')} />
-
-
-    <Block style={{marginLeft:10}}>
-    <Text  style={{fontSize:12,color:"grey",letterSpacing:1}}>Instructor</Text>
-    <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",marginTop:3}}>
-  
-
-
-
-<Block style={{marginLeft:4}}>
-<Text  style={[styles2.title]}>Pradeep Singh </Text>
-</Block>
-    </Block>
-  
-    </Block>
-    </Block>
-
-   
-      
-    <Block>
-    <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center",backgroundColor:"#DEFFE9",width:80,padding:5,borderRadius:15}}>
-<AntDesign name="star" size={11} color="#1CBC52" />
-     <Text style={{marginLeft:3,color:"#1CBC52",fontSize:18}}>4.3</Text>
-</Block>
-    </Block>
-   </Block>
-   
-
-   
+         
+            <Block center style={{marginTop:20}}>
     
-    <Block style={{padding:20}}>
+              {
+                customSessions && customSessions.map((el,index)=>{
+                  return <View key={index} style={[styles2.card,{marginTop:20}]}>
+       
+                  <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",padding:10}}>
+                   <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+               
+                   <Image style={{width:60,height:60,borderRadius:10}} source={require('../../assets/Samsra-app.jpg')} />
+               
+               
+                   <Block style={{marginLeft:10}}>
+                   <Text  style={{fontSize:12,color:"grey",letterSpacing:1}}>Instructor</Text>
+                   <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center",marginTop:3}}>
+                 
+               
+               
+               
+               <Block style={{marginLeft:4}}>
+               <Text  style={[styles2.title]}>{el.teacher.name}</Text>
+               </Block>
+                   </Block>
+                 
+                   </Block>
+                   </Block>
+               
+                  
+                     
+                   <Block>
+                   <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center",backgroundColor:"#DEFFE9",width:80,padding:5,borderRadius:15}}>
+               <AntDesign name="star" size={11} color="#1CBC52" />
+                    <Text style={{marginLeft:3,color:"#1CBC52",fontSize:18}}>4.3</Text>
+               </Block>
+                   </Block>
+                  </Block>
+                  
+               
+                  
+                   
+                   <Block style={{padding:20}}>
+                   
+                   <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:-16}}>
+                   </Block>
+               
+                   <Block style={{flexDirection:"column",marginTop:10}}>
+                   <Text style={{fontSize:24}}>{el.date}</Text>
+                  
+                   <Text style={{fontSize:14,color:"#4F4F4F",letterSpacing:1,marginTop:3}}>{el.timeSlot.timeRange} ( IST )</Text>
+                   </Block>
+               
+                   <Block style={{marginTop:30}}>
+                       <Block  style={{padding:20,height:100,maraginBottom:20,flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+                       <TouchableOpacity onPress={()=>handelWebZommClassClick({
+                            meeting_number: el.meeting_number,
+                            password: el.password,
+                          })}    style={{marginBottom:20,height:65, width:"100%",borderRadius: 20,backgroundColor: '#EA6C13',justifyContent: 'center',alignItems: 'center',}} >
+                     <Text style={{fontSize:16,color:"white"}}>Join Now</Text>
+                   </TouchableOpacity>
+                       </Block>
+                       </Block>
+                    
+                 
+                   </Block>
+                   
+                   
+                 </View>
+                })
+              }
+            
+            </Block>
     
-    <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:-16}}>
-    </Block>
-
-    <Block style={{flexDirection:"column",marginTop:10}}>
-    <Text style={{fontSize:24}}>Fri , 26 Jan 2024</Text>
-   
-    <Text style={{fontSize:14,color:"#4F4F4F",letterSpacing:1,marginTop:3}}>4:30 PM - 5:30 PM ( IST )</Text>
-    </Block>
-
-    <Block style={{marginTop:30}}>
-        <Block  style={{padding:20,height:100,maraginBottom:20,flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-        <TouchableOpacity    style={{marginBottom:20,height:65, width:"100%",borderRadius: 20,backgroundColor: '#EA6C13',justifyContent: 'center',alignItems: 'center',}} >
-      <Text style={{fontSize:16,color:"white"}}>Join Now</Text>
-    </TouchableOpacity>
-        </Block>
-        </Block>
-     
-  
-    </Block>
-    
-    
-  </View>
-        </Block>
-
-        </Block>
+            </Block>
+      </ScrollView>
+       
         
     </View>
   )

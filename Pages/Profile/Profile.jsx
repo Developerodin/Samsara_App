@@ -24,7 +24,7 @@ import { Feather } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Profile = () => {
-
+  const navigation = useNavigation()
   const [userData,setUserData] = useState(null)
   const [healthIssues,setHealthIssues] = useState([])
 
@@ -35,6 +35,10 @@ export const Profile = () => {
     {"icon": <FontAwesome5 name="calendar-alt" size={24} color="grey" />,"title":"Preferred practice time","sub1":"Afternonn (12pm - 5pm)","sub2":"","route":"/details"}
   ]
 
+  const handelEditClick = ()=>{
+    navigation.navigate("Edit Profile");
+  }
+
   useEffect(()=>{
     const userDetailsFromStorage = async()=>{
       const Details = await AsyncStorage.getItem('userDetails') || null;
@@ -43,7 +47,7 @@ export const Profile = () => {
       console.log("Parse Data users    ===>",ParseData.data.user)
       const data = ParseData.data.user
       setUserData(data)
-      const healthIssuesArray = data && data.health_issues[0].split(',');
+      const healthIssuesArray = data && data.health_issues && data.health_issues[0].split(',');
 
       console.log("Health issuess ==>", healthIssuesArray)
       setHealthIssues(healthIssuesArray)
@@ -81,7 +85,7 @@ export const Profile = () => {
             <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
               <Text style={{fontSize:17,color:"#4F4F4F"}}>Personal Information</Text>
 
-              <TouchableOpacity style={{backgroundColor:"#EDF1F9",borderWidth:1, borderColor: '#D9E2F2',padding:10,width:80,flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
+              <TouchableOpacity onPress={handelEditClick} style={{backgroundColor:"#EDF1F9",borderWidth:1, borderColor: '#D9E2F2',padding:10,width:80,flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
               <Feather name="edit-2" size={14} color="#3F5162" />
                   <Text style={{color:"#3F5162",fontSize:17,marginLeft:3}}>Edit</Text>
               </TouchableOpacity> 
