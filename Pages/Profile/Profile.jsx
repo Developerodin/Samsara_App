@@ -36,7 +36,7 @@ export const Profile = () => {
   ]
 
   const handelEditClick = ()=>{
-    navigation.navigate("Edit Profile");
+    // navigation.navigate("Edit Profile");
   }
 
   useEffect(()=>{

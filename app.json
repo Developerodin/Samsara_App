@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "samsara-app",
-    "slug": "samsara-app",
-    "version": "1.0.0",
+    "slug": "samsara",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,6 +19,7 @@
       "bundleIdentifier": "com.samsara.app.theOdin"
     },
     "android": {
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -30,7 +31,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "c18b200f-0b08-4823-bfcd-29d54f9b95f2"
+        "projectId": "d2d067a1-f54f-4843-93af-3a2c56d99ace"
       }
     },
     "owner": "akshaypareek_01"

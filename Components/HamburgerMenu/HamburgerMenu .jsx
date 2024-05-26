@@ -15,6 +15,8 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EvilIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Base_url } from '../../Config/BaseUrl';
+import axios from "axios"
 const HamburgerMenu = ({ isVisible, onClose }) => {
  const navigation = useNavigation()
  const [userData, setUserData] = useState(null);
@@ -92,6 +94,27 @@ const handelLogout=async()=>{
   navigation.navigate("My Account");
   onClose()
  }
+
+ const handelDeleteCustomer=async()=>{
+  console.log("delete Customer",userData._id)
+ 
+  try {
+    const res = await axios.delete(`${Base_url}api/users/${userData._id}`, {
+      // headers: { "Authorization": `${token}` }
+    });
+    console.log("res Customer delete === ==>", res);
+    await AsyncStorage.removeItem("userDetails");
+   await AsyncStorage.setItem("Auth",'false');
+   console.log('AsyncStorage cleared successfully');
+   navigation.reset({
+    index: 0,
+    routes: [{ name: 'Login' }],
+  });
+   
+  } catch (err) {
+    console.log("error in Customer delete", err);
+  }
+}
 
  useEffect(() => {
   const userDetailsFromStorage = async () => {
@@ -180,7 +203,9 @@ const handelLogout=async()=>{
             <Text style={{fontSize:16,color:"#EA6C13",marginTop:5}}>Terms & Conditions</Text>
            </Block>
 
-<TouchableOpacity activeOpacity={0.9} style={{borderRadius:17,backgroundColor:"#FFE9E9",height:60,marginBottom:30,marginTop:30}}  onPress={()=>handelRoute("logout")}>
+           
+
+<TouchableOpacity activeOpacity={0.9} style={{borderRadius:17,backgroundColor:"#FFE9E9",height:60,marginBottom:0,marginTop:30}}  onPress={()=>handelRoute("logout")}>
              <Block center  style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, padding: 10, borderColor: 'grey' }}>
           <View style={{ height: 45, width: 45, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',borderRadius:20,padding:5 }}>
           <AntDesign name="logout" size={22} color="#FC2C2C" />
@@ -188,8 +213,19 @@ const handelLogout=async()=>{
           <Text style={{ fontSize: 17, color: '#FC2C2C', marginLeft: 20 }}>Logout</Text>
         </Block>
         </TouchableOpacity>
+
+        <TouchableOpacity activeOpacity={0.9} style={{borderRadius:17,backgroundColor:"#FFE9E9",height:60,marginBottom:30,marginTop:20}}  onPress={()=>handelDeleteCustomer()}>
+             <Block center  style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, padding: 10, borderColor: 'grey' }}>
+          <View style={{ height: 45, width: 45, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',borderRadius:20,padding:5 }}>
+          
+          <AntDesign name="delete" size={24} color="#FC2C2C" />
+          </View>
+          <Text style={{ fontSize: 17, color: '#FC2C2C', marginLeft: 20 }}>Delete</Text>
+        </Block>
+        </TouchableOpacity>
     </ScrollView>
          
+ 
         
          
           
@@ -201,6 +237,8 @@ const handelLogout=async()=>{
   );
 };
 
+
+
 const styles = StyleSheet.create({
   menu: {
     flex:1,
@@ -211,6 +249,77 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     padding: 20,
     minHeight:height
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    borderRadius: 17,
+    backgroundColor: "#FFE9E9",
+    height: 60,
+    marginBottom: 30,
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  block: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    padding: 10,
+    borderColor: 'grey',
+  },
+  iconContainer: {
+    height: 45,
+    width: 45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    padding: 5,
+  },
+  deleteText: {
+    fontSize: 17,
+    color: '#FC2C2C',
+    marginLeft: 20,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  confirmButton: {
+    backgroundColor: '#FC2C2C',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  confirmButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  cancelButton: {
+    backgroundColor: '#CCCCCC',
+    padding: 10,
+    borderRadius: 5,
+  },
+  cancelButtonText: {
+    color: 'black',
+    fontSize: 16,
   },
 });
 

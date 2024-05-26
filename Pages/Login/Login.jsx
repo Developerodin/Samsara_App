@@ -96,7 +96,32 @@ export const Login = ({ navigation }) => {
       console.error('Error saving Mobile:', error);
     }
   };
-
+  const handleFindUser = async () => {
+    console.log("Login Fun")
+    setLoading(true)
+    try {
+        const response = await axios.get(`${Base_url}api/users/find/${formData.phoneNumber}`);
+    
+              console.log("Status find ==>",response.data)
+            if (response.data.success === true) {
+              setLoading(false)
+          // handelPreviousUser()
+          setOTPShow(true);
+         } 
+    else {
+      setLoading(false)
+      handelNewUser();
+    }
+        
+       
+        // console.log('Login successful! Token:', token);
+        // Redirect user to dashboard or perform any other necessary action
+    } catch (error) {
+      setLoading(false)
+        console.error('Login failed:', error.response.data.message);
+        Alert.alert('Login failed', 'Invalid mobile number or password');
+    }
+};
   const handleLogin = async () => {
     console.log("Login Fun")
     setLoading(true)
@@ -117,7 +142,7 @@ export const Login = ({ navigation }) => {
          } 
     else {
       setLoading(false)
-      handelNewUser();
+      ToastAndroid.show(`Wrong Mobile Number or Pin`, ToastAndroid.SHORT);
     }
         
        
@@ -126,7 +151,7 @@ export const Login = ({ navigation }) => {
     } catch (error) {
       setLoading(false)
         console.error('Login failed:', error.response.data.message);
-        Alert.alert('Login failed', 'Invalid mobile number or password');
+        
     }
 };
 
@@ -162,7 +187,8 @@ export const Login = ({ navigation }) => {
       ToastAndroid.show("Please Provide Mobile Number", ToastAndroid.SHORT);
       return;
     }
-    setOTPShow(true);
+    handleFindUser();
+   
     // generateOTP()
     
   };
@@ -488,7 +514,7 @@ export const Login = ({ navigation }) => {
                 //   trailing={(props) => <Icon name="send" {...props} />}
                 //   tintColor="#fff"
                 // />
-                <CustomButton onPress={handelMobileNumber} title="Get OTP" />
+                <CustomButton onPress={handelMobileNumber} title="Proceed" />
               )}
             </Block>
           </Block>
