@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.samsara.app.theOdin"
+      "bundleIdentifier": "com.samsarawellness.app"
     },
     "android": {
       "versionCode": 2,
@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.akshaypareek_01.samsaraapp"
+      "package": "com.samsarawellness.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
