@@ -22,12 +22,13 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAppContext } from "../../Context/AppContext";
 
 export const Profile = () => {
   const navigation = useNavigation()
   const [userData,setUserData] = useState(null)
   const [healthIssues,setHealthIssues] = useState([])
-
+  const {ProfileUpdate,setProfileUpdate} = useAppContext()
   const CardData =[
     {"icon": <MaterialCommunityIcons name="yoga" size={26} color="grey" />,"title":"Date of Birth & Gender","sub1":userData && userData.dob,"sub2":`Gender : ${userData && userData.gender}`,"route":"/details"},
     {"icon": <FontAwesome6 name="hand-holding-medical" size={23} color="grey" />,"title":"Medical history","sub1":"Asthama","sub2":"","route":"/details"},
@@ -36,7 +37,7 @@ export const Profile = () => {
   ]
 
   const handelEditClick = ()=>{
-    // navigation.navigate("Edit Profile");
+    navigation.navigate("Edit Profile");
   }
 
   useEffect(()=>{
@@ -55,7 +56,7 @@ export const Profile = () => {
     }
     
     userDetailsFromStorage()
-  },[])
+  },[ProfileUpdate])
   return (
     <View style={styles.container}>
         <ScrollView>

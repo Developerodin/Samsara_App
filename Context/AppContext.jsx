@@ -18,6 +18,7 @@ export const AppProvider = ({ children }) => {
   const [CartTotalAmount,setCartTotalAmount] = useState(0);
     const [CartTotalWeight,setCartTotalWeight] = useState(0);
     const [SelectedAddressFromMap,setSelectedAddressFromMap] = useState(null);
+    const [ProfileUpdate,setProfileUpdate] = useState(0)
   const toggleDrwerMenu = () => {
     setDrawerMenuVisible(!isDrwerMenuVisible);
   };
@@ -91,7 +92,7 @@ export const AppProvider = ({ children }) => {
 //   },[selectedTabs])
 
   return (
-    <AppContext.Provider value={{SelectedAddressFromMap,setSelectedAddressFromMap,CartInStorage,CartTotalAmount,CartTotalWeight,showCartSuggestion,setShowCartSuggestion,Cart,setCart,update,setUpdate,toggleDrwerMenu,isDrwerMenuVisible, setDrawerMenuVisible ,selectedMarker, setSelectedMarker,isMarkerModalVisible, setMarkerModalVisible,selectedTabs,setSelectedTabs, isLoggedIn, toggleLogin,modalVisible,setModalVisible,isLoggedIn,setIsLoggedIn }}>
+    <AppContext.Provider value={{ProfileUpdate,setProfileUpdate,SelectedAddressFromMap,setSelectedAddressFromMap,CartInStorage,CartTotalAmount,CartTotalWeight,showCartSuggestion,setShowCartSuggestion,Cart,setCart,update,setUpdate,toggleDrwerMenu,isDrwerMenuVisible, setDrawerMenuVisible ,selectedMarker, setSelectedMarker,isMarkerModalVisible, setMarkerModalVisible,selectedTabs,setSelectedTabs, isLoggedIn, toggleLogin,modalVisible,setModalVisible,isLoggedIn,setIsLoggedIn }}>
       {children}
     </AppContext.Provider>
   );

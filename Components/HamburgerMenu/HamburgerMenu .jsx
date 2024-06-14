@@ -17,9 +17,11 @@ import { EvilIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Base_url } from '../../Config/BaseUrl';
 import axios from "axios"
+import { useAppContext } from '../../Context/AppContext';
 const HamburgerMenu = ({ isVisible, onClose }) => {
  const navigation = useNavigation()
  const [userData, setUserData] = useState(null);
+ const {ProfileUpdate,setProfileUpdate} = useAppContext()
   const RoutesData =[
     // {Icon:<AntDesign name="user" size={24} color="#586B90" />,Title:"My account" , Route:"My Account"},
     // {Icon:<FontAwesome5 name="chalkboard-teacher" size={24} color="#586B90" />,Title:"My classes" , Route:"My Classes"},
@@ -127,7 +129,7 @@ const handelLogout=async()=>{
   };
 
   userDetailsFromStorage();
-}, []);
+}, [ProfileUpdate]);
 
   return (
     <View>
