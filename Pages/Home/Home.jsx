@@ -31,12 +31,14 @@ import { ToastAndroid, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { BottomTabs } from "../../Components/Tabs/BottomTabs";
+import EventCard from "../../Components/Cards/EventCard";
 export const Home = () => {
   const navigation = useNavigation();
   const animationRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [webmodalVisible, setWebModalVisible] = useState(false);
   const [classes, setClasses] = useState([]);
+  const [Events, setEventsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [TeacherData, setTeacherData] = useState([]);
@@ -194,8 +196,81 @@ export const Home = () => {
     }
   };
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+    
+    return `${day}/${month}/${year}`;
+  }
+  
+  function formatTimeTo12Hour(timeString) {
+    let [hours, minutes] = timeString.split(':').map(Number);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? hours : 12; // The hour '0' should be '12'
+    
+    return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  }
+
+
+
+  const getAllEvents = async () => {
+    try {
+      const response = await axios.get(`${Base_url}api/events`); // Update the API endpoint accordingly
+      
+      const Data = response.data
+      console.log("Data Class DAta in if  : ",response)
+      if(Data){
+         console.log("Formated DAta ==>",Data)
+          const formattedData = Data.map((item) => ({
+         "id":item._id,
+         "eventName":item.eventName,
+         "eventType":item.eventType,
+         "Date":formatDate(item.startDate),
+         "Time":formatTimeTo12Hour(item.startTime) ,
+          'mn': item.meeting_number,
+          'pass': item.password,
+       
+     
+     }));
+
+     setEventsData(formattedData)
+    
+    
+      }
+    } catch (error) {
+      console.error('Error fetching classes:', error.message);
+    }
+  };
+
+ const handleEventWebView = (id)=> {
+  // console.log("Data details =====>", data);
+  // const ZoomMeetingNumber = {
+  //   number: data.number,
+  //   pass: data.pass,
+  //   userName: userData && userData.name,
+  //   email: userData && userData.email,
+  // };
+  const data ={
+    userId:userData._id,
+    eventId:id
+  }
+
+  
+    navigation.navigate("EventWebView", { data });
+    return;
+ 
+
+ }
+
+ 
+
   useEffect(() => {
     getAllClasses();
+    getAllEvents()
   }, []);
   return (
     <View style={styles.container}>
@@ -301,7 +376,7 @@ export const Home = () => {
             </Swiper>
           </Block>
 
-          {/* <Block style={{ marginTop: 30 }}>
+         <Block style={{ marginTop: 30 }}>
             <Text
               style={{
                 fontSize: 20,
@@ -323,22 +398,25 @@ export const Home = () => {
               overlayOpacity={0.5}
               spaceBetween={3}
             >
-              {classes &&
-                classes.map((card, index) => (
+              {Events &&
+                Events.map((card, index) => (
                   <View key={index}>
                     <View style={{ flexDirection: "row" }}>
                     
-                      <Card
+                      <EventCard
                         mn={card.mn}
-                        title={card.Title}
-                        description={card.Teacher}
+                        title={card.eventName}
+                        description={card.eventType}
+                        date={card.Date}
+                        time={card.Time}
                         ClassClick={handelClassClick}
                         book={handelMembershipModel}
                         join={() =>
-                          handelWebZommClassClick({
-                            number: card.mn,
-                            pass: card.pass,
-                          })
+                          // handelWebZommClassClick({
+                          //   number: card.mn,
+                          //   pass: card.pass,
+                          // })
+                          handleEventWebView(card.id)
                         }
                     
                       />
@@ -355,7 +433,7 @@ export const Home = () => {
                   </View>
                 ))}
             </Swiper>
-          </Block> */}
+          </Block> 
 
           <Block style={{ marginTop: 40 }}>
             <Text

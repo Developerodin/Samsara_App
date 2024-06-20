@@ -13,7 +13,7 @@ import { Fontisto } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import CustomButton from '../Buttons/CustomButton';
 import { LinearGradient } from "expo-linear-gradient";
-const Card = ({ title, description,ClassClick ,book,join,mn,time}) => (
+const EventCard = ({ title, description,ClassClick ,book,join,mn,time,date}) => (
   <View style={styles.card}>
       <LinearGradient
       colors={['#a9d2fe', '#000000']}
@@ -36,7 +36,7 @@ const Card = ({ title, description,ClassClick ,book,join,mn,time}) => (
               <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
                   
                   <Block>
-                  <Text style={{fontSize:20,color:"rgba(255, 255, 255, 1)",fontWeight:600}}>{description && description}</Text>
+                  <Text style={{fontSize:20,color:"rgba(255, 255, 255, 1)",fontWeight:600}}>{title && title}</Text>
                    
                    <Block style={{marginTop:5,flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
                     <Block style={{borderRadius:20,padding:6,width:65,flexDirection:"row",justifyContent:"space-around",alignItems:"center",backgroundColor:"#DEFFE9"}}>
@@ -63,7 +63,7 @@ const Card = ({ title, description,ClassClick ,book,join,mn,time}) => (
             colors={['rgba(255, 240, 229, 1)', 'rgba(254, 242, 234, 0)']}
              style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
               <Text style={{fontSize:48,color:"#EA6C13"}}>I</Text>
-              <Text style={{fontSize:20,marginLeft:10}}>{title}</Text>
+              <Text style={{fontSize:20,marginLeft:10}}>{description === "inPerson" ? "In Person" : "Virtual Event"}</Text>
              </LinearGradient>
 
              <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
@@ -72,14 +72,14 @@ const Card = ({ title, description,ClassClick ,book,join,mn,time}) => (
                   </Block>
 
                   <Block style={{marginLeft:10}}>
-                    <Text style={{fontSize:16}}>Mon, Tue, Wed</Text>
-                    <Text style={{color:"#787878",marginTop:3,fontSize:13}}>{time}</Text>
+                    <Text style={{fontSize:16}}>{date} ( {time} )</Text>
+                    {/* <Text style={{color:"#787878",marginTop:3,fontSize:13}}>{time}</Text> */}
                   </Block>
              </Block>
 
              <Block style={[styles.Center,{marginTop:20}]}>
              <TouchableOpacity onPress={join} style={styles.button} >
-      <Text style={styles.buttonText}>Join Now</Text>
+      <Text style={styles.buttonText}>Join</Text>
     </TouchableOpacity>
              </Block>
       </Block>
@@ -145,43 +145,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Card;
-
-
-{/* <View style={styles.card}>
-   
-   <Image style={{width:"100%",height:140,borderTopLeftRadius:10,borderTopRightRadius:10}} source={require('../../assets/Samsra-app.jpg')} />
-
-  
-   
-   <Block style={{padding:20}}>
-     <Block style={{borderWidth:1,padding:10,backgroundColor:"#FFF0E5"}}>
-     <Text onPress={ClassClick} style={styles.title}>{title}</Text>
-     </Block>
-   
-   <Block style={{flexDirection:"row",marginTop:10}}>
-   <AntDesign name="retweet" size={20} color="grey" />
-   <Text style={{fontSize:14,color:"grey",letterSpacing:1,marginLeft:15}}>Fri,Mon & Wed</Text>
-   </Block>
-
-   <Block style={{flexDirection:"row",marginTop:10}}>
-   <AntDesign name="clockcircleo" size={20} color="grey" />
-   <Text style={{fontSize:14,color:"grey",letterSpacing:1,marginLeft:15}}>04:30-5:30PM</Text>
-   </Block>
-
-   <Block center style={{marginTop:15}}>
-     {
-       mn ?  <Button onPress={()=>join()} style={{backgroundColor:"orange"}}>
-       Join
-     </Button>
-     :
-     <Button onPress={()=>book()} style={{backgroundColor:"orange"}}>
-       Book
-     </Button>
-     }
-    
-   </Block>
-   </Block>
-   
-   
- </View> */}
+export default EventCard;

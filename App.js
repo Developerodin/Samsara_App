@@ -36,6 +36,8 @@ import { BookSession } from './Pages/Class/BookSession';
 import { SessionStatus } from './Pages/Class/SessionStatus';
 import { MySessions } from './Pages/MyClasses/MySessions';
 import { EditProfile } from './Pages/Profile/EditProfile';
+import { EventWebView } from './Pages/WebViewPage/EventWebView';
+import { MyEvents } from './Pages/MyClasses/MyEvents';
 
 
 
@@ -196,6 +198,11 @@ export default function App() {
             headerShown: false,
           }}
         />
+        <Stack.Screen name="EventWebView" component={EventWebView}
+          options={{
+            headerShown: true,
+          }}
+        />
 
         <Stack.Screen name="AppSlides" component={AppSlides}
           options={{
@@ -250,6 +257,9 @@ export default function App() {
           }}/>
 
 <Stack.Screen name="My Sessions" component={MySessions} options={{
+            headerShown: true,
+          }}/>
+          <Stack.Screen name="My Events" component={MyEvents} options={{
             headerShown: true,
           }}/>
 
