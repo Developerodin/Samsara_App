@@ -27,7 +27,7 @@ export const MyEvents = () => {
       const Data = response.data
     
       setCustomSessions(Data);
-      console.log("Data of Events ============>-=======>",Data)
+      console.log("Data of Events ============>-=======>",Data[0])
       
     } catch (error) {
       console.error('Error fetching classes:', error.message);
@@ -144,8 +144,8 @@ export const MyEvents = () => {
                    <Block style={{marginTop:30}}>
                        <Block  style={{padding:20,height:100,maraginBottom:20,flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
                        <TouchableOpacity onPress={()=>handelWebZommClassClick({
-                            meeting_number: el.meeting_number,
-                            password: el.password,
+                            meeting_number: el.eventId.meeting_number,
+                            password: el.eventId.password,
                           })}    style={{marginBottom:20,height:65, width:"100%",borderRadius: 20,backgroundColor: '#EA6C13',justifyContent: 'center',alignItems: 'center',}} >
                      <Text style={{fontSize:16,color:"white"}}>Join Now</Text>
                    </TouchableOpacity>

@@ -198,7 +198,7 @@ export default function App() {
             headerShown: false,
           }}
         />
-        <Stack.Screen name="EventWebView" component={EventWebView}
+        <Stack.Screen name="Event" component={EventWebView}
           options={{
             headerShown: true,
           }}

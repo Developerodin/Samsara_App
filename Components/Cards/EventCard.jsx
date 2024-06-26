@@ -79,7 +79,7 @@ const EventCard = ({ title, description,ClassClick ,book,join,mn,time,date}) => 
 
              <Block style={[styles.Center,{marginTop:20}]}>
              <TouchableOpacity onPress={join} style={styles.button} >
-      <Text style={styles.buttonText}>Join</Text>
+      <Text style={styles.buttonText}>Register now</Text>
     </TouchableOpacity>
              </Block>
       </Block>

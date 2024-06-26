@@ -260,7 +260,7 @@ export const Home = () => {
   }
 
   
-    navigation.navigate("EventWebView", { data });
+    navigation.navigate("Event", { data });
     return;
  
 
