@@ -48,7 +48,7 @@ const EventCard = ({ title, description,ClassClick ,book,join,mn,time,date}) => 
                    </Block>
                   </Block>
 
-                  <TouchableOpacity onPress={ClassClick} style={{flexDirection:"row",justifyContent:"center",alignItems:"center",height:35,width:35,borderRadius:20,backgroundColor:"#667f99"}}>
+                  <TouchableOpacity  style={{flexDirection:"row",justifyContent:"center",alignItems:"center",height:35,width:35,borderRadius:20,backgroundColor:"#667f99"}}>
                   <Fontisto  name="angle-down" size={18} color="white" />
                   </TouchableOpacity>
               </Block>

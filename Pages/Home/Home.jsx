@@ -32,11 +32,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { BottomTabs } from "../../Components/Tabs/BottomTabs";
 import EventCard from "../../Components/Cards/EventCard";
+import { MoodSelectModel } from "../../Components/Model/MoodSelectModel";
 export const Home = () => {
   const navigation = useNavigation();
   const animationRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [webmodalVisible, setWebModalVisible] = useState(false);
+  const [MoodmodalVisible, setMoodModalVisible] = useState(false);
   const [classes, setClasses] = useState([]);
   const [Events, setEventsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +46,46 @@ export const Home = () => {
   const [TeacherData, setTeacherData] = useState([]);
   const [update, setupdate] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
+  const moods = [
+    { moodName: "Happy", emoji: "☺️" },
+    { moodName: "Sad", emoji: "😢" },
+    { moodName: "Angry", emoji: "😠" },
+    { moodName: "Excited", emoji: "😃" },
+    { moodName: "Surprised", emoji: "😮" },
+    { moodName: "Confused", emoji: "😕" },
+    { moodName: "Scared", emoji: "😱" },
+    { moodName: "Disgusted", emoji: "🤢" },
+    { moodName: "Bored", emoji: "😒" },
+    { moodName: "Calm", emoji: "😌" },
+    { moodName: "Tired", emoji: "😴" },
+    { moodName: "Love", emoji: "❤️" }
+  ];
+  const [selectedMood, setSelectedMood] = useState(null);
+  const [selectedModdObject,setSelectedMoodObject] = useState(moods[0]);
+
+  const getUserMood = async (id) => {
+    try {
+      const response = await axios.get(`${Base_url}api/usermood/${id}`); // Update the API endpoint accordingly
+      
+      const Data = response.data
+      // console.log("User Mood Data 1 =====>  : ",Data[0])
+      setSelectedMood(Data[0].mood);
+      const Mood = moods.find(mood => mood.moodName === Data[0].mood)
+      // console.log("Selected Modds=============>==========>",Mood)
+      setSelectedMoodObject(Mood)
+    
+      
+    } catch (error) {
+      console.error('Error fetching Modd Data ======>:', error.message);
+    }
+  };
+  useEffect(() => {
+    if(userData && userData._id){
+      getUserMood(userData._id);
+    }
+    
+  }, [update,userData]);
+
   const handelTeacherClick = (id) => {
     navigation.navigate("About Instructor", { teacherId: id });
   };
@@ -62,7 +104,7 @@ export const Home = () => {
       const response = await axios.get(`${Base_url}api/teacher`); // Replace with your actual API endpoint
       // setUsers(response.data.data.users);
       const Data= response.data.data.teachers
-      console.log("Trainer Data ==>",Data)
+      // console.log("Trainer Data ==>",Data)
       if(Data){
         setTeacherData(Data)
     //  setFilterRows(Data);
@@ -98,7 +140,7 @@ export const Home = () => {
   };
 
   const handelWebModelComplete = () => {
-    console.log("web Complete");
+    // console.log("web Complete");
   };
 
   
@@ -137,7 +179,7 @@ export const Home = () => {
   };
 
   const handelWebZommClassClick = (data) => {
-    console.log("Data details =====>", data);
+    // console.log("Data details =====>", data);
     const ZoomMeetingNumber = {
       number: data.number,
       pass: data.pass,
@@ -158,7 +200,7 @@ export const Home = () => {
       const Details = (await AsyncStorage.getItem("userDetails")) || null;
       const ParseData = JSON.parse(Details);
 
-      console.log("Parse Data ===>", ParseData.data.user);
+      // console.log("Parse Data ===>", ParseData.data.user);
       const data = ParseData.data.user;
       setUserData(data);
     };
@@ -222,9 +264,9 @@ export const Home = () => {
       const response = await axios.get(`${Base_url}api/events`); // Update the API endpoint accordingly
       
       const Data = response.data
-      console.log("Data Class DAta in if  : ",response)
+      // console.log("Data Class DAta in if  : ",response)
       if(Data){
-         console.log("Formated DAta ==>",Data)
+        //  console.log("Formated DAta ==>",Data)
           const formattedData = Data.map((item) => ({
          "id":item._id,
          "eventName":item.eventName,
@@ -255,7 +297,7 @@ export const Home = () => {
   //   email: userData && userData.email,
   // };
   const data ={
-    userId:userData._id,
+    userId:userData && userData._id,
     eventId:id
   }
 
@@ -266,6 +308,21 @@ export const Home = () => {
 
  }
 
+ const getGreeting = () => {
+  const currentHour = new Date().getHours();
+
+  if (currentHour < 12) {
+    return "Good Morning";
+  } else if (currentHour < 18) {
+    return "Good Afternoon";
+  } else {
+    return "Good Evening";
+  }
+};
+
+const handelMoodModelOpen = ()=>{
+  setMoodModalVisible(true);
+}
  
 
   useEffect(() => {
@@ -294,24 +351,44 @@ export const Home = () => {
             width: width,
           }}
         >
+          <Block style={[styles.Space_Between,{padding:10}]}>
+            <Block>
+              <Text style={{fontSize:18,color:"black"}}>Hii {userData && userData.name},</Text>
+              <Text style={{fontSize:20,color:"#EA6C13",fontWeight:600}}>{getGreeting()}</Text>
+            </Block>
+
+            <Block>
+              <TouchableOpacity onPress={handelMoodModelOpen}>
+              <Block>
+                  <Text style={{fontSize:30}}>{selectedModdObject.emoji}</Text>
+              </Block>
+
+              </TouchableOpacity>
+             
+            </Block>
+          </Block>
           <Block >
             <Swiper
-              style={{ height: height * 0.25 }}
+              style={{ height: height * 0.20 }}
               showsPagination={false}
-              overlayEnabled
-              overlayColor={"transparent"} // Set the color of the overlay
+              overlayEnabled={true}
+              overlayColor={"transparent"} 
               overlayOpacity={0.5}
+              autoplay={true}
+              autoplayTimeout={5}
+            
             >
               <View>
                 <Image
                   source={require("../../assets/Images/Frame1.png")}
-                  resizeMode="contain"
+                  
+                  style={{width:width}}
                 />
               </View>
               <View>
                 <Image
                   source={require("../../assets/Images/Frame1.png")}
-                  resizeMode="contain"
+                  style={{width:width}}
                 />
               </View>
             </Swiper>
@@ -539,6 +616,13 @@ export const Home = () => {
         setModalVisible={setWebModalVisible}
         handelComplete={handelWebModelComplete}
       />
+
+<MoodSelectModel
+ modalVisible={MoodmodalVisible}
+ setModalVisible={setMoodModalVisible}
+ setupdate={setupdate}
+ userId={userData && userData._id}
+/>
      
     </ScrollView>
       }
