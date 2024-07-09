@@ -38,6 +38,7 @@ import { MySessions } from './Pages/MyClasses/MySessions';
 import { EditProfile } from './Pages/Profile/EditProfile';
 import { EventWebView } from './Pages/WebViewPage/EventWebView';
 import { MyEvents } from './Pages/MyClasses/MyEvents';
+import { MemberShipWebView } from './Pages/WebViewPage/MemberShipWebView';
 
 
 
@@ -199,6 +200,12 @@ export default function App() {
           }}
         />
         <Stack.Screen name="Event" component={EventWebView}
+          options={{
+            headerShown: true,
+          }}
+        />
+
+<Stack.Screen name="Membership" component={MemberShipWebView}
           options={{
             headerShown: true,
           }}

@@ -19,6 +19,7 @@ import { Entypo } from '@expo/vector-icons';
 import { WebView } from 'react-native-webview';
 import { Base_url } from "../../Config/BaseUrl";
 import axios from "axios";
+import { StatusBar } from "expo-status-bar";
 const { width, height } = Dimensions.get("screen");
 export const MoodSelectModel = ({
   modalVisible,
@@ -121,6 +122,7 @@ export const MoodSelectModel = ({
       swipeDirection={["right"]}
       style={styles.viewHalf}
     >
+        
       <View style={[styles.centeredView]}>
         <View style={styles.modalView}>
             <ScrollView>

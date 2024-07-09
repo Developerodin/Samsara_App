@@ -11,7 +11,8 @@ import {
   Image,
   Animated,
   TextInput,
-  RefreshControl
+  RefreshControl,
+  ImageBackground
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Block, Text, Input, theme, Button } from "galio-framework";
@@ -62,6 +63,14 @@ export const Home = () => {
   ];
   const [selectedMood, setSelectedMood] = useState(null);
   const [selectedModdObject,setSelectedMoodObject] = useState(moods[0]);
+  const [isMenuVisible, setMenuVisible] = useState(false);
+  // const {toggleDrwerMenu,isDrwerMenuVisible, setDrawerMenuVisible} =useAppContext()
+  const CloseMenu= () =>{
+    setMenuVisible(false)
+  }
+  const showMenue = ()=>{
+    setMenuVisible(true)
+  }
 
   const getUserMood = async (id) => {
     try {
@@ -308,6 +317,16 @@ export const Home = () => {
 
  }
 
+ const handelMemebershipWebView= ()=>{
+  const data ={
+    userId:userData && userData._id,
+  }
+
+  
+    navigation.navigate("Membership", { data });
+    return;
+ }
+
  const getGreeting = () => {
   const currentHour = new Date().getHours();
 
@@ -331,8 +350,8 @@ const handelMoodModelOpen = ()=>{
   }, []);
   return (
     <View style={styles.container}>
-      <Header />
-      <StatusBar style="dark" />
+      {/* <Header /> */}
+      {/* <StatusBar style="dark" /> */}
        {isLoading ? <Block center style={{height:height*0.8,flexDirection:"row",justifyContent:"center",alignItems:"center"}}> 
 
         <ActivityIndicator size="large" color="orange" />
@@ -349,28 +368,54 @@ const handelMoodModelOpen = ()=>{
         <Block
           style={{
             width: width,
+            position:"relative"
           }}
         >
-          <Block style={[styles.Space_Between,{padding:10}]}>
-            <Block>
-              <Text style={{fontSize:18,color:"black"}}>Hii {userData && userData.name},</Text>
-              <Text style={{fontSize:20,color:"#EA6C13",fontWeight:600}}>{getGreeting()}</Text>
-            </Block>
 
-            <Block>
-              <TouchableOpacity onPress={handelMoodModelOpen}>
+          <Block style={{position:"absolute",top:0,zIndex:999,width:width}}>
+          
+          <View style={[{marginTop:10,padding:10,paddingTop:20},styles2.container]}>
+        <StatusBar  hidden/>
+        <Block  style={styles2.Space_Between}>
+        <TouchableOpacity onPress={showMenue}>
+          {/* <Entypo name="menu" size={40} color="grey"  /> */}
+          <Image    source={require('../../assets/Images/ri_menu-2-line.png')} />
+          </TouchableOpacity>
+          <Block style={{alignItems:"center"}}>
+          {/* samsaraLogo.png */}
+          <Image  style={{height:33,width:150}}  source={require('../../assets/samsaraLogo.png')} />
+          </Block>
+          <Block>
+          <TouchableOpacity onPress={handelMoodModelOpen}>
               <Block>
-                  <Text style={{fontSize:30}}>{selectedModdObject.emoji}</Text>
+                  <Text style={{fontSize:26}}>{selectedModdObject.emoji}</Text>
               </Block>
 
               </TouchableOpacity>
-             
+          </Block>
+        </Block>
+       <HamburgerMenu isVisible={isMenuVisible} onClose={CloseMenu}  />
+    </View>
+
+
+               
+          <Block style={[{padding:10,height:height*0.15,flexDirection:"row",justifyContent:"left",alignItems:"center"}]}>
+            <Block >
+              <Text style={{fontSize:20,color:"#fff",fontWeight:700}}>Hii, {userData && userData.name}</Text>
+              <Text style={{fontSize:18,color:"#EA6C13",fontWeight:600}}>{getGreeting()}</Text>
             </Block>
           </Block>
+
+
+          </Block>
+          
+
+
+
           <Block >
             <Swiper
-              style={{ height: height * 0.20 }}
-              showsPagination={false}
+              style={{ height: height * 0.35 }}
+              showsPagination={true}
               overlayEnabled={true}
               overlayColor={"transparent"} 
               overlayOpacity={0.5}
@@ -378,22 +423,80 @@ const handelMoodModelOpen = ()=>{
               autoplayTimeout={5}
             
             >
-              <View>
-                <Image
-                  source={require("../../assets/Images/Frame1.png")}
-                  
-                  style={{width:width}}
-                />
+              <View >
+        
+              <ImageBackground
+        source={require('../../assets/Images/Frame1.png')}
+        style={styles.imageBackground}
+        imageStyle={styles.imageStyle} 
+      >
+           <LinearGradient 
+              colors={['rgba(254, 242, 234, 0)', '#eef3f7']}
+            locations={[0.4, 0.95]}
+            style={styles.linearGradient}>
+             
+             </LinearGradient>
+      </ImageBackground>
+   
               </View>
-              <View>
-                <Image
-                  source={require("../../assets/Images/Frame1.png")}
-                  style={{width:width}}
-                />
-              </View>
+
+
+              <View >
+        
+        <ImageBackground
+  source={require('../../assets/Images/Frame1.png')}
+  style={styles.imageBackground}
+  imageStyle={styles.imageStyle} 
+>
+     <LinearGradient 
+        colors={['rgba(254, 242, 234, 0)', '#eef3f7']}
+      locations={[0.4, 0.95]}
+      style={styles.linearGradient}>
+       
+       </LinearGradient>
+</ImageBackground>
+
+        </View>
+
+
+        <View >
+        
+        <ImageBackground
+  source={require('../../assets/Images/Frame1.png')}
+  style={styles.imageBackground}
+  imageStyle={styles.imageStyle} 
+>
+     <LinearGradient 
+        colors={['rgba(254, 242, 234, 0)', '#eef3f7']}
+      locations={[0.4, 0.95]}
+      style={styles.linearGradient}>
+       
+       </LinearGradient>
+</ImageBackground>
+
+        </View>
+              
+
+            
+             
             </Swiper>
           </Block>
         </Block>
+
+         <Block style={{padding:10}}>
+             <Block style={styles.Space_Between}>
+              <Block>
+              <Text style={{fontSize:17,color:"grey"}}>Ready to unlock more?</Text>
+              <Text style={{fontSize:17,color:"grey"}}>Upgrade your membership today!</Text>
+              </Block>
+              
+
+              <TouchableOpacity onPress={handelMemebershipWebView} style={styles.button2} >
+      <Text style={styles.buttonText2}>Pay now</Text>
+    </TouchableOpacity>
+             </Block>
+         </Block>
+     
 
         <Block style={{ padding: 10 }}>
           <Block style={{ marginTop: 10 }}>
@@ -636,8 +739,39 @@ const styles = StyleSheet.create({
   wrapper: {},
   container: {
     flex: 1,
+  },
+  imageBackground: {
+    width: '100%',
+    height: height * 0.30,
+    overflow: 'hidden',
+  },
+  imageStyle: {
    
-    borderWidth: 1,
+  },
+  button2: {
+    height: 30, // Adjust height as needed
+    width:80, // Take entire width
+    borderRadius: 17, // Border radius for rounded corners
+    backgroundColor: '#EA6C13', // Orange background color
+    justifyContent: 'center', // Center content vertically
+    alignItems: 'center', // Center content horizontally
+  },
+  buttonText2: {
+    color: 'white', // Text color
+    fontSize: 14, // Text font size
+    // Text font weight
+  },
+  linearGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: 10,
+   
+    height:height * 0.35
   },
   lottie: {
     width: 350,
@@ -748,3 +882,95 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
 });
+
+
+const styles2 = StyleSheet.create({
+  container:{
+  
+    
+
+  },
+  textPlayfair: {
+    fontFamily: 'PlayfairDisplay_600SemiBold',
+    fontSize: 27,
+  },
+  inputContainer: {
+    width: '100%',
+    height: 66,
+    borderBottomWidth: 1, // Add a bottom border for the input
+    borderColor: 'transparent', // Make the border color transparent
+  },
+  input: {
+    flex: 1,
+    textAlign:"center",
+    padding:0,
+    fontSize:22
+     // Remove padding to make it look borderless
+  },
+  subtitle: {
+    color:"black",
+    fontSize: 20,
+    marginTop: 10,
+  
+    textAlign: 'left',
+    lineHeight: 23,
+    letterSpacing:0.3
+  },
+  title: {
+    color:"black",
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginTop: 20,
+    textAlign: 'center',
+  },
+  image: {
+    height: '100%',
+    width: '100%',
+    resizeMode: 'contain',
+  },
+  indicator: {
+    height: 10,
+    width: 10,
+    backgroundColor: 'grey',
+    marginHorizontal: 3,
+    borderRadius: 52,
+  },
+  btn: {
+   width: '95%',
+    height: 55,
+    borderRadius: 5,
+    backgroundColor: '#40A99E',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  border: {
+      borderWidth: 1,
+      borderColor: "blue",
+    },
+    Center: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    Space_Around: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      alignItems: "center",
+    },
+    Space_Between: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    shadow: {
+      shadowColor: "black",
+      shadowOffset: { width: 0, height: 2 },
+      shadowRadius: 4,
+      shadowOpacity: 0.2,
+      elevation: 2,
+    },
+    button: {
+      width: width,
+    },
+
+  });
