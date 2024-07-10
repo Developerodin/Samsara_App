@@ -20,6 +20,16 @@ import { WebView } from 'react-native-webview';
 import { Base_url } from "../../Config/BaseUrl";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
+import Happy from "../../assets/Mood/HappyMood.png";
+import Sad from "../../assets/Mood/SadMood.png";
+import Angry from "../../assets/Mood/AngryMood.png";
+import Content from "../../assets/Mood/ContentMood.png";
+import Enthused from "../../assets/Mood/EnthusedMood.png"
+import Grateful from "../../assets/Mood/GratefulMood.png";
+import Lonely from "../../assets/Mood/LonelyMood.png";
+import Stressed from "../../assets/Mood/StressedMood.png";
+import Tired from "../../assets/Mood/TiredMood.png";
+import Anxious from "../../assets/Mood/AnxiousMood.png";
 const { width, height } = Dimensions.get("screen");
 export const MoodSelectModel = ({
   modalVisible,
@@ -31,18 +41,16 @@ export const MoodSelectModel = ({
   const animationRef = useRef(null);
 
   const moods = [
-    { moodName: "Happy", emoji: "☺️" },
-    { moodName: "Sad", emoji: "😢" },
-    { moodName: "Angry", emoji: "😠" },
-    { moodName: "Excited", emoji: "😃" },
-    { moodName: "Surprised", emoji: "😮" },
-    { moodName: "Confused", emoji: "😕" },
-    { moodName: "Scared", emoji: "😱" },
-    { moodName: "Disgusted", emoji: "🤢" },
-    { moodName: "Bored", emoji: "😒" },
-    { moodName: "Calm", emoji: "😌" },
-    { moodName: "Tired", emoji: "😴" },
-    { moodName: "Love", emoji: "❤️" }
+    { moodName: "Happy", emoji:Happy },
+    { moodName: "Sad", emoji:Sad },
+    { moodName: "Angry", emoji:Angry },
+    { moodName: "Content", emoji:Content},
+    { moodName: "Enthused", emoji:Enthused },
+    { moodName: "Grateful", emoji:Grateful},
+    { moodName: "Lonely", emoji:Lonely },
+    { moodName: "Stressed", emoji:Stressed },
+    { moodName: "Tired", emoji:Tired },
+    { moodName: "Anxious", emoji:Anxious },
   ];
   const [selectedMood, setSelectedMood] = useState(null);
 
@@ -135,8 +143,11 @@ export const MoodSelectModel = ({
             />
           </Block>
           <Block style={{marginTop:20,marginBottom:40}}>
-          {/* <WebView style={styles.webcontainer} source={{ uri: webUrl  }}  originWhitelist={['*']} /> */}
-          {moods.map((el, index) => (
+            <Block center >
+             <Text style={{fontSize:24}}> How are you feeling ?</Text>
+              </Block>
+              <View style={styles2.container}>
+      {moods.map((el, index) => (
         <TouchableOpacity
           key={index}
           onPress={() => handleSelectMood(el.moodName)}
@@ -145,13 +156,17 @@ export const MoodSelectModel = ({
             {
               borderColor: selectedMood === el.moodName ? 'green' : 'transparent',
               borderWidth: selectedMood === el.moodName ? 2 : 0,
+              borderRadius:20
             },
           ]}
         >
-          <Text style={{ fontSize: 35 }}>{el.emoji}</Text>
-          <Text style={{ fontSize: 20, marginLeft: 10 }}>{el.moodName}</Text>
+          <View style={styles2.blockCenter}>
+            <Image style={styles2.image} source={el.emoji} />
+            <Text style={styles2.text}>{el.moodName}</Text>
+          </View>
         </TouchableOpacity>
       ))}
+    </View>
          
           </Block>
             </ScrollView>
@@ -171,8 +186,8 @@ export const MoodSelectModel = ({
 const styles = StyleSheet.create({
     moodContainer: {
         marginTop: 10,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
+        flexDirection: 'column',
+        justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
         borderRadius: 5,
@@ -250,5 +265,31 @@ const styles = StyleSheet.create({
     color: "#2DA194",
   },
 });
+
+
+const styles2 = {
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+  moodContainer: {
+    width: '48%', // Two items per row
+    marginBottom: 10,
+    padding: 10,
+    alignItems: 'center',
+  },
+  blockCenter: {
+    alignItems: 'center',
+  },
+  image: {
+    height: 98,
+    width: 98,
+  },
+  text: {
+    fontSize: 18,
+  },
+};
 
 

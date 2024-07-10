@@ -34,6 +34,16 @@ import { LinearGradient } from "expo-linear-gradient";
 import { BottomTabs } from "../../Components/Tabs/BottomTabs";
 import EventCard from "../../Components/Cards/EventCard";
 import { MoodSelectModel } from "../../Components/Model/MoodSelectModel";
+import Happy from "../../assets/Mood/HappyMood.png";
+import Sad from "../../assets/Mood/SadMood.png";
+import Angry from "../../assets/Mood/AngryMood.png";
+import Content from "../../assets/Mood/ContentMood.png";
+import Enthused from "../../assets/Mood/EnthusedMood.png"
+import Grateful from "../../assets/Mood/GratefulMood.png";
+import Lonely from "../../assets/Mood/LonelyMood.png";
+import Stressed from "../../assets/Mood/StressedMood.png";
+import Tired from "../../assets/Mood/TiredMood.png";
+import Anxious from "../../assets/Mood/AnxiousMood.png";
 export const Home = () => {
   const navigation = useNavigation();
   const animationRef = useRef(null);
@@ -48,18 +58,16 @@ export const Home = () => {
   const [update, setupdate] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const moods = [
-    { moodName: "Happy", emoji: "☺️" },
-    { moodName: "Sad", emoji: "😢" },
-    { moodName: "Angry", emoji: "😠" },
-    { moodName: "Excited", emoji: "😃" },
-    { moodName: "Surprised", emoji: "😮" },
-    { moodName: "Confused", emoji: "😕" },
-    { moodName: "Scared", emoji: "😱" },
-    { moodName: "Disgusted", emoji: "🤢" },
-    { moodName: "Bored", emoji: "😒" },
-    { moodName: "Calm", emoji: "😌" },
-    { moodName: "Tired", emoji: "😴" },
-    { moodName: "Love", emoji: "❤️" }
+    { moodName: "Happy", emoji:Happy },
+    { moodName: "Sad", emoji:Sad },
+    { moodName: "Angry", emoji:Angry },
+    { moodName: "Content", emoji:Content},
+    { moodName: "Enthused", emoji:Enthused },
+    { moodName: "Grateful", emoji:Grateful},
+    { moodName: "Lonely", emoji:Lonely },
+    { moodName: "Stressed", emoji:Stressed },
+    { moodName: "Tired", emoji:Tired },
+    { moodName: "Anxious", emoji:Anxious },
   ];
   const [selectedMood, setSelectedMood] = useState(null);
   const [selectedModdObject,setSelectedMoodObject] = useState(moods[0]);
@@ -388,7 +396,8 @@ const handelMoodModelOpen = ()=>{
           <Block>
           <TouchableOpacity onPress={handelMoodModelOpen}>
               <Block>
-                  <Text style={{fontSize:26}}>{selectedModdObject.emoji}</Text>
+                  {/* <Text style={{fontSize:26}}>{selectedModdObject.emoji}</Text> */}
+                  <Image style={{height:36,width:36}}  source={selectedModdObject.emoji} />
               </Block>
 
               </TouchableOpacity>
@@ -432,7 +441,7 @@ const handelMoodModelOpen = ()=>{
       >
            <LinearGradient 
               colors={['rgba(254, 242, 234, 0)', '#eef3f7']}
-            locations={[0.4, 0.95]}
+            locations={[0.7, 0.95]}
             style={styles.linearGradient}>
              
              </LinearGradient>
@@ -450,14 +459,13 @@ const handelMoodModelOpen = ()=>{
 >
      <LinearGradient 
         colors={['rgba(254, 242, 234, 0)', '#eef3f7']}
-      locations={[0.4, 0.95]}
+      locations={[0.7, 0.95]}
       style={styles.linearGradient}>
        
        </LinearGradient>
 </ImageBackground>
 
         </View>
-
 
         <View >
         
@@ -468,13 +476,16 @@ const handelMoodModelOpen = ()=>{
 >
      <LinearGradient 
         colors={['rgba(254, 242, 234, 0)', '#eef3f7']}
-      locations={[0.4, 0.95]}
+      locations={[0.7, 0.95]}
       style={styles.linearGradient}>
        
        </LinearGradient>
 </ImageBackground>
 
         </View>
+
+
+           
               
 
             
@@ -486,7 +497,7 @@ const handelMoodModelOpen = ()=>{
          <Block style={{padding:10}}>
              <Block style={styles.Space_Between}>
               <Block>
-              <Text style={{fontSize:17,color:"grey"}}>Ready to unlock more?</Text>
+            
               <Text style={{fontSize:17,color:"grey"}}>Upgrade your membership today!</Text>
               </Block>
               
@@ -742,7 +753,7 @@ const styles = StyleSheet.create({
   },
   imageBackground: {
     width: '100%',
-    height: height * 0.30,
+    height: height * 0.35,
     overflow: 'hidden',
   },
   imageStyle: {

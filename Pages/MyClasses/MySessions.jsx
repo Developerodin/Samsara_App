@@ -25,7 +25,8 @@ export const MySessions = () => {
       const response = await axios.get(`${Base_url}api/custom_session`); // Update the API endpoint accordingly
       
       const Data = response.data
-      const filterData = Data.filter((el)=>el.user._id === id)
+      console.log("Data Class Data in if  : ",Data)
+      const filterData = Data.filter((el)=>el.user && el.user._id === id)
       setCustomSessions(filterData);
       // console.log("Data Class Data in if  : ",filterData[0].user.name)
       
@@ -58,6 +59,7 @@ export const MySessions = () => {
       // console.log("Parse Data ===>", ParseData.data.user);
       const data = ParseData.data.user;
       setUserData(data);
+      console.log("_id ===============>",data._id)
       getAllCustomSessions(data._id)
     };
 

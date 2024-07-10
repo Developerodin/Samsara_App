@@ -295,7 +295,7 @@ export const Teacher = ({ route }) => {
 
    
        
-        <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",padding:10,marginTop:20}}>
+        {/* <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",padding:10,marginTop:20}}>
               
              
                 <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
@@ -412,7 +412,7 @@ export const Teacher = ({ route }) => {
                   I got to know various asspects of my own body , which i was like completely unaware of
                 </Text>
                </Block>
-        </Block>
+        </Block> */}
 
      </Block>
     
