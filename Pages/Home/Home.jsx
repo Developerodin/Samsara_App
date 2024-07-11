@@ -205,7 +205,14 @@ export const Home = () => {
 
   const swiperItemWidth = screenWidth * 0.8;
 
-  const handelComplete = () => {};
+  const handelComplete = () => {
+    const data ={
+      userId:userData && userData._id,
+    }
+  
+    
+      navigation.navigate("Membership", { data });
+  };
 
   const handelMembershipModel = () => {
     setModalVisible(true);
@@ -606,11 +613,19 @@ useEffect(() => {
                         description={card.Teacher}
                         ClassClick={()=>handelClassClick(card._id)}
                         book={handelMembershipModel}
-                        join={() =>
-                          handelWebZommClassClick({
-                            number: card.mn,
-                            pass: card.pass,
-                          })
+                        join={() =>{
+                          if(MemberShipData && MemberShipData.status === "active"){
+                            handelWebZommClassClick({
+                              number: card.mn,
+                              pass: card.pass,
+                            })
+                          }
+                          else{
+                            handelMembershipModel()
+                          }
+                        }
+                         
+                       
                         }
                         // Pass overlay color to the Card component
                       />

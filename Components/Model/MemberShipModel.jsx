@@ -60,7 +60,7 @@ export const MemberShipModel = ({
               onPress={handelClose}
               name="close-circle"
               size={24}
-              color="orange"
+              color="#EA6C13"
             />
           </Block>
 
@@ -74,8 +74,8 @@ export const MemberShipModel = ({
               padding: 10,
             }}
           >
-            <Entypo name="new" size={44} color="orange" />
-              <Text style={{fontSize:24,marginLeft:10,fontWeight:600,color:"orange"}}>MEMBERSHIP REQUIRED</Text>
+            <Entypo name="new" size={44} color="#EA6C13" />
+              <Text style={{fontSize:24,marginLeft:10,fontWeight:600,color:"#EA6C13"}}>MEMBERSHIP REQUIRED</Text>
           </Block>
 
           <Block
@@ -95,8 +95,8 @@ export const MemberShipModel = ({
          
 
             <Button
-            color="orange"
-             style={{width:200}}
+            color="#EA6C13"
+             style={{width:200,borderRadius:20}}
              onPress={() => handelComplete()}
            > Get</Button>
            
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: width * 0.9,
-    height: height - 500,
+    height: height - 550,
   },
   button: {
     borderRadius: 20,
