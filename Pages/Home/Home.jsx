@@ -44,6 +44,42 @@ import Lonely from "../../assets/Mood/LonelyMood.png";
 import Stressed from "../../assets/Mood/StressedMood.png";
 import Tired from "../../assets/Mood/TiredMood.png";
 import Anxious from "../../assets/Mood/AnxiousMood.png";
+
+const calculateTimeLeft = (startDate, endDate) => {
+  const now = new Date();
+  const end = new Date(endDate);
+  const timeLeft = end - now;
+
+  if (timeLeft <= 0) {
+    return '00:00:00:00';
+  }
+
+  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+  return `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
+const MembershipTimer = ({ startDate, endDate }) => {
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(startDate, endDate));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft(startDate, endDate));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [startDate, endDate]);
+
+  return (
+    <Block>
+      <Text style={{fontSize:15,color:"grey"}}>Time Left: {timeLeft}</Text>
+    </Block>
+  );
+};
+
 export const Home = () => {
   const navigation = useNavigation();
   const animationRef = useRef(null);
@@ -72,6 +108,7 @@ export const Home = () => {
   const [selectedMood, setSelectedMood] = useState(null);
   const [selectedModdObject,setSelectedMoodObject] = useState(moods[0]);
   const [isMenuVisible, setMenuVisible] = useState(false);
+  const [MemberShipData,setMemberShipData] = useState(null);
   // const {toggleDrwerMenu,isDrwerMenuVisible, setDrawerMenuVisible} =useAppContext()
   const CloseMenu= () =>{
     setMenuVisible(false)
@@ -96,12 +133,7 @@ export const Home = () => {
       console.error('Error fetching Modd Data ======>:', error.message);
     }
   };
-  useEffect(() => {
-    if(userData && userData._id){
-      getUserMood(userData._id);
-    }
-    
-  }, [update,userData]);
+
 
   const handelTeacherClick = (id) => {
     navigation.navigate("About Instructor", { teacherId: id });
@@ -352,9 +384,35 @@ const handelMoodModelOpen = ()=>{
 }
  
 
+const getUserMemberShip = async (id) => {
+  try {
+    const response = await axios.get(`${Base_url}api/memberships/user/${id}`); // Update the API endpoint accordingly
+    
+    const Data = response.data
+    console.log("User MemberShip Data  0000 =====>  : ",Data[0])
+ 
+    setMemberShipData(Data[0])
+  
+    
+  } catch (error) {
+    console.error('Error fetching MemberShip Data ======>:', error.message);
+  }
+};
+
+useEffect(() => {
+  if(userData && userData._id){
+    getUserMood(userData._id);
+    getUserMemberShip(userData._id)
+  }
+  
+}, [update,userData]);
+
+
+
   useEffect(() => {
     getAllClasses();
-    getAllEvents()
+    getAllEvents();
+  
   }, []);
   return (
     <View style={styles.container}>
@@ -499,6 +557,10 @@ const handelMoodModelOpen = ()=>{
               <Block>
             
               <Text style={{fontSize:17,color:"grey"}}>Upgrade your membership today!</Text>
+              {/* <Text style={{fontSize:17,color:"grey"}}>{MemberShipData && MemberShipData.validityDays} Day</Text> */}
+              {
+                MemberShipData && <MembershipTimer startDate={MemberShipData.startDate} endDate={MemberShipData.endDate} />
+              }
               </Block>
               
 

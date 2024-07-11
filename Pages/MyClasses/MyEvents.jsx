@@ -90,10 +90,10 @@ export const MyEvents = () => {
       <Block>
             
          
-            <Block center style={{marginTop:20}}>
+            <Block  style={{marginTop:20,padding:10}}>
     
               {
-                customSessions && customSessions.map((el,index)=>{
+                customSessions && customSessions.length >1 ? customSessions.map((el,index)=>{
                   return <View key={index} style={[styles2.card,{marginTop:20}]}>
        
                   <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",padding:10}}>
@@ -158,6 +158,10 @@ export const MyEvents = () => {
                    
                  </View>
                 })
+                :
+                <Block center > 
+                  <Text style={{fontSize:20}}>No Events yet</Text>
+                </Block>
               }
             
             </Block>
