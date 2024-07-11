@@ -680,11 +680,16 @@ useEffect(() => {
                         ClassClick={handelClassClick}
                         book={handelMembershipModel}
                         join={() =>
-                          // handelWebZommClassClick({
-                          //   number: card.mn,
-                          //   pass: card.pass,
-                          // })
-                          handleEventWebView(card.id)
+                          {
+                            if(MemberShipData && MemberShipData.status === "active"){
+                              handleEventWebView(card.id)
+                            }
+                            else{
+                              handelMembershipModel()
+                            }
+                          }
+                        
+                         
                         }
                     
                       />
