@@ -91,7 +91,7 @@ const EventCard = ({ title, description,ClassClick ,book,join,mn,time,date}) => 
 const styles = StyleSheet.create({
   button: {
     height: 55, // Adjust height as needed
-    width:"80%", // Take entire width
+    width:"70%", // Take entire width
     borderRadius: 17, // Border radius for rounded corners
     backgroundColor: '#EA6C13', // Orange background color
     justifyContent: 'center', // Center content vertically
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     borderWidth:1,
     borderColor: '#D9E2F2',
-    width:"85%",
+    width:"70%",
     borderBottomLeftRadius:10,
     borderBottomRightRadius:10,
   
