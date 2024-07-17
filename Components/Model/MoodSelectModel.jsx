@@ -55,18 +55,21 @@ export const MoodSelectModel = ({
   const [selectedMood, setSelectedMood] = useState(null);
 
   const getUserMood = async () => {
-    try {
-      const response = await axios.get(`${Base_url}api/usermood/${userId}`); // Update the API endpoint accordingly
+    if(userId){
+      try {
+        const response = await axios.get(`${Base_url}api/usermood/${userId}`); // Update the API endpoint accordingly
+        
+        const Data = response.data
+        console.log("User Mood Data in model  =====>  : ",Data[0])
+        setSelectedMood(Data[0].mood);
       
-      const Data = response.data
-      console.log("User Mood Data 1 =====>  : ",Data[0])
-      setSelectedMood(Data[0].mood);
-    
-    
       
-    } catch (error) {
-      console.error('Error fetching Modd Data ======>:', error.message);
+        
+      } catch (error) {
+        console.error('Error fetching Modd Data in model ======>:', error.message);
+      }
     }
+   
   };
 
  const updateUserMood = async (moodName) => {

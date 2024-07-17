@@ -88,7 +88,7 @@ export const Home = () => {
   const [MoodmodalVisible, setMoodModalVisible] = useState(false);
   const [classes, setClasses] = useState([]);
   const [Events, setEventsData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
   const [TeacherData, setTeacherData] = useState([]);
   const [update, setupdate] = useState(0);
@@ -118,20 +118,26 @@ export const Home = () => {
   }
 
   const getUserMood = async (id) => {
-    try {
-      const response = await axios.get(`${Base_url}api/usermood/${id}`); // Update the API endpoint accordingly
+    if(id){
+      try {
+        const response = await axios.get(`${Base_url}api/usermood/${id}`); // Update the API endpoint accordingly
+        
+        const Data = response.data
+        console.log("User Mood Data 1 =====>  : ",Data[0])
+        if(Data && Data.length>0){
+          setSelectedMood(Data[0].mood);
+          const Mood = moods.find(mood => mood.moodName === Data[0].mood)
+          console.log("Selected Modds=============>==========>",Mood)
+          setSelectedMoodObject(Mood)
+        }
+        
       
-      const Data = response.data
-      // console.log("User Mood Data 1 =====>  : ",Data[0])
-      setSelectedMood(Data[0].mood);
-      const Mood = moods.find(mood => mood.moodName === Data[0].mood)
-      // console.log("Selected Modds=============>==========>",Mood)
-      setSelectedMoodObject(Mood)
-    
-      
-    } catch (error) {
-      console.error('Error fetching Modd Data ======>:', error.message);
+        
+      } catch (error) {
+        console.error('Error fetching Modd Data ======>:', error);
+      }
     }
+   
   };
 
 
@@ -370,7 +376,8 @@ export const Home = () => {
   }
 
   
-    navigation.navigate("Membership", { data });
+    // navigation.navigate("Membership", { data });
+    navigation.navigate("Plans");
     return;
  }
 
@@ -563,7 +570,7 @@ useEffect(() => {
              <Block style={styles.Space_Between}>
               <Block>
             
-              <Text style={{fontSize:17,color:"grey"}}>Upgrade your membership today!</Text>
+              <Text style={{fontSize:16,color:"grey"}}>Upgrade your membership today!</Text>
               {/* <Text style={{fontSize:17,color:"grey"}}>{MemberShipData && MemberShipData.validityDays} Day</Text> */}
               {
                 MemberShipData && <MembershipTimer startDate={MemberShipData.startDate} endDate={MemberShipData.endDate} />

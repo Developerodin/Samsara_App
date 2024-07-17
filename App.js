@@ -39,6 +39,7 @@ import { EditProfile } from './Pages/Profile/EditProfile';
 import { EventWebView } from './Pages/WebViewPage/EventWebView';
 import { MyEvents } from './Pages/MyClasses/MyEvents';
 import { MemberShipWebView } from './Pages/WebViewPage/MemberShipWebView';
+import { Membership } from './Pages/MemberShip/MemberShip';
 
 
 
@@ -206,6 +207,12 @@ export default function App() {
         />
 
 <Stack.Screen name="Membership" component={MemberShipWebView}
+          options={{
+            headerShown: true,
+          }}
+        />
+
+<Stack.Screen name="Plans" component={Membership}
           options={{
             headerShown: true,
           }}
