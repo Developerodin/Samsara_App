@@ -216,7 +216,7 @@ export const PersonalInfo2 = () => {
 
                 <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
                 <Ionicons onPress={handelPassBackPress} name="arrow-back" size={24} color="#3E5072" />
-                  <Text style={{fontSize:24,color:"#3E5072",marginLeft:10}}>Setup Password</Text>
+                  <Text style={{fontSize:24,color:"#3E5072",marginLeft:10}}>Setup Login Pin</Text>
                 </Block>
                 <Block style={{ marginTop: 10 }}>
                   <Input
@@ -230,7 +230,7 @@ export const PersonalInfo2 = () => {
                     iconSize={24}
                        value={formData.password}
                        onChangeText={(text) => handleInputChange("password", text)}
-                    placeholder="  Create New Password"
+                    placeholder="  Create New Pin"
                     style={{
                       height: 60,
                       backgroundColor: "#A8B6D140",
@@ -252,12 +252,13 @@ export const PersonalInfo2 = () => {
                     iconSize={24}
                     value={formData.confirm_password}
                        onChangeText={(text) => handleInputChange("confirm_password", text)}
-                    placeholder="  Confirm New Password"
+                    placeholder="  Confirm New Pin"
                     style={{
                       height: 60,
                       backgroundColor: "#A8B6D140",
                       borderColor: "#A8B6D140",
                       letterSpacing: 2,
+                      
                     }}
                   />
                 </Block>
