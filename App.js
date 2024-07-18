@@ -147,7 +147,7 @@ export default function App() {
    },[])
 
    useEffect(() => {
-    NavigationBar.setBackgroundColorAsync('#eef3f7'); // Change this to your desired color
+    NavigationBar.setBackgroundColorAsync('#fff'); // Change this to your desired color
   }, []);
    
    if (!appIsReady) {

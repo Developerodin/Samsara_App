@@ -122,8 +122,7 @@ const styles = StyleSheet.create({
   wrapper: {},
   container: {
     flex: 1,
-   
-    borderWidth: 1,
+  
   },
   lottie: {
     width: 350,

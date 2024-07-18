@@ -455,7 +455,9 @@ useEffect(() => {
           <Block style={{position:"absolute",top:0,zIndex:999,width:width}}>
           
           <View style={[{marginTop:10,padding:10,paddingTop:20},styles2.container]}>
-        <StatusBar  hidden/>
+        <StatusBar  barStyle="light-content" 
+        translucent={true} 
+        />
         <Block  style={styles2.Space_Between}>
         <TouchableOpacity onPress={showMenue}>
           {/* <Entypo name="menu" size={40} color="grey"  /> */}
