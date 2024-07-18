@@ -44,7 +44,7 @@ import Lonely from "../../assets/Mood/LonelyMood.png";
 import Stressed from "../../assets/Mood/StressedMood.png";
 import Tired from "../../assets/Mood/TiredMood.png";
 import Anxious from "../../assets/Mood/AnxiousMood.png";
-
+import * as NavigationBar from 'expo-navigation-bar'
 const calculateTimeLeft = (startDate, endDate) => {
   const now = new Date();
   const end = new Date(endDate);

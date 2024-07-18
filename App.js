@@ -40,7 +40,7 @@ import { EventWebView } from './Pages/WebViewPage/EventWebView';
 import { MyEvents } from './Pages/MyClasses/MyEvents';
 import { MemberShipWebView } from './Pages/WebViewPage/MemberShipWebView';
 import { Membership } from './Pages/MemberShip/MemberShip';
-
+import * as NavigationBar from 'expo-navigation-bar';
 
 
 const Stack = createNativeStackNavigator();
@@ -146,7 +146,9 @@ export default function App() {
      checkAuthAndFirstLaunch();
    },[])
 
-  
+   useEffect(() => {
+    NavigationBar.setBackgroundColorAsync('#eef3f7'); // Change this to your desired color
+  }, []);
    
    if (!appIsReady) {
     return <WelcomeScreen/>
