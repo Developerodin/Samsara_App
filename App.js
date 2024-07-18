@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { StyleSheet, Text, View,Alert,Modal  } from "react-native";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { NavigationContainer,useFocusEffect,useNavigation  } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -41,7 +41,10 @@ import { MyEvents } from './Pages/MyClasses/MyEvents';
 import { MemberShipWebView } from './Pages/WebViewPage/MemberShipWebView';
 import { Membership } from './Pages/MemberShip/MemberShip';
 import * as NavigationBar from 'expo-navigation-bar';
-
+import * as Notifications from 'expo-notifications';
+import { registerForPushNotificationsAsync } from './PushNotificationHelper';
+import { Platform } from 'react-native';
+import axios from 'axios';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -79,6 +82,14 @@ const Tabs = ({navigation}) => {
   );
 };
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 export default function App() {
   let [fontsLoaded] = useFonts({
     PlayfairDisplay_600SemiBold,
@@ -88,7 +99,85 @@ export default function App() {
   const [Auth, setAuth]=useState(null);
   const [isAppFirstLaunched, setIsAppFirstLaunched] =useState(null);
   const [appIsReady, setAppIsReady] = useState(false);
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [channels, setChannels] = useState([]);
+  const [notification, setNotification] = useState(undefined);
+  const [userData, setUserData] = useState(null);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  const sendPushNotification = async (expoPushToken) => {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: 'Demo Notification',
+      body: 'This is a test notification',
+      data: { someData: 'goes here' },
+    };
 
+    try {
+      const response = await axios.post('https://exp.host/--/api/v2/push/send', message, {
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('Notification sent successfully:', response.data);
+    } catch (error) {
+      console.error('Error sending notification:', error.response ? error.response.data : error.message);
+    }
+  };
+
+  useEffect(() => {
+    const userDetailsFromStorage = async () => {
+      const Details = (await AsyncStorage.getItem("userDetails")) || null;
+      const ParseData = JSON.parse(Details);
+
+      // console.log("Parse Data ===>", ParseData.data.user);
+      const data = ParseData.data.user;
+      setUserData(data);
+    };
+
+    userDetailsFromStorage();
+  }, []);
+
+
+  useEffect(() => {
+    if(userData){
+      registerForPushNotificationsAsync(userData._id).then(token => {
+        token && setExpoPushToken(token)
+        console.log("Token push token =====================>====>",token)
+        if (token) {
+          
+          sendPushNotification(token);
+        } else {
+          console.log("Failed to get push token");
+        }
+      });
+  
+      if (Platform.OS === 'android') {
+        Notifications.getNotificationChannelsAsync().then(value => setChannels(value ?? []));
+      }
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        setNotification(notification);
+      });
+  
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        console.log(response);
+      });
+  
+      return () => {
+        notificationListener.current &&
+          Notifications.removeNotificationSubscription(notificationListener.current);
+        responseListener.current &&
+          Notifications.removeNotificationSubscription(responseListener.current);
+      };
+    }
+    else{
+      console.log("User Data not found for push notifi")
+    }
+    
+  }, [userData]);
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -149,6 +238,8 @@ export default function App() {
    useEffect(() => {
     NavigationBar.setBackgroundColorAsync('#fff'); // Change this to your desired color
   }, []);
+
+
    
    if (!appIsReady) {
     return <WelcomeScreen/>
