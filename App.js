@@ -45,6 +45,7 @@ import * as Notifications from 'expo-notifications';
 import { registerForPushNotificationsAsync } from './PushNotificationHelper';
 import { Platform } from 'react-native';
 import axios from 'axios';
+import usePushNotifications from './usePushNotifications';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,13 +96,15 @@ export default function App() {
     PlayfairDisplay_600SemiBold,
     Manrope_400Regular
   });
+  const { expoPushToken, notification } = usePushNotifications();
+  const data = JSON.stringify(notification, undefined, 2);
   
   const [Auth, setAuth]=useState(null);
   const [isAppFirstLaunched, setIsAppFirstLaunched] =useState(null);
   const [appIsReady, setAppIsReady] = useState(false);
-  const [expoPushToken, setExpoPushToken] = useState('');
+  // const [expoPushToken, setExpoPushToken] = useState('');
   const [channels, setChannels] = useState([]);
-  const [notification, setNotification] = useState(undefined);
+  // const [notification, setNotification] = useState(undefined);
   const [userData, setUserData] = useState(null);
   const notificationListener = useRef();
   const responseListener = useRef();
@@ -142,42 +145,45 @@ export default function App() {
   }, []);
 
 
-  useEffect(() => {
-    if(userData){
-      registerForPushNotificationsAsync(userData._id).then(token => {
-        token && setExpoPushToken(token)
-        console.log("Token push token =====================>====>",token)
-        if (token) {
+  // useEffect(() => {
+  //   if(userData){
+  //     registerForPushNotificationsAsync(userData._id).then(token => {
+  //       token && setExpoPushToken(token)
+  //       console.log("Token push token =====================>====>",token)
+  //       if (token) {
           
-          sendPushNotification(token);
-        } else {
-          console.log("Failed to get push token");
-        }
-      });
+  //         sendPushNotification(token);
+  //       } else {
+  //         console.log("Failed to get push token");
+  //       }
+  //     });
   
-      if (Platform.OS === 'android') {
-        Notifications.getNotificationChannelsAsync().then(value => setChannels(value ?? []));
-      }
-      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-        setNotification(notification);
-      });
+  //     if (Platform.OS === 'android') {
+  //       Notifications.getNotificationChannelsAsync().then(value => setChannels(value ?? []));
+  //     }
+  //     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+  //       setNotification(notification);
+  //     });
   
-      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        console.log(response);
-      });
+  //     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+  //       console.log(response);
+  //     });
   
-      return () => {
-        notificationListener.current &&
-          Notifications.removeNotificationSubscription(notificationListener.current);
-        responseListener.current &&
-          Notifications.removeNotificationSubscription(responseListener.current);
-      };
-    }
-    else{
-      console.log("User Data not found for push notifi")
-    }
+  //     return () => {
+  //       notificationListener.current &&
+  //         Notifications.removeNotificationSubscription(notificationListener.current);
+  //       responseListener.current &&
+  //         Notifications.removeNotificationSubscription(responseListener.current);
+  //     };
+  //   }
+  //   else{
+  //     console.log("User Data not found for push notifi")
+  //   }
     
-  }, [userData]);
+  // }, [userData]);
+
+
+  
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {

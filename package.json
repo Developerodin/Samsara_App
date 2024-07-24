@@ -40,7 +40,7 @@
     "lottie-react-native": "6.5.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "^0.73.6",
+    "react-native": "0.73.6",
     "react-native-check-box": "^2.1.7",
     "react-native-datepicker": "^1.7.2",
     "react-native-dropdown-select-list": "^2.0.5",
@@ -65,7 +65,8 @@
     "expo-navigation-bar": "~2.8.1",
     "expo-notifications": "~0.27.8",
     "expo-device": "~5.9.4",
-    "expo-constants": "~15.4.6"
+    "expo-constants": "~15.4.6",
+    "typescript": "^5.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

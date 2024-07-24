@@ -45,6 +45,7 @@ import Stressed from "../../assets/Mood/StressedMood.png";
 import Tired from "../../assets/Mood/TiredMood.png";
 import Anxious from "../../assets/Mood/AnxiousMood.png";
 import * as NavigationBar from 'expo-navigation-bar'
+import usePushNotifications from "../../usePushNotifications";
 const calculateTimeLeft = (startDate, endDate) => {
   const now = new Date();
   const end = new Date(endDate);
@@ -109,6 +110,8 @@ export const Home = () => {
   const [selectedModdObject,setSelectedMoodObject] = useState(moods[0]);
   const [isMenuVisible, setMenuVisible] = useState(false);
   const [MemberShipData,setMemberShipData] = useState(null);
+  const { expoPushToken, notification } = usePushNotifications();
+  const data = JSON.stringify(notification, undefined, 2);
   // const {toggleDrwerMenu,isDrwerMenuVisible, setDrawerMenuVisible} =useAppContext()
   const CloseMenu= () =>{
     setMenuVisible(false)
@@ -584,6 +587,10 @@ useEffect(() => {
       <Text style={styles.buttonText2}>Pay now</Text>
     </TouchableOpacity>
              </Block>
+             {/* <Block>
+             <Text>Token: {expoPushToken ? expoPushToken.data : ""}</Text>
+             <Text>Notification: {data ? data : "no data"}</Text>
+             </Block> */}
          </Block>
      
 

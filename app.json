@@ -39,6 +39,7 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": ["NOTIFICATIONS"],
+      "googleServicesFile": "./android/app/google-services.json",
       "package": "com.samsarawellness.app"
     },
     "web": {
