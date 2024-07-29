@@ -416,6 +416,12 @@ const getUserMemberShip = async (id) => {
   }
 };
 
+const handelPayClick = ()=>{
+  console.log("URl Click")
+ const url = `https://samsara-web-8j4i.vercel.app/pricing/${userData._id}`
+ Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+}
+
 useEffect(() => {
   if(userData && userData._id){
     getUserMood(userData._id);
@@ -583,7 +589,7 @@ useEffect(() => {
               </Block>
               
 
-              <TouchableOpacity onPress={handelMemebershipWebView} style={styles.button2} >
+              <TouchableOpacity onPress={handelPayClick} style={styles.button2} >
       <Text style={styles.buttonText2}>Pay now</Text>
     </TouchableOpacity>
              </Block>

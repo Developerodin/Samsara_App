@@ -46,7 +46,7 @@ import { registerForPushNotificationsAsync } from './PushNotificationHelper';
 import { Platform } from 'react-native';
 import axios from 'axios';
 import usePushNotifications from './usePushNotifications';
-
+import * as Linking from 'expo-linking';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -96,6 +96,19 @@ export default function App() {
     PlayfairDisplay_600SemiBold,
     Manrope_400Regular
   });
+
+  const prefix = Linking.createURL('/');
+
+const linking = {
+  prefixes: [prefix, 'samsara://'],
+  config: {
+    screens: {
+      Home: 'home',
+      Profile: 'profile/:id',
+    },
+  },
+};
+
   const { expoPushToken, notification } = usePushNotifications();
   const data = JSON.stringify(notification, undefined, 2);
   
@@ -253,7 +266,7 @@ export default function App() {
  
   return (
     <AppProvider>
-<NavigationContainer onLayout={onLayoutRootView} >
+<NavigationContainer linking={linking} onLayout={onLayoutRootView} >
 
 
       {/* {

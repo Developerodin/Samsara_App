@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "samsara-app",
-    "slug": "samsara",
+    "slug": "samsara-app",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,7 +15,6 @@
           "defaultChannel": "default",
           "sounds": [
             "./assets/sounds/i_phone_notification.mp3"
-           
           ]
         }
       ]
@@ -38,7 +37,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["NOTIFICATIONS"],
+      "permissions": [
+        "NOTIFICATIONS"
+      ],
       "googleServicesFile": "./android/app/google-services.json",
       "package": "com.samsarawellness.app"
     },
@@ -47,9 +48,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "d2d067a1-f54f-4843-93af-3a2c56d99ace"
+        "projectId": "065f1b8a-9d67-415a-aed2-487659062e19"
       }
     },
-    "owner": "akshaypareek_01"
+    "owner": "samsara_wellness_official",
+    "scheme": "samsara"
   }
 }
