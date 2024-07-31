@@ -85,7 +85,7 @@ export const CategoryAddModel2 = ({
               onPress={handelClose}
               name="close-circle"
               size={24}
-              color="teal"
+              color="#EA6C13"
             />
           </Block>
           <Text style={{fontSize:17}}>Select Health Issues</Text>
@@ -106,9 +106,9 @@ export const CategoryAddModel2 = ({
     <View key={index} style={[styles.checkboxContainer]}>
       <Checkbox
       style={{marginTop:15}}
-      color="info"
-      label={category.name}
-      initialValue={selectedCategories.some(selectedCategory => selectedCategory.name === category.name)}
+      color="#EA6C13"
+      label={category}
+      initialValue={selectedCategories.some(selectedCategory => selectedCategory === category)}
         onChange={(el) => {
             
                 handleCategorySelect(category)
@@ -121,7 +121,7 @@ export const CategoryAddModel2 = ({
            
           </Block>
 
-          <Button onPress={handelComplete} color="teal">Submit</Button>
+          <Button onPress={handelComplete} color="#EA6C13">Submit</Button>
         </View>
       </View>
 

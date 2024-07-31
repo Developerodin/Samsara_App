@@ -192,7 +192,8 @@ export const Profile = () => {
 
              <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
              
-
+             {
+  userData && userData.corporate_id !== "" &&
              <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center",width:"70%"}}>
                 <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
                  
@@ -210,10 +211,13 @@ export const Profile = () => {
  
              
              </Block>
-
-             <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
+}
+{
+  userData && userData.corporate_id !== "" &&
+             <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>}
              
-
+             {
+  userData && userData.corporate_id !== "" &&
              <Block style={{marginTop:20,flexDirection:"row",justifyContent:"space-between",alignItems:"center",width:"70%"}}>
                 <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
                  
@@ -232,10 +236,11 @@ export const Profile = () => {
  
                 
              </Block>
-         
-
+}
+{
+  userData && userData.corporate_id !== "" &&
              <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:10}}></Block>
-
+}
           </Block>
 
 

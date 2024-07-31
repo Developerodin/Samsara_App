@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
+  Platform
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Block, Text, Input, theme, Button } from "galio-framework";
@@ -26,7 +27,8 @@ import { Base_url } from "../../Config/BaseUrl";
 import axios from "axios";
 import CustomButton from "../../Components/Buttons/CustomButton";
 import { useAppContext } from "../../Context/AppContext";
-
+import { CategoryAddModel2 } from "../../Components/Model/CategoryAddModel2";
+import DateTimePicker from '@react-native-community/datetimepicker';
 export const EditProfile = () => {
   const navigation = useNavigation()
   const [userData, setUserData] = useState(null);
@@ -45,14 +47,17 @@ export const EditProfile = () => {
     country: "",
     height: "",
     weight: "",
-    healthIssues: [],
+    healthIssues: "",
     description: "",
     Address: "",
     howyouknowus: "",
     PriorExperience: "",
   });
+  const [ catmodalVisible,setcatModalVisible] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const {ProfileUpdate,setProfileUpdate} = useAppContext()
-
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const CardData = [
     {
       icon: <MaterialCommunityIcons name="yoga" size={26} color="grey" />,
@@ -83,6 +88,84 @@ export const EditProfile = () => {
       route: "/details",
     },
   ];
+
+  const HealthIssuesData= [
+    "Neck and Shoulder",
+    "Lower Back",
+    "Frozen Shoulder",
+    "Diabetic",
+    "Knee Problem",
+   "PCOS & PCOD",
+    "Thyroid",
+    "Gastric & Constipations",
+    "Insomnia",
+    "Varicos Vein",
+    "High BP",
+    "Low Bp",
+   "Anxiety",
+    "Depression",
+   "Breathless",
+    "Dizziness",
+    "Sciatica",
+    "Morning Sickness",
+    "Oedema (Swelling Joints)",
+    "Headache"
+  ]
+  const [CategoriesData, setCategoriesData] = useState(HealthIssuesData);
+  const [updatedCategoriesData,setUpdatedCategoriesData] = useState(HealthIssuesData);
+  const [UserCategoryData, setUserCategoryData] = useState(HealthIssuesData);
+  const handelCatSelectComplete = async()=>{
+
+    if(selectedCategories && selectedCategories.length>0){
+     
+        const Data = selectedCategories.map(category => {
+          return category
+        });
+        console.log("Helth Issues After Select",Data)
+        const UpdatedData = JSON.stringify(Data);
+        setSelectedCategories(Data);
+      // setupdate((prev) => prev + 1);
+          setcatModalVisible(false)
+        // try {
+        //   const response = await axios.post(
+        //     `${Base_url}api/b2b/${userDetails._id}/addCategories`,{
+        //      Data : UpdatedData
+        //     }
+            
+        //   );
+        //   setupdate((prev) => prev + 1);
+        //   setcatModalVisible(false)
+        //   return response.data;
+        // } catch (error) {
+        //   console.error("Error adding category:", error);
+        //   throw error;
+        // }
+    
+    }
+    
+    
+  }
+
+  const handleDateChange = (event, date) => {
+   console.log("Date ====>",date)
+    setShowDatePicker(Platform.OS === 'ios');
+    if (date) {
+      setSelectedDate(date);
+    }
+    setShowDatePicker(false)
+  };
+
+
+  const handelCategoryModelOpen=()=>{
+
+    const newCategoriesData = CategoriesData.filter(
+      (category) => !UserCategoryData.some((userCategory) => userCategory === category)
+    );
+    setUpdatedCategoriesData(newCategoriesData)
+      // console.log("CategoryUpdatedData",newCategoriesData)
+   
+    setcatModalVisible(true)
+  }
 
   const handleInputChange = (fieldName, value) => {
     setFormData((prevData) => ({
@@ -137,7 +220,7 @@ export const EditProfile = () => {
       "country":formData.country,
       "height":formData.height,
       "weight":formData.weight,
-      "health_issues":formData.healthIssues,
+      "health_issues":selectedCategories,
       // "howyouknowus":formData.howyouknowus,
       // "PriorExperience": formData.PriorExperience,
       "description":formData.description,
@@ -151,20 +234,20 @@ export const EditProfile = () => {
     // formData1.append("email", userData.email);
     // formData1.append("password", userData.password);
     // formData1.append("mobile", userData.mobile);
-    formData1.append("dob", userData.dob);
+    formData1.append("dob", null);
     // userData.images.forEach((image, index) => {
     //   formData1.append('images', image);
     // });
     // userData.health_issues.forEach((el, index) => {
     //   formData1.append('health_issues', el);
     // });
+    formData1.append('health_issues', userData.health_issues);
     formData1.append("Address", userData.Address);
     formData1.append("city", userData.city);
     formData1.append("pincode", userData.pincode);
     formData1.append("country", userData.country);
     formData1.append("height", userData.height);
     formData1.append("weight", userData.weight);
-    
     formData1.append("howyouknowus", userData.howyouknowus);
     formData1.append("PriorExperience", userData.PriorExperience);
     formData1.append("description", userData.description);
@@ -213,13 +296,16 @@ export const EditProfile = () => {
             country: Data.country,
             height: Data.height,
             weight: Data.weight,
-            healthIssues: Data.health_issues,
+            healthIssues:Data.health_issues.join(', '),
             description: Data.description,
             Address:Data.Address,
             howyouknowus: Data.howyouknowus,
             PriorExperience: Data.PriorExperience,
           })
-         
+          if(Data && Data.health_issues){
+            setSelectedCategories(Data.health_issues)
+          }
+          
 
     // Update the state with the formatted date
    
@@ -229,6 +315,30 @@ export const EditProfile = () => {
       console.error('Error fetching users:', error.message);
     }
   };
+  
+  const customStyle ={
+    Card1: {
+    
+      borderRadius:5,
+      padding:10,
+      backgroundColor:"#fff",
+     
+    },
+    Card2: {
+    
+      borderRadius:5,
+      padding:10,
+      backgroundColor:"#fff",
+  
+    },
+    Card3: {
+    
+      borderRadius:5,
+      padding:10,
+      backgroundColor:"#fff",
+     
+    },
+  }
 
   useEffect(() => {
     const userDetailsFromStorage = async () => {
@@ -299,38 +409,42 @@ export const EditProfile = () => {
               }}
             />
           </Block>
+{
+  formData.corporateId !== "" && <Block style={{ marginTop: 10 }}>
+  <Text style={{ color: "grey" }}>Company Name</Text>
+  <Input
+    left
+    value={formData.companyName}
+    onChangeText={(text) => handleInputChange("companyName", text)}
+    placeholder="Company Name"
+    style={{
+      height: 60,
+      backgroundColor: "#A8B6D140",
+      borderColor: "#A8B6D140",
+      letterSpacing: 2,
+    }}
+  />
+</Block>
+}
+     {
+      formData.corporateId !== "" && <Block style={{ marginTop: 10 }}>
+      <Text style={{ color: "grey" }}>Employee Id</Text>
+      <Input
+        left
+        value={formData.corporateId}
+        onChangeText={(text) => handleInputChange("corporateId", text)}
+        placeholder="Employee Id"
+        style={{
+          height: 60,
+          backgroundColor: "#A8B6D140",
+          borderColor: "#A8B6D140",
+          letterSpacing: 2,
+        }}
+      />
+    </Block>
+     }     
 
-          <Block style={{ marginTop: 10 }}>
-            <Text style={{ color: "grey" }}>Company Name</Text>
-            <Input
-              left
-              value={formData.companyName}
-              onChangeText={(text) => handleInputChange("companyName", text)}
-              placeholder="Company Name"
-              style={{
-                height: 60,
-                backgroundColor: "#A8B6D140",
-                borderColor: "#A8B6D140",
-                letterSpacing: 2,
-              }}
-            />
-          </Block>
-
-          <Block style={{ marginTop: 10 }}>
-            <Text style={{ color: "grey" }}>Employee Id</Text>
-            <Input
-              left
-              value={formData.corporateId}
-              onChangeText={(text) => handleInputChange("corporateId", text)}
-              placeholder="Employee Id"
-              style={{
-                height: 60,
-                backgroundColor: "#A8B6D140",
-                borderColor: "#A8B6D140",
-                letterSpacing: 2,
-              }}
-            />
-          </Block>
+          
 
           <Block style={{ marginTop: 10 }}>
             <Text style={{ color: "grey" }}>Mobile</Text>
@@ -348,7 +462,7 @@ export const EditProfile = () => {
             />
           </Block>
 
-          <Block style={{ marginTop: 10 }}>
+          {/* <Block style={{ marginTop: 10 }}>
             <Text style={{ color: "grey" }}>Dob</Text>
             <Input
               left
@@ -362,7 +476,34 @@ export const EditProfile = () => {
                 letterSpacing: 2,
               }}
             />
-          </Block>
+          </Block> */}
+          <Text style={{color:"grey"}}>Dob</Text>
+          <TouchableOpacity onPress={() => setShowDatePicker(true)} style={[{marginTop:5,flexDirection:"row",borderBottomWidth:1,borderColor:"#A8B6D140",backgroundColor: "#A8B6D140",padding:15,borderRadius:8,height:60}]}>
+
+<Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
+   
+  <Block >
+  <Text style={{color:"grey"}}>{selectedDate ? selectedDate.toDateString() : "Select Date" }</Text>
+  </Block>
+
+
+
+
+
+{showDatePicker && (
+<DateTimePicker
+value={selectedDate}
+mode="date"
+display="default"
+// minimumDate={today}
+// maximumDate={maxDate}
+onChange={handleDateChange}
+/>
+)}
+</Block>
+
+
+</TouchableOpacity>
 
           <Block style={{ marginTop: 10 }}>
             <Text style={{ color: "grey" }}>City</Text>
@@ -444,7 +585,7 @@ export const EditProfile = () => {
             />
           </Block>
 
-          <Block style={{ marginTop: 10 }}>
+          {/* <Block style={{ marginTop: 10 }}>
             <Text style={{ color: "grey" }}>Health Issues</Text>
             <Input
               left
@@ -458,7 +599,30 @@ export const EditProfile = () => {
                 letterSpacing: 2,
               }}
             />
+          </Block> */}
+          <Text style={{color:"grey"}}>Health Issues</Text>
+          <TouchableOpacity style={[{marginTop:5,flexDirection:"row",borderBottomWidth:1,borderColor:"#A8B6D140",backgroundColor: "#A8B6D140",padding:15,borderRadius:8,height:60}]} onPress={handelCategoryModelOpen}>
+          {/* <Ionicons name="add-circle-outline" size={24} color="teal" /> */}
+        
+  
+          <Block center>
+          <Block >
+       
+
+          <Block style={{marginLeft:5}} >
+            <Text style={{color:"grey"}}>
+              {
+                selectedCategories.length > 0 ? selectedCategories.map((el,index)=>{
+                  return el+ " , "
+                })
+                :
+                "Select Health Issues"
+              }
+            </Text>
           </Block>
+                  </Block>
+          </Block>
+          </TouchableOpacity>
 
           <Block style={{ marginTop: 10 }}>
             <Text style={{ color: "grey" }}>Description</Text>
@@ -496,6 +660,15 @@ export const EditProfile = () => {
             <CustomButton title={"Update"} onPress={handelContinue} />
           </Block>
         </Block>
+
+        <CategoryAddModel2
+            modalVisible={catmodalVisible} 
+            setModalVisible={setcatModalVisible} 
+            categoriesData={HealthIssuesData}
+            setSelectedCategories={setSelectedCategories}
+            selectedCategories={selectedCategories}
+            handelComplete={handelCatSelectComplete}
+            />
       </ScrollView>
     </View>
   );
