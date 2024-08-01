@@ -153,6 +153,7 @@ export const Home = () => {
     // Call your functions here
     fetchTeachers()
     getAllClasses();
+    getUserMemberShip(userData._id)
     // After fetching data, set refreshing to false
     setRefreshing(false);
   };
