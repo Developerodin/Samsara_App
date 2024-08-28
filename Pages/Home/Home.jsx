@@ -578,12 +578,12 @@ useEffect(() => {
           </Block>
         </Block>
 
-         <Block style={{padding:10}}>
+        {/* <Block style={{padding:10}}>
              <Block style={styles.Space_Between}>
               <Block>
             
               <Text style={{fontSize:16,color:"grey"}}>Upgrade your membership today!</Text>
-              {/* <Text style={{fontSize:17,color:"grey"}}>{MemberShipData && MemberShipData.validityDays} Day</Text> */}
+              
               {
                 MemberShipData && <MembershipTimer startDate={MemberShipData.startDate} endDate={MemberShipData.endDate} />
               }
@@ -594,12 +594,9 @@ useEffect(() => {
       <Text style={styles.buttonText2}>Pay now</Text>
     </TouchableOpacity>
              </Block>
-             {/* <Block>
-             <Text>Token: {expoPushToken ? expoPushToken.data : ""}</Text>
-             <Text>Notification: {data ? data : "no data"}</Text>
-             </Block> */}
+           
          </Block>
-     
+     */}
 
         <Block style={{ padding: 10 }}>
           <Block style={{ marginTop: 10 }}>
@@ -637,15 +634,16 @@ useEffect(() => {
                         ClassClick={()=>handelClassClick(card._id)}
                         book={handelMembershipModel}
                         join={() =>{
-                          if(MemberShipData && MemberShipData.status === "active"){
+                          // if(MemberShipData && MemberShipData.status === "active"){
                             handelWebZommClassClick({
                               number: card.mn,
                               pass: card.pass,
+                          //   })
+                          // }
+                          // else{
+                          //   handelMembershipModel()
+                          // }
                             })
-                          }
-                          else{
-                            handelMembershipModel()
-                          }
                         }
                          
                        
