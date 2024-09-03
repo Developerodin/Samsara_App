@@ -37,6 +37,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="com.samsarawellness.app"/>
         <data android:scheme="samsara"/>
+        <data android:scheme="com.samsarawellnessv1.app"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>

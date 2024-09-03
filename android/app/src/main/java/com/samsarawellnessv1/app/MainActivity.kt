@@ -1,4 +1,4 @@
-package com.samsarawellness.app
+package com.samsarawellnessv1.app
 
 import android.os.Build
 import android.os.Bundle

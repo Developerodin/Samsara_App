@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "226300963173",
-    "project_id": "samsaraapp-7b6eb",
-    "storage_bucket": "samsaraapp-7b6eb.appspot.com"
+    "project_number": "68098927405",
+    "project_id": "samsarav1",
+    "storage_bucket": "samsarav1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:226300963173:android:b19cfcee28ea1c80d4198c",
+        "mobilesdk_app_id": "1:68098927405:android:d900e5ea864b118d4f41a4",
         "android_client_info": {
-          "package_name": "com.samsarawellness.app"
+          "package_name": "com.samsarawellnessv1.app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA9zclrqsmH7Jug8fR4r9rabZ7zxG3Zgl0"
+          "current_key": "AIzaSyANCgR8RgCcgCHgYY9eL8rf6SwzNHXj7ek"
         }
       ],
       "services": {
