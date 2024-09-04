@@ -27,7 +27,7 @@ import { MyClass } from './Pages/MyClasses/MyClass';
 import { Profile } from './Pages/Profile/Profile';
 import { ContactUs } from './Pages/Contactus/ContactUs';
 import {  ZoomWebView } from './Pages/WebViewPage/WebView';
-import { ZoomPage } from './Pages/ZoomSdkPage/ZoomPage';
+
 import { AppProvider } from './Context/AppContext';
 import { PersonalInfo2 } from './Pages/SignUp/Registration/PersonalInfo2';
 import { GroupClasses } from './Pages/Class/GroupClasses';
@@ -301,11 +301,7 @@ const linking = {
           }}
         />
 
-<Stack.Screen name="ZoomPage" component={ZoomPage}
-          options={{
-            headerShown: true,
-          }}
-        />
+
 
 <Stack.Screen name="ZoomWebView" component={ZoomWebView}
           options={{

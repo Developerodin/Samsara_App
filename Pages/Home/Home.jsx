@@ -274,9 +274,7 @@ export const Home = () => {
     userDetailsFromStorage();
   }, []);
 
-  const handelWebZommPageClick = () => {
-    navigation.navigate("ZoomPage");
-  };
+
 
   const getAllClasses = async () => {
     setIsLoading(true);
