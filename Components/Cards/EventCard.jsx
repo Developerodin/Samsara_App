@@ -13,16 +13,24 @@ import { Fontisto } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import CustomButton from '../Buttons/CustomButton';
 import { LinearGradient } from "expo-linear-gradient";
-const EventCard = ({ title, description,ClassClick ,book,join,mn,time,date}) => (
+
+const imgArr = [
+  require('../../assets/Images/CardImg2.png'),
+  require('../../assets/Images/CardImg.png'),
+  require('../../assets/Images/CardImg3.png'),
+];
+
+const EventCard = ({ title, description,ClassClick ,book,join,mn,time,date,index}) => (
   <View style={styles.card}>
-      <LinearGradient
+    <TouchableOpacity activeOpacity={0.9} onPress={join}>
+    <LinearGradient
       colors={['#a9d2fe', '#000000']}
       locations={[0.3, 0.91]}
-       style={[{backgroundColor:"#a9d2fe",height:"45%",borderTopRightRadius:20,borderTopLeftRadius: 20}]} >
+       style={[{backgroundColor:"#a9d2fe",height:180,borderTopRightRadius:20,borderTopLeftRadius: 20}]} >
              
              
              <Block center style={{position:"absolute",bottom:0}}>
-             <Image   source={require('../../assets/Images/CardImg.png')} />
+             <Image style={{ height: 170, width: 170 }} source={imgArr[index % imgArr.length]} />
              </Block>
 
              {/* <Block style={{position:"absolute",right:10,top:10}}>
@@ -48,16 +56,18 @@ const EventCard = ({ title, description,ClassClick ,book,join,mn,time,date}) => 
                    </Block>
                   </Block>
 
-                  <TouchableOpacity  style={{flexDirection:"row",justifyContent:"center",alignItems:"center",height:35,width:35,borderRadius:20,backgroundColor:"#667f99"}}>
+                  <Block  style={{flexDirection:"row",justifyContent:"center",alignItems:"center",height:35,width:35,borderRadius:20,backgroundColor:"#667f99"}}>
                   <Fontisto  name="angle-down" size={18} color="white" />
-                  </TouchableOpacity>
+                  </Block>
               </Block>
                 
              </Block>
              
       </LinearGradient>
-
-      <Block style={{padding:10}}>
+    </TouchableOpacity>
+     
+     <TouchableOpacity activeOpacity={0.9} onPress={join}>
+     <Block style={{padding:10}}>
              
              <LinearGradient 
             colors={['rgba(255, 240, 229, 1)', 'rgba(254, 242, 234, 0)']}
@@ -77,14 +87,17 @@ const EventCard = ({ title, description,ClassClick ,book,join,mn,time,date}) => 
                   </Block>
              </Block>
 
-             <Block style={[styles.Center,{marginTop:20}]}>
+          
+      </Block>
+     </TouchableOpacity>
+
+     
+       
+      <Block style={[styles.Center,{marginTop:10}]}>
              <TouchableOpacity onPress={join} style={styles.button} >
       <Text style={styles.buttonText}>Register now</Text>
     </TouchableOpacity>
              </Block>
-      </Block>
-       
-
   </View>
 );
 
@@ -117,7 +130,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    margin: 10,
+    // margin: 10,
     elevation: 3, // for Android shadow
     shadowColor: '#000', // for iOS shadow
     shadowOffset: { width: 0, height: 1 },
@@ -125,7 +138,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     borderWidth:1,
     borderColor: '#D9E2F2',
-    width:"70%",
+    width:"98%",
     borderBottomLeftRadius:10,
     borderBottomRightRadius:10,
   

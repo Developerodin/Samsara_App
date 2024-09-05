@@ -35,9 +35,9 @@ const GroupClassCard = ({ title, description,ClassClick ,book,join,mn,time}) => 
                     <Text style={{fontSize:15,color:"#4F4F4F",marginTop:3}}>{time} (IST)</Text>
                 </Block>
 
-                <Block>
+                <TouchableOpacity onPress={join}>
                 <Image   source={require('../../assets/Images/view group class details.png')} />
-                </Block>
+                </TouchableOpacity>
              </Block>
 
              <Block style={{borderTopWidth:1,borderColor:'#D9E2F2',marginTop:20}}>

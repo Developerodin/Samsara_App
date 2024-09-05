@@ -517,7 +517,7 @@ useEffect(() => {
               <View >
         
               <ImageBackground
-        source={require('../../assets/Images/Frame1.png')}
+        source={require('../../assets/Images/Frame2.jpg')}
         style={styles.imageBackground}
         imageStyle={styles.imageStyle} 
       >
@@ -552,7 +552,7 @@ useEffect(() => {
         <View >
         
         <ImageBackground
-  source={require('../../assets/Images/Frame1.png')}
+  source={require('../../assets/Images/Frame3.jpg')}
   style={styles.imageBackground}
   imageStyle={styles.imageStyle} 
 >
@@ -611,56 +611,43 @@ useEffect(() => {
           </Block>
 
           <Block style={{ marginTop: 10 }}>
-            <Swiper
-              style={{ height: swiperHeight }}
-              showsPagination={false}
-              overlayEnabled={true}
-              overlayColor={"transparent"} // Set the color of the overlay
-              overlayOpacity={0.5}
-              spaceBetween={3}
-            >
-              {classes &&
-                classes.map((card, index) => (
-                  <View key={index}>
-                    <View style={{ flexDirection: "row" }}>
-                      {/* Current card */}
-                      <Card
-                        mn={card.mn}
-                        title={card.Title}
-                        time={card.time}
-                        description={card.Teacher}
-                        ClassClick={()=>handelClassClick(card._id)}
-                        book={handelMembershipModel}
-                        join={() =>{
-                          // if(MemberShipData && MemberShipData.status === "active"){
-                            handelWebZommClassClick({
-                              number: card.mn,
-                              pass: card.pass,
-                          //   })
-                          // }
-                          // else{
-                          //   handelMembershipModel()
-                          // }
-                            })
-                        }
-                         
-                       
-                        }
-                        // Pass overlay color to the Card component
-                      />
-                      {/* Next card */}
-                      {classes[index + 1] && (
-                        <Card
-                          mn={classes[index + 1].mn}
-                          title={classes[index + 1].Title}
-                          description={classes[index + 1].Teacher}
-                          overlayColor={classes[index + 1].overlayColor} // Pass overlay color to the next card
-                        />
-                      )}
-                    </View>
-                  </View>
-                ))}
-            </Swiper>
+         
+
+
+          <FlatList
+  data={classes}
+  horizontal
+  pagingEnabled={false} // Disable paging, so half of the next card can be shown
+  showsHorizontalScrollIndicator={false}
+  snapToInterval={width * 0.75 + 10} // Snap to the size of 1 card + spacing
+  decelerationRate="fast" // Optional: smooth snapping effect
+  contentContainerStyle={{ paddingHorizontal: 10 }} // Padding to start/end cards
+  renderItem={({ item,index }) => (
+    <View style={{
+      flexDirection: "row",
+      width: width * 0.70, // Show 75% of the card width
+      marginRight: 10, // Add spacing between cards
+      height: 400,
+      // borderWidth:1
+      // Your card height
+    }}>
+      <Card
+        mn={item.mn}
+        title={item.Title}
+        time={item.time}
+        description={item.Teacher}
+        ClassClick={() => handelClassClick(item._id)}
+        book={handelMembershipModel}
+        join={() => handelWebZommClassClick({
+          number: item.mn,
+          pass: item.pass
+        })}
+        index={index}
+      />
+    </View>
+  )}
+  keyExtractor={(item, index) => index.toString()}
+/>
           </Block>
 
          <Block style={{ marginTop: 30 }}>
@@ -677,54 +664,37 @@ useEffect(() => {
           </Block>
 
           <Block style={{ marginTop: 10 }}>
-            <Swiper
-              style={{ height: swiperHeight }}
-              showsPagination={false}
-              overlayEnabled={true}
-              overlayColor={"transparent"} // Set the color of the overlay
-              overlayOpacity={0.5}
-              spaceBetween={3}
-            >
-              {Events &&
-                Events.map((card, index) => (
-                  <View key={index}>
-                    <View style={{ flexDirection: "row" }}>
-                    
-                      <EventCard
-                        mn={card.mn}
-                        title={card.eventName}
-                        description={card.eventType}
-                        date={card.Date}
-                        time={card.Time}
-                        ClassClick={handelClassClick}
-                        book={handelMembershipModel}
-                        join={() =>
-                          {
-                            // if(MemberShipData && MemberShipData.status === "active"){
-                              handleEventWebView(card.id)
-                            // }
-                            // else{
-                            //   handelMembershipModel()
-                            // }
-                          }
-                        
-                         
-                        }
-                    
-                      />
-                    
-                      {classes[index + 1] && (
-                        <Card
-                          mn={classes[index + 1].mn}
-                          title={classes[index + 1].Title}
-                          description={classes[index + 1].Teacher}
-                          overlayColor={classes[index + 1].overlayColor} // Pass overlay color to the next card
-                        />
-                      )}
-                    </View>
-                  </View>
-                ))}
-            </Swiper>
+         
+
+
+          <FlatList
+  data={Events}
+  horizontal
+  pagingEnabled
+  snapToInterval={320} // Adjust this value according to card width + margin
+  decelerationRate="fast" // Ensures smooth snapping
+  showsHorizontalScrollIndicator={false}
+  contentContainerStyle={{ paddingHorizontal: 20 }} // Optional: adds padding to the list
+  renderItem={({ item,index }) => (
+    <View style={{ flexDirection: "row", height: 400, width: 300, marginRight: 10 }}>
+      <EventCard
+        mn={item.mn}
+        title={item.eventName}
+        description={item.eventType}
+        date={item.Date}
+        time={item.Time}
+        ClassClick={handelClassClick}
+        book={handelMembershipModel}
+        join={() => handleEventWebView(item.id)}
+        index={index}
+      />
+    </View>
+  )}
+  keyExtractor={(item, index) => index.toString()}
+/>
+
+
+    
           </Block> 
 
           <Block style={{ marginTop: 40 }}>

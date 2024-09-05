@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
 export const OneOnOneClassCard = ({ data,onTeacherClick }) => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity activeOpacity={0.9} onPress={onTeacherClick} style={styles.card}>
    
    <Block style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center",padding:10}}>
     <Block style={{flexDirection:"row",justifyContent:"left",alignItems:"center"}}>
@@ -65,7 +65,7 @@ export const OneOnOneClassCard = ({ data,onTeacherClick }) => {
     </Block>
     
     
-  </View>
+  </TouchableOpacity>
   )
 }
 const styles = StyleSheet.create({
