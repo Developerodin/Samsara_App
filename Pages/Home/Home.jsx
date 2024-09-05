@@ -700,12 +700,12 @@ useEffect(() => {
                         book={handelMembershipModel}
                         join={() =>
                           {
-                            if(MemberShipData && MemberShipData.status === "active"){
+                            // if(MemberShipData && MemberShipData.status === "active"){
                               handleEventWebView(card.id)
-                            }
-                            else{
-                              handelMembershipModel()
-                            }
+                            // }
+                            // else{
+                            //   handelMembershipModel()
+                            // }
                           }
                         
                          
