@@ -35,8 +35,8 @@ export const GroupClasses = () => {
   const [classes, setClasses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
-  const handelClassClick = () => {
-    navigation.navigate("ClassDescription");
+  const handelClassClick = (id) => {
+    navigation.navigate("ClassDescription",{ value: id });
   };
   const handelTeacherClick = () => {
     navigation.navigate("About Instructor");
@@ -85,6 +85,7 @@ export const GroupClasses = () => {
       setIsLoading(false);
       if (Data) {
         const formattedData = Data.map((item) => ({
+          _id:item._id,
           Title: item.title,
           Teacher: item.teacher && item.teacher.name,
           Date: item.schedule,
@@ -134,7 +135,7 @@ export const GroupClasses = () => {
                     title={card.Title}
                     time={card.time}
                     description={card.Teacher}
-                    ClassClick={handelClassClick}
+                    ClassClick={() => handelClassClick(card._id)}
                     book={handelMembershipModel}
                     join={() =>
                       handelWebZommClassClick({

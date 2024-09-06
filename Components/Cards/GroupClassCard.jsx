@@ -17,7 +17,7 @@ const GroupClassCard = ({ title, description,ClassClick ,book,join,mn,time}) => 
   <View style={styles.card}>
      
 
-      <Block style={{padding:15}}>
+      <TouchableOpacity activeOpacity={0.8} onPress={ClassClick} style={{padding:15}}>
              <Block>
                 <Text style={{color:"#EA6C13",fontSize:16}}>Class Title</Text>
                 <Text style={{fontSize:20,marginTop:5}}>
@@ -35,7 +35,7 @@ const GroupClassCard = ({ title, description,ClassClick ,book,join,mn,time}) => 
                     <Text style={{fontSize:15,color:"#4F4F4F",marginTop:3}}>{time} (IST)</Text>
                 </Block>
 
-                <TouchableOpacity onPress={join}>
+                <TouchableOpacity >
                 <Image   source={require('../../assets/Images/view group class details.png')} />
                 </TouchableOpacity>
              </Block>
@@ -66,13 +66,13 @@ const GroupClassCard = ({ title, description,ClassClick ,book,join,mn,time}) => 
              </Block>
 
 
-              <Block style={[styles.Center,{marginTop:30}]}>
+             
+      </TouchableOpacity>
+      <Block style={[styles.Center,{marginTop:10,marginBottom:20}]}>
              <TouchableOpacity onPress={join} style={styles.button} >
       <Text style={styles.buttonText}>Join Now</Text>
     </TouchableOpacity>
              </Block> 
-      </Block>
-       
 
   </View>
 );

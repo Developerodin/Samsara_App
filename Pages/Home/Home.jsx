@@ -46,6 +46,7 @@ import Tired from "../../assets/Mood/TiredMood.png";
 import Anxious from "../../assets/Mood/AnxiousMood.png";
 import * as NavigationBar from 'expo-navigation-bar'
 import usePushNotifications from "../../usePushNotifications";
+
 const calculateTimeLeft = (startDate, endDate) => {
   const now = new Date();
   const end = new Date(endDate);
@@ -425,6 +426,16 @@ const handelPayClick = ()=>{
 const handelContactus = ()=>{
   navigation.navigate("Contact Us")
 }
+const handleGestureEvent = (event) => {
+  const { translationX } = event.nativeEvent;
+
+  // Detect swipe left (translationX < 0)
+  if (translationX < -50) { // Adjust the threshold as needed
+    // setSwipedLeft(true);
+    console.log("Left swipe")
+  }
+};
+
 
 useEffect(() => {
   if(userData && userData._id){
@@ -442,6 +453,7 @@ useEffect(() => {
   
   }, []);
   return (
+    
     <View style={styles.container}>
       {/* <Header /> */}
       {/* <StatusBar style="dark" /> */}
@@ -472,13 +484,13 @@ useEffect(() => {
         translucent={true} 
         />
         <Block  style={styles2.Space_Between}>
-        <TouchableOpacity onPress={showMenue}>
+        <TouchableOpacity  onPress={showMenue} style={{width:50,padding:10,paddingLeft:0}}>
           {/* <Entypo name="menu" size={40} color="grey"  /> */}
           <Image    source={require('../../assets/Images/ri_menu-2-line.png')} />
           </TouchableOpacity>
           <Block style={{alignItems:"center"}}>
           {/* samsaraLogo.png */}
-          <Image  style={{height:33,width:150}}  source={require('../../assets/samsaraLogo.png')} />
+          <Image  style={{height:33,width:155}}  source={require('../../assets/samsaraLogo.png')} />
           </Block>
           <Block>
           <TouchableOpacity onPress={handelMoodModelOpen}>
@@ -495,7 +507,7 @@ useEffect(() => {
 
 
                
-          <Block style={[{padding:10,height:height*0.15,flexDirection:"row",justifyContent:"left",alignItems:"center"}]}>
+          <Block style={[{paddingLeft:10,flexDirection:"row",justifyContent:"left",alignItems:"center",width:150,marginTop:50}]}>
             <Block >
               <Text style={{fontSize:20,color:"#fff",fontWeight:700}}>Hii, {userData && userData.name}</Text>
               <Text style={{fontSize:18,color:"#EA6C13",fontWeight:600}}>{getGreeting()}</Text>
@@ -516,7 +528,7 @@ useEffect(() => {
               overlayColor={"transparent"} 
               overlayOpacity={0.5}
               autoplay={true}
-              autoplayTimeout={5}
+              autoplayTimeout={3}
             
             >
               <View >
@@ -609,6 +621,7 @@ useEffect(() => {
                 color: "black",
 
                 marginTop: 5,
+                marginLeft:5
               }}
             >
               Group Classes
@@ -662,6 +675,7 @@ useEffect(() => {
                 color: "black",
 
                 marginTop: 5,
+                marginLeft:5
               }}
             >
               Upcoming Events
@@ -708,11 +722,12 @@ useEffect(() => {
                 fontSize: 20,
                 color: "black",
                 marginTop: 5,
+                marginLeft:5
               }}
             >
               Book 1:1 Session
             </Text>
-            <Text style={{ fontSize: 14, color: "grey" }}>
+            <Text style={{ fontSize: 14, color: "grey",marginLeft:5 }}>
               With your favorite Instructor
             </Text>
           </Block>
@@ -821,6 +836,7 @@ useEffect(() => {
       
       <BottomTabs ActiveTab={"home"}/>
     </View>
+ 
   );
 };
 

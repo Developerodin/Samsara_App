@@ -112,7 +112,7 @@ export const ClassDescription = () => {
        
          
         
-         <Block style={{backgroundColor: 'rgba(0, 0, 0, 0.7)',flex:1,padding:20 }}>
+         <Block style={{backgroundColor: 'rgba(0, 0, 0, 0.3)',flex:1,padding:20 }}>
            
            <Block>
            <AntDesign
