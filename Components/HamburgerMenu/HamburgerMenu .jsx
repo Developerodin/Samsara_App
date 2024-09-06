@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet,Dimensions, ScrollView,Share, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet,Dimensions, ScrollView,Share, Image,Linking,ToastAndroid  } from 'react-native';
 import Modal from "react-native-modal";
 const {width, height} = Dimensions.get('window');
 import { AntDesign } from '@expo/vector-icons';
@@ -27,26 +27,75 @@ const HamburgerMenu = ({ isVisible, onClose }) => {
     // {Icon:<FontAwesome5 name="chalkboard-teacher" size={24} color="#586B90" />,Title:"My classes" , Route:"My Classes"},
     {Icon:<FontAwesome5 name="chalkboard-teacher" size={24} color="#586B90" />,Title:"My Sessions" , Route:"My Sessions"},
     {Icon:<MaterialIcons name="event" size={24} color="#586B90" />,Title:"My Events" , Route:"My Events"},
-    {Icon:<AntDesign name="playcircleo" size={24} color="#586B90" />,Title:"How It works ?" , Route:""},
+    {Icon:<AntDesign name="playcircleo" size={24} color="#586B90" />,Title:"How It works ?" , Route:"howitworks"},
     // {Icon:<Ionicons name="chatbox-ellipses-outline" size={24} color="grey" />,Title:"Chat" , Route:"Chat"},
     {Icon:<EvilIcons name="share-google" size={26} color="#586B90" />,Title:"Share App" , Route:"Refer"},
    
-    {Icon:<FontAwesome6 name="laptop" size={21} color="#586B90" />,Title:"Web Login" , Route:""},
+    {Icon:<FontAwesome6 name="laptop" size={21} color="#586B90" />,Title:"Web Login" , Route:"weblogin"},
 
     
-    {Icon:<AntDesign name="questioncircleo" size={24} color="#586B90" />,Title:"FAQ" , Route:""},
+    // {Icon:<AntDesign name="questioncircleo" size={24} color="#586B90" />,Title:"FAQ" , Route:""},
     {Icon:<MaterialIcons name="support-agent" size={24} color="#586B90" />,Title:"Contact us" , Route:"Contact Us"},
     // {Icon:<AntDesign name="logout" size={24} color="#586B90" />,Title:"Logout" , Route:"logout"},
   ]
 
+  const handlePressYouTube = () => {
+    const youtubeUrl = 'https://www.youtube.com/@samsara_wellnessthis';
+    Linking.canOpenURL(youtubeUrl)
+      .then((supported) => {
+        if (supported) {
+          return Linking.openURL(youtubeUrl);
+        } else {
+          
+          ToastAndroid.show('Unable to open YouTube', ToastAndroid.SHORT);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handlePressWebsite = () => {
+    const websiteUrl = 'https://samsarawellness.in/';
+    Linking.canOpenURL(websiteUrl)
+      .then((supported) => {
+        if (supported) {
+          return Linking.openURL(websiteUrl);
+        } else {
+          // Alert.alert('Error', 'Unable to open the website');
+          ToastAndroid.show('Unable to open the website', ToastAndroid.SHORT);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handlePressTermscondition = () => {
+    const websiteUrl = 'https://samsarawellness.in/privacy-policy/';
+    Linking.canOpenURL(websiteUrl)
+      .then((supported) => {
+        if (supported) {
+          return Linking.openURL(websiteUrl);
+        } else {
+          // Alert.alert('Error', 'Unable to open the website');
+          ToastAndroid.show('Unable to open the website', ToastAndroid.SHORT);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
 const handelRoute = (route) =>{
   if(route === "Refer"){
     handleShare();
     return;
   }
+  if(route === "howitworks"){
+    handlePressYouTube();
+    return;
+  }
   if(route === "logout"){
     handelLogout();
+    return ;
+  }
+  if(route === "weblogin"){
+    handlePressWebsite();
     return ;
   }
 
@@ -201,10 +250,10 @@ const handelLogout=async()=>{
         
       ))}
 
-           <Block style={{marginLeft:10,marginTop:20}}>
+           <TouchableOpacity activeOpacity={0.7} onPress={handlePressTermscondition}  style={{marginLeft:10,marginTop:20}}>
             <Text style={{fontSize:16,color:"#EA6C13"}}>Privacy Policy</Text>
             <Text style={{fontSize:16,color:"#EA6C13",marginTop:5}}>Terms & Conditions</Text>
-           </Block>
+           </TouchableOpacity>
 
            
 

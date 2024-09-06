@@ -7,6 +7,8 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
+  Linking,
+  ToastAndroid
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Block, Text, Input, theme, Button } from "galio-framework";
@@ -19,6 +21,30 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 export const ContactUs = () => {
+  const handlePressCall = () => {
+    Linking.openURL('tel:+916360198390'); // Replace with your phone number
+  };
+
+  const handlePressWhatsApp = () => {
+    const phoneNumber = '+916360198390'; // Replace with your WhatsApp number
+    const url = `whatsapp://send?phone=${phoneNumber}`;
+
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (!supported) {
+          // Alert.alert('Error', 'WhatsApp is not installed on your device');
+          ToastAndroid.show('WhatsApp is not installed on your device', ToastAndroid.SHORT);
+        } else {
+          return Linking.openURL(url);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handlePressEmail = () => {
+    const email = 'info.samsarawellness@gmail.com'; // Replace with your email
+    Linking.openURL(`mailto:${email}`);
+  };
   return (
     <View style={[styles.container]}>
         <Block center style={{marginTop:40}} >
@@ -33,22 +59,22 @@ export const ContactUs = () => {
 
          <Block style={{position:"absolute",bottom:100,left:0,right:0}}>
          <Block style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-           <Block style={{flexDirection:"row",marginRight:20}}>
+           <TouchableOpacity activeOpacity={0.8} onPress={handlePressCall} style={{flexDirection:"row",marginRight:20}}>
            <Feather name="phone-call" size={20} style={{marginRight:10,color:"#525CEB"}}  />
            <Text style={{color:"#525CEB"}}>Call us</Text>
-           </Block>
+           </TouchableOpacity>
 
-           <Block style={{flexDirection:"row",marginRight:20}}>
+           <TouchableOpacity activeOpacity={0.8} onPress={handlePressWhatsApp} style={{flexDirection:"row",marginRight:20}}>
           
            <Entypo name="chat" size={20}   style={{marginRight:10,color:"#525CEB"}} />
            <Text style={{color:"#525CEB"}}>Chat now</Text>
-           </Block>
+           </TouchableOpacity>
 
-           <Block style={{flexDirection:"row"}}>
+           <TouchableOpacity activeOpacity={0.8} onPress={handlePressEmail} style={{flexDirection:"row"}}>
            
            <MaterialIcons name="email" size={20} style={{marginRight:10,color:"#525CEB"}} />
            <Text style={{color:"#525CEB"}}>Email us</Text>
-           </Block>
+           </TouchableOpacity>
         </Block>
          </Block>
        

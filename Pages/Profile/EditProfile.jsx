@@ -29,6 +29,15 @@ import CustomButton from "../../Components/Buttons/CustomButton";
 import { useAppContext } from "../../Context/AppContext";
 import { CategoryAddModel2 } from "../../Components/Model/CategoryAddModel2";
 import DateTimePicker from '@react-native-community/datetimepicker';
+
+const formatDate = (date) => {
+  let day = date.getDate().toString().padStart(2, '0');
+  let month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
+  let year = date.getFullYear(); // Full year (yyyy)
+  return `${day}-${month}-${year}`;
+};
+
+
 export const EditProfile = () => {
   const navigation = useNavigation()
   const [userData, setUserData] = useState(null);
@@ -58,6 +67,7 @@ export const EditProfile = () => {
   const {ProfileUpdate,setProfileUpdate} = useAppContext()
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [aselectedDate, setaSelectedDate] = useState("");
   const CardData = [
     {
       icon: <MaterialCommunityIcons name="yoga" size={26} color="grey" />,
@@ -150,7 +160,10 @@ export const EditProfile = () => {
    console.log("Date ====>",date)
     setShowDatePicker(Platform.OS === 'ios');
     if (date) {
+      const formattedDate = formatDate(date);
+      console.log("Formatted Date ===>", formattedDate);
       setSelectedDate(date);
+      setaSelectedDate(formattedDate)
     }
     setShowDatePicker(false)
   };
@@ -212,7 +225,7 @@ export const EditProfile = () => {
       "email":formData.email,
       "password": "",
       "mobile":formData.mobile,
-      "dob": formData.dob,
+      "dob": aselectedDate,
       // "images": [userimageFile1],
       "Address":formData.Address,
       "city":formData.city,
@@ -234,7 +247,7 @@ export const EditProfile = () => {
     // formData1.append("email", userData.email);
     // formData1.append("password", userData.password);
     // formData1.append("mobile", userData.mobile);
-    formData1.append("dob", null);
+    formData1.append("dob", aselectedDate);
     // userData.images.forEach((image, index) => {
     //   formData1.append('images', image);
     // });
@@ -252,6 +265,8 @@ export const EditProfile = () => {
     formData1.append("PriorExperience", userData.PriorExperience);
     formData1.append("description", userData.description);
     
+
+    console.log("DAta of form ==>",formData1)
     axios.patch(`${Base_url}api/users/update/${userDetails._id}`, formData1,{
       headers: {
         'Content-Type': 'multipart/form-data',

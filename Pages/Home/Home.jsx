@@ -421,6 +421,11 @@ const handelPayClick = ()=>{
  Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
 }
 
+
+const handelContactus = ()=>{
+  navigation.navigate("Contact Us")
+}
+
 useEffect(() => {
   if(userData && userData._id){
     getUserMood(userData._id);
@@ -733,6 +738,8 @@ useEffect(() => {
         }
             </Swiper>
           </Block>
+<TouchableOpacity activeOpacity={0.8} onPress={handelContactus}>
+
 
           <LinearGradient
     colors={['#FFFFFF', '#E6FBEB']}
@@ -775,7 +782,7 @@ useEffect(() => {
               />
             </Block>
   </LinearGradient>
-          
+  </TouchableOpacity>      
         </Block>
       </Block>
 
